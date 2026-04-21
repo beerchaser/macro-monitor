@@ -93,6 +93,32 @@ def fetch_fred(series_id):
     raise ValueError(f"{series_id} 없음")
 
 
+def fetch_nfp():
+    """NFP 전월 대비 증감 (단위: 천명)"""
+    if not FRED_API_KEY:
+        raise ValueError("FRED_API_KEY 없음")
+    params = urllib.parse.urlencode({
+        "series_id": "PAYEMS", "api_key": FRED_API_KEY,
+        "file_type": "json", "sort_order": "desc", "limit": 3
+    })
+    data = http_get(f"https://api.stlouisfed.org/fred/series/observations?{params}")
+    obs = [o for o in data.get("observations", []) if o["value"] != "."]
+    if len(obs) < 2:
+        raise ValueError("NFP 데이터 부족")
+    latest = float(obs[0]["value"])
+    prev   = float(obs[1]["value"])
+    change = round(latest - prev)           # 전월 대비 증감 (천명)
+    dt = datetime.strptime(obs[0]["date"], "%Y-%m-%d")
+    # 발표일은 보통 다음달 첫째 금요일 — verify-note용 date는 월만 표시
+    month_name = dt.strftime("%-m월")
+    return {
+        "val": change,
+        "month": month_name,
+        "date": f"{dt.month}/{dt.day}",
+        "display": f"+{change:,}K ({month_name})"
+    }
+
+
 def sub(html, pattern, replacement, flags=0, label=""):
     result, n = re.subn(pattern, replacement, html, flags=flags)
     tag = label or pattern[:45]
@@ -226,17 +252,22 @@ def patch_html(html, data):
 
     # ── NFP ──
     if nfp:
-        nfp_k = int(nfp["val"])
+        nfp_k = nfp["val"]
+        month = nfp["month"]
         html = sub(html,
-            r'(<td class="val val-(?:ok|warn)">3월: \+)[\d,]+K(</td>)',
+            r'(<td class="val val-(?:ok|warn)">\d+월: [+-])[\d,]+K(</td>)',
             f'\\g<1>{nfp_k:,}K\\g<2>', label="NFP val")
+        # val 셀 월 이름도 업데이트
         html = sub(html,
-            r'\d+/\d+ 발표 · BLS 3월 \+[\d,]+K',
-            f'{nfp["date"]} 발표 · BLS 3월 +{nfp_k:,}K', label="NFP note")
+            r'(<td class="val val-(?:ok|warn)">)\d+월: [+-][\d,]+K(</td>)',
+            f'\\g<1>{month}: +{nfp_k:,}K\\g<2>', label="NFP val month")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
-            r'(<span class="verify-note">)\d+/\d+ 발표 · BLS 3월',
-            f'\\g<1>{AUTO_BADGE}\\g<2>{nfp["date"]} 발표 · BLS 3월',
+            r'\d+/\d+ 발표 · BLS \d+월 [+-][\d,]+K',
+            f'{nfp["date"]} 발표 · BLS {month} +{nfp_k:,}K', label="NFP note")
+        html = sub(html,
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전|자동확인)</span>'
+            r'(<span class="verify-note">)\d+/\d+ 발표 · BLS \d+월',
+            f'\\g<1>{AUTO_BADGE}\\g<2>{nfp["date"]} 발표 · BLS {month}',
             label="NFP badge")
 
     # ── Core CPI 날짜 ──
@@ -290,7 +321,7 @@ def main():
     data["dgs10"]   = safe_fetch("DGS10",   lambda: fetch_fred("DGS10"))
     data["sofr"]    = safe_fetch("SOFR",    lambda: fetch_fred("SOFR"))
     data["rrp"]     = safe_fetch("RRP",     lambda: fetch_fred("RRPONTSYD"))
-    data["nfp"]     = safe_fetch("NFP",     lambda: fetch_fred("PAYEMS"))
+    data["nfp"]     = safe_fetch("NFP",     fetch_nfp)
     data["cpi"]     = safe_fetch("CoreCPI", lambda: fetch_fred("CPILFESL"))
     data["unrate"]  = safe_fetch("UNRATE",  lambda: fetch_fred("UNRATE"))
     data["ci"]      = safe_fetch("C&I",     lambda: fetch_fred("BUSLOANS"))
