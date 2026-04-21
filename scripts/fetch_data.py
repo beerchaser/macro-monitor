@@ -139,12 +139,6 @@ def set_auto_badge(html, anchor_note):
 
 
 
-def fetch_gold():
-    """Gold 현물가격 — gold-api.com (무료, 키 없음)"""
-    data = http_get("https://gold-api.com/price/XAU")
-    price = float(data["price"])
-    return {"val": price, "display": f"${price:,.0f}"}
-
 
 def fetch_spx():
     """S&P 500 종가 — FRED SP500"""
@@ -177,7 +171,6 @@ def patch_html(html, data):
     auction = data.get("auction")
     spx     = data.get("spx")
     vix     = data.get("vix")
-    gold    = data.get("gold")
 
     print("\n  [패치 시작]")
 
@@ -347,21 +340,6 @@ def patch_html(html, data):
             f'\\g<1>{AUTO_BADGE}\\g<2>{vix["date"]} 종가 · FRED VIXCLS',
             label="VIX badge")
 
-    # ── Gold ──
-    if gold:
-        html = sub(html,
-            r'(<td class="val val-(?:ok|warn)">\$)([\d,]+)(</td>\s*<td class="verify">.*?COMEX)',
-            lambda m: f'{m.group(1)}{gold["val"]:,.0f}{m.group(3)}',
-            re.DOTALL, "Gold val")
-        html = sub(html,
-            r'\d+/\d+ 장중 · COMEX · 종가 미확인',
-            f'gold-api.com 실시간', label="Gold note")
-        html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|est|auto)">(?:검색확인|구버전|추정|자동확인)</span>'
-            r'(<span class="verify-note">)(?:\d+/\d+ 장중 · COMEX · 종가 미확인|gold-api\.com 실시간)',
-            f'\\g<1>{AUTO_BADGE}\\g<2>gold-api.com 실시간',
-            label="Gold badge")
-
     # ── C&I ──
     if ci:
         old_badge = '<span class="vbadge vbadge-old">구버전</span><span class="verify-note">3월 FRED BUSLOANS · 접근 불가</span>'
@@ -394,7 +372,6 @@ def main():
     data["auction"] = safe_fetch("경매IB",  fetch_auction)
     data["spx"]     = safe_fetch("S&P500",  fetch_spx)
     data["vix"]     = safe_fetch("VIX",     fetch_vix)
-    data["gold"]    = safe_fetch("Gold",    fetch_gold)
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
