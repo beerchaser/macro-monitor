@@ -158,38 +158,30 @@ def fetch_dxy():
 
 def fetch_cot_ust10y():
     """CFTC COT TFF Futures Only — 10Y UST 레버리지드 펀드 Net 포지션
-    CSV 직접 다운로드: cftc.gov/dea/newcot/FinFutWk.txt
-    매주 금요일 발표, 화요일 기준. 컬럼: 고정 너비 CSV.
+    publicreporting.cftc.gov CSV API (dataset: udgc-27he)
+    헤더: market_and_exchange_names, lev_money_positions_long, lev_money_positions_short
     """
-    import io, csv
-    url = "https://www.cftc.gov/dea/newcot/FinFutWk.txt"
+    import io, csv, urllib.parse
+    params = urllib.parse.urlencode({
+        "$where": "market_and_exchange_names like '%10-YEAR U.S. TREASURY%'",
+        "$order": "report_date_as_yyyy_mm_dd DESC",
+        "$limit": "1",
+        "$select": "market_and_exchange_names,report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short"
+    })
+    url = f"https://publicreporting.cftc.gov/resource/udgc-27he.csv?{params}"
     req = urllib.request.Request(url, headers={
         "User-Agent": "Mozilla/5.0",
-        "Accept": "*/*"
+        "Accept": "text/csv"
     })
     with urllib.request.urlopen(req, timeout=20) as r:
-        raw = r.read().decode("latin-1")
+        raw = r.read().decode("utf-8")
 
-    reader = csv.reader(io.StringIO(raw))
-    headers = next(reader)
-    headers = [h.strip() for h in headers]
-
-    # 컬럼 인덱스 찾기
-    name_idx = headers.index("Market and Exchange Names")
-    date_idx = headers.index("As of Date in Form YYYY-MM-DD")
-    long_idx  = headers.index("Lev Money Positions-Long (All)")
-    short_idx = headers.index("Lev Money Positions-Short (All)")
-
+    reader = csv.DictReader(io.StringIO(raw))
     for row in reader:
-        if len(row) <= short_idx:
-            continue
-        name = row[name_idx].strip()
-        if "10-YEAR U.S. TREASURY NOTES" not in name:
-            continue
-        long_pos  = int(row[long_idx].replace(",", "").strip() or 0)
-        short_pos = int(row[short_idx].replace(",", "").strip() or 0)
+        long_pos  = int(float(row.get("lev_money_positions_long", 0) or 0))
+        short_pos = int(float(row.get("lev_money_positions_short", 0) or 0))
         net = long_pos - short_pos
-        dt = datetime.strptime(row[date_idx].strip()[:10], "%Y-%m-%d")
+        dt = datetime.strptime(row["report_date_as_yyyy_mm_dd"][:10], "%Y-%m-%d")
         d = f"{dt.month}/{dt.day}"
         direction = "Net Short" if net < 0 else "Net Long"
         contracts_k = abs(net) // 1000
@@ -246,7 +238,7 @@ def patch_html(html, data):
             f'{tga["date"]} DTS Closing {tga["val_str"]}(전일', label="TGA threshold")
         # 배지 → 자동확인
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ DTS Closing',
             f'\\g<1>{AUTO_BADGE}\\g<2>{tga["date"]} DTS Closing',
             label="TGA badge")
@@ -262,7 +254,7 @@ def patch_html(html, data):
             r'\d+/\d+ · FRED RRPONTSYD [\d.]+B',
             new_note, label="RRP note")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ · FRED RRPONTSYD',
             f'\\g<1>{AUTO_BADGE}\\g<2>{rrp["date"]} · FRED RRPONTSYD',
             label="RRP badge")
@@ -277,7 +269,7 @@ def patch_html(html, data):
             r'\d+/\d+ 종가 · FRED DGS10',
             f'{dgs10["date"]} 종가 · FRED DGS10', label="DGS10 note")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ 종가 · FRED DGS10',
             f'\\g<1>{AUTO_BADGE}\\g<2>{dgs10["date"]} 종가 · FRED DGS10',
             label="DGS10 badge")
@@ -297,12 +289,12 @@ def patch_html(html, data):
             label="Repo Stress note")
         # SOFR 배지 2개
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ SOFR [\d.]+% · FRED 확인',
             f'\\g<1>{AUTO_BADGE}\\g<2>{sofr["date"]} SOFR {sofr["val"]:.2f}% · FRED 확인',
             label="SOFR badge")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ SOFR [\d.]+% vs IORB',
             f'\\g<1>{AUTO_BADGE}\\g<2>{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB',
             label="Repo Stress badge")
@@ -316,7 +308,7 @@ def patch_html(html, data):
             r'\d+Y \d+/\d+ 경매 · fiscaldata 확인',
             f'10Y {auction["date"]} 경매 · fiscaldata 확인', label="경매 note")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+Y \d+/\d+ 경매 · fiscaldata 확인',
             f'\\g<1>{AUTO_BADGE}\\g<2>10Y {auction["date"]} 경매 · fiscaldata 확인',
             label="경매 badge")
@@ -347,7 +339,7 @@ def patch_html(html, data):
             r'\d+/\d+ 발표 · 3월 BLS 헤드라인',
             f'{cpi["date"]} 발표 · 3월 BLS 헤드라인', label="CPI note")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)\d+/\d+ 발표 · 3월 BLS 헤드라인',
             f'\\g<1>{AUTO_BADGE}\\g<2>{cpi["date"]} 발표 · 3월 BLS 헤드라인',
             label="CPI badge")
@@ -362,7 +354,7 @@ def patch_html(html, data):
             r'3월 BLS · \d+/\d+ 발표',
             f'3월 BLS · {unrate["date"]} 발표', label="실업률 note")
         html = sub(html,
-            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old)">(?:검색확인|구버전)</span>'
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전)</span>'
             r'(<span class="verify-note">)3월 BLS · \d+/\d+ 발표',
             f'\\g<1>{AUTO_BADGE}\\g<2>3월 BLS · {unrate["date"]} 발표',
             label="실업률 badge")
