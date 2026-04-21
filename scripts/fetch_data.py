@@ -111,6 +111,16 @@ def set_auto_badge(html, anchor_note):
     return result, n
 
 
+def ensure_css(html):
+    """vbadge-auto CSS 없으면 자동 삽입"""
+    if 'vbadge-auto' not in html:
+        old = '.vbadge-ss{background:#E6F1FB;color:#0C447C}'
+        new = old + '\n.vbadge-auto{background:#EDE7F6;color:#4527A0}'
+        html = html.replace(old, new)
+        print("  [CSS] vbadge-auto 자동 삽입됨")
+    return html
+
+
 def patch_html(html, data):
     tga     = data.get("tga")
     dgs10   = data.get("dgs10")
@@ -289,6 +299,7 @@ def main():
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
 
+    html = ensure_css(html)
     html = patch_html(html, data)
 
     with open(MONITOR_FILE, "w", encoding="utf-8") as f:
