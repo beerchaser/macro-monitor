@@ -72,77 +72,97 @@ def fetch_fred(series_id):
 
 
 def patch_html(html, tga, dgs10, sofr, rrp):
-    # ── TGA val 셀: $971.1B 형태
-    html = re.sub(
+    orig = html
+
+    # ── TGA val 셀
+    html, n = re.subn(
         r'(<td class="val val-(?:ok|warn)">\$)[\d,.]+B(</td>)',
         lambda m: f'{m.group(1)}{tga["bal_b"]:,.1f}B{m.group(2)}',
         html, count=1
     )
-    # ── TGA verify-note: "4/16 DTS Closing $971.1B · fiscaldata.treasury.gov"
-    html = re.sub(
+    print(f"  [패치] TGA val: {n}건 교체")
+
+    # ── TGA verify-note
+    html, n = re.subn(
         r'\d+/\d+ DTS Closing \$[\d,.]+B · fiscaldata\.treasury\.gov',
         f'{tga["date"]} DTS Closing {tga["val_str"]} · fiscaldata.treasury.gov',
         html
     )
-    # ── TGA threshold 텍스트 안의 날짜+금액
-    html = re.sub(
-        r'4/\d+ DTS Closing \$[\d,.]+B\(전일',
+    print(f"  [패치] TGA verify-note: {n}건 교체")
+
+    # ── TGA threshold
+    html, n = re.subn(
+        r'\d+/\d+ DTS Closing \$[\d,.]+B\(전일',
         f'{tga["date"]} DTS Closing {tga["val_str"]}(전일',
         html
     )
+    print(f"  [패치] TGA threshold: {n}건 교체")
 
-    # ── RRP val 셀: $0.50B 형태
-    html = re.sub(
+    # ── RRP val 셀
+    html, n = re.subn(
         r'(<td class="val val-ok">\$)[\d.]+B(</td>\s*<td class="verify">.*?RRPONTSYD)',
         lambda m: f'{m.group(1)}{rrp["val"]:.2f}B{m.group(2)}',
         html, count=1, flags=re.DOTALL
     )
-    # ── RRP verify-note: "4/20 · FRED RRPONTSYD 0.503B"
-    html = re.sub(
+    print(f"  [패치] RRP val: {n}건 교체")
+
+    # ── RRP verify-note
+    html, n = re.subn(
         r'\d+/\d+ · FRED RRPONTSYD [\d.]+B',
         f'{rrp["date"]} · FRED RRPONTSYD {rrp["val"]:.3f}B',
         html
     )
+    print(f"  [패치] RRP verify-note: {n}건 교체")
 
-    # ── DGS10 val 셀: "4.26%" 형태 (verify-note 바로 앞)
-    html = re.sub(
+    # ── DGS10 val 셀
+    html, n = re.subn(
         r'(<td class="val val-ok">)([\d.]+%)(</td>\s*<td class="verify">.*?FRED DGS10)',
         lambda m: f'{m.group(1)}{dgs10["val"]:.2f}%{m.group(3)}',
         html, count=1, flags=re.DOTALL
     )
-    # ── DGS10 verify-note: "4/17 종가 · FRED DGS10"
-    html = re.sub(
+    print(f"  [패치] DGS10 val: {n}건 교체")
+
+    # ── DGS10 verify-note
+    html, n = re.subn(
         r'\d+/\d+ 종가 · FRED DGS10',
         f'{dgs10["date"]} 종가 · FRED DGS10',
         html
     )
+    print(f"  [패치] DGS10 verify-note: {n}건 교체")
 
-    # ── SOFR val 셀: "3.65% / 3.65%" 형태
-    html = re.sub(
+    # ── SOFR val 셀
+    html, n = re.subn(
         r'(<td class="val val-ok">)([\d.]+%)(\ / [\d.]+%</td>)',
         lambda m: f'{m.group(1)}{sofr["val"]:.2f}%{m.group(3)}',
         html, count=1
     )
-    # ── SOFR verify-note (두 군데): "4/17 SOFR 3.65% · FRED 확인"
-    html = re.sub(
+    print(f"  [패치] SOFR val: {n}건 교체")
+
+    # ── SOFR verify-note
+    html, n = re.subn(
         r'\d+/\d+ SOFR [\d.]+% · FRED 확인',
         f'{sofr["date"]} SOFR {sofr["val"]:.2f}% · FRED 확인',
         html
     )
-    # ── SOFR Repo Stress verify-note: "4/17 SOFR 3.65% vs IORB 3.65% · 역전 해소"
-    html = re.sub(
+    print(f"  [패치] SOFR verify-note: {n}건 교체")
+
+    # ── SOFR Repo Stress verify-note
+    html, n = re.subn(
         r'\d+/\d+ SOFR [\d.]+% vs IORB [\d.]+% · 역전 해소',
         f'{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB 3.65% · 역전 해소',
         html
     )
+    print(f"  [패치] Repo Stress verify-note: {n}건 교체")
 
+    changed = orig != html
+    print(f"  [패치] 전체 변경 여부: {'변경됨' if changed else '변경없음 ← 문제!'}")
     return html
 
 
 def main():
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] 데이터 조회 시작")
 
-    tga  = fetch_tga()
+    tga   = fetch_tga()
     print(f"  TGA   : {tga['val_str']} ({tga['date']})")
 
     dgs10 = fetch_fred("DGS10")
@@ -157,12 +177,25 @@ def main():
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
 
+    # 현재 파일에서 패턴 존재 여부 미리 확인
+    print("\n  [사전확인] 파일 내 패턴 존재 여부:")
+    checks = [
+        ("TGA verify-note", r'\d+/\d+ DTS Closing \$[\d,.]+B · fiscaldata\.treasury\.gov'),
+        ("RRP verify-note", r'\d+/\d+ · FRED RRPONTSYD [\d.]+B'),
+        ("DGS10 verify-note", r'\d+/\d+ 종가 · FRED DGS10'),
+        ("SOFR verify-note", r'\d+/\d+ SOFR [\d.]+% · FRED 확인'),
+    ]
+    for name, pattern in checks:
+        found = re.search(pattern, html)
+        print(f"    {'✅' if found else '❌'} {name}: {found.group(0) if found else '없음'}")
+
+    print()
     html = patch_html(html, tga, dgs10, sofr, rrp)
 
     with open(MONITOR_FILE, "w", encoding="utf-8") as f:
         f.write(html)
 
-    print(f"  완료: {MONITOR_FILE} 업데이트됨")
+    print(f"\n  완료: {MONITOR_FILE} 업데이트됨")
 
 
 if __name__ == "__main__":
