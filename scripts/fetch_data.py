@@ -157,37 +157,52 @@ def fetch_dxy():
 
 
 def fetch_cot_ust10y():
-    """CFTC COT TFF — 10Y UST 레버리지드 펀드 Net 포지션 (계약수)
-    매주 금요일 발표, 화요일 기준 데이터. 3영업일 시차.
+    """CFTC COT TFF Futures Only — 10Y UST 레버리지드 펀드 Net 포지션
+    CSV 직접 다운로드: cftc.gov/dea/newcot/FinFutWk.txt
+    매주 금요일 발표, 화요일 기준. 컬럼: 고정 너비 CSV.
     """
-    import urllib.parse
-    params = urllib.parse.urlencode({
-        "$where": "market_and_exchange_names='10-YEAR U.S. TREASURY NOTES - CHICAGO BOARD OF TRADE'",
-        "$order": "report_date_as_yyyy_mm_dd DESC",
-        "$limit": "1",
-        "$select": "report_date_as_yyyy_mm_dd,lev_money_positions_long_all,lev_money_positions_short_all"
+    import io, csv
+    url = "https://www.cftc.gov/dea/newcot/FinFutWk.txt"
+    req = urllib.request.Request(url, headers={
+        "User-Agent": "Mozilla/5.0",
+        "Accept": "*/*"
     })
-    url = f"https://publicreporting.cftc.gov/resource/gpe5-46if.json?{params}"
-    data = http_get(url)
-    if not data:
-        raise ValueError("CFTC COT 데이터 없음")
-    row = data[0]
-    long_pos  = int(row.get("lev_money_positions_long_all", 0))
-    short_pos = int(row.get("lev_money_positions_short_all", 0))
-    net = long_pos - short_pos
-    dt = datetime.strptime(row["report_date_as_yyyy_mm_dd"][:10], "%Y-%m-%d")
-    d = f"{dt.month}/{dt.day}"
-    direction = "Net Short" if net < 0 else "Net Long"
-    contracts_k = abs(net) // 1000
-    return {
-        "net": net,
-        "long": long_pos,
-        "short": short_pos,
-        "date": d,
-        "direction": direction,
-        "contracts_k": contracts_k,
-        "display": f"{direction} {contracts_k}K계약 ({d})"
-    }
+    with urllib.request.urlopen(req, timeout=20) as r:
+        raw = r.read().decode("latin-1")
+
+    reader = csv.reader(io.StringIO(raw))
+    headers = next(reader)
+    headers = [h.strip() for h in headers]
+
+    # 컬럼 인덱스 찾기
+    name_idx = headers.index("Market and Exchange Names")
+    date_idx = headers.index("As of Date in Form YYYY-MM-DD")
+    long_idx  = headers.index("Lev Money Positions-Long (All)")
+    short_idx = headers.index("Lev Money Positions-Short (All)")
+
+    for row in reader:
+        if len(row) <= short_idx:
+            continue
+        name = row[name_idx].strip()
+        if "10-YEAR U.S. TREASURY NOTES" not in name:
+            continue
+        long_pos  = int(row[long_idx].replace(",", "").strip() or 0)
+        short_pos = int(row[short_idx].replace(",", "").strip() or 0)
+        net = long_pos - short_pos
+        dt = datetime.strptime(row[date_idx].strip()[:10], "%Y-%m-%d")
+        d = f"{dt.month}/{dt.day}"
+        direction = "Net Short" if net < 0 else "Net Long"
+        contracts_k = abs(net) // 1000
+        return {
+            "net": net,
+            "long": long_pos,
+            "short": short_pos,
+            "date": d,
+            "direction": direction,
+            "contracts_k": contracts_k,
+            "display": f"{direction} {contracts_k}K계약 ({d})"
+        }
+    raise ValueError("10Y UST 행 없음")
 
 def ensure_css(html):
     """vbadge-auto CSS 없으면 자동 삽입"""
