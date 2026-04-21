@@ -163,7 +163,7 @@ def fetch_cot_ust10y():
     """
     import io, csv, urllib.parse
     params = urllib.parse.urlencode({
-        "$where": "market_and_exchange_names like '%10-YEAR U.S. TREASURY%'",
+        "$where": "cftc_contract_market_code='043602'",
         "$order": "report_date_as_yyyy_mm_dd DESC",
         "$limit": "1",
         "$select": "market_and_exchange_names,report_date_as_yyyy_mm_dd,lev_money_positions_long,lev_money_positions_short"
