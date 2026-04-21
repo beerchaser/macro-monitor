@@ -149,6 +149,46 @@ def fetch_vix():
     """VIX 종가 — FRED VIXCLS"""
     return fetch_fred("VIXCLS")
 
+
+
+def fetch_dxy():
+    """DXY 달러 인덱스 — FRED DTWEXBGS (Broad Dollar Index, 일간)"""
+    return fetch_fred("DTWEXBGS")
+
+
+def fetch_cot_ust10y():
+    """CFTC COT TFF — 10Y UST 레버리지드 펀드 Net 포지션 (계약수)
+    매주 금요일 발표, 화요일 기준 데이터. 3영업일 시차.
+    """
+    import urllib.parse
+    params = urllib.parse.urlencode({
+        "$where": "market_and_exchange_names='10-YEAR U.S. TREASURY NOTES - CHICAGO BOARD OF TRADE'",
+        "$order": "report_date_as_yyyy_mm_dd DESC",
+        "$limit": "1",
+        "$select": "report_date_as_yyyy_mm_dd,lev_money_positions_long_all,lev_money_positions_short_all"
+    })
+    url = f"https://publicreporting.cftc.gov/resource/gpe5-46if.json?{params}"
+    data = http_get(url)
+    if not data:
+        raise ValueError("CFTC COT 데이터 없음")
+    row = data[0]
+    long_pos  = int(row.get("lev_money_positions_long_all", 0))
+    short_pos = int(row.get("lev_money_positions_short_all", 0))
+    net = long_pos - short_pos
+    dt = datetime.strptime(row["report_date_as_yyyy_mm_dd"][:10], "%Y-%m-%d")
+    d = f"{dt.month}/{dt.day}"
+    direction = "Net Short" if net < 0 else "Net Long"
+    contracts_k = abs(net) // 1000
+    return {
+        "net": net,
+        "long": long_pos,
+        "short": short_pos,
+        "date": d,
+        "direction": direction,
+        "contracts_k": contracts_k,
+        "display": f"{direction} {contracts_k}K계약 ({d})"
+    }
+
 def ensure_css(html):
     """vbadge-auto CSS 없으면 자동 삽입"""
     if 'vbadge-auto' not in html:
@@ -171,6 +211,8 @@ def patch_html(html, data):
     auction = data.get("auction")
     spx     = data.get("spx")
     vix     = data.get("vix")
+    dxy     = data.get("dxy")
+    cot     = data.get("cot")
 
     print("\n  [패치 시작]")
 
@@ -340,6 +382,66 @@ def patch_html(html, data):
             f'\\g<1>{AUTO_BADGE}\\g<2>{vix["date"]} 종가 · FRED VIXCLS',
             label="VIX badge")
 
+    # ── DXY ──
+    if dxy:
+        # 직접 문자열 교체 (MOVE Index와 패턴 충돌 방지)
+        old_dxy = (
+            '<td class="val val-warn">97.8</td>\n'
+            '  <td class="verify"><span class="vbadge vbadge-ok">검색확인</span>'
+            '<span class="verify-note">4/17 종가 · Investing.com</span></td>'
+        )
+        new_dxy = (
+            f'<td class="val val-ok">{dxy["val"]:.1f}</td>\n'
+            f'  <td class="verify">{AUTO_BADGE}'
+            f'<span class="verify-note">{dxy["date"]} 종가 · FRED DTWEXBGS</span></td>'
+        )
+        if old_dxy in html:
+            html = html.replace(old_dxy, new_dxy)
+            print(f"    ✅ DXY 직접 교체")
+        else:
+            # 이미 교체된 경우 날짜+값만 업데이트
+            html = sub(html,
+                r'(<td class="val val-(?:ok|warn)">)([\d.]+)(</td>\s*<td class="verify">'
+                r'<span class="vbadge vbadge-auto">자동확인</span>'
+                r'<span class="verify-note">)\d+/\d+ 종가 · FRED DTWEXBGS(</span></td>)',
+                f'\\g<1>{dxy["val"]:.1f}\\g<3>{dxy["date"]} 종가 · FRED DTWEXBGS\\g<4>',
+                label="DXY 재업데이트")
+
+    # ── CFTC COT (두 군데) ──
+    if cot:
+        net_k = abs(cot["net"]) // 1000
+        direction = cot["direction"]
+
+        # 1) CFTC COT 국채 선물 val 셀: "Net Short 구조 지속"
+        html = sub(html,
+            r'(<td class="val val-(?:ok|warn)">)Net (?:Short|Long) 구조 지속(</td>)',
+            f'\\g<1>{direction} {net_k}K계약\\g<2>',
+            label="COT val (국채)")
+        html = sub(html,
+            r'4/\d+ 기준 · CFTC 접근 불가',
+            f'{cot["date"]} · CFTC TFF Lev Funds',
+            label="COT note (국채)")
+        html = sub(html,
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전|자동확인)</span>'
+            r'(<span class="verify-note">)\d+/\d+ 기준 · CFTC (?:접근 불가|TFF Lev Funds)',
+            f'\\g<1>{AUTO_BADGE}\\g<2>{cot["date"]} · CFTC TFF Lev Funds',
+            label="COT badge (국채)")
+
+        # 2) HF 레버리지 숏 val 셀: "~508K계약"
+        html = sub(html,
+            r'(<td class="val val-(?:ok|warn)">~?)[\d]+K계약(</td>)',
+            f'\\g<1>{net_k}K계약\\g<2>',
+            label="COT val (HF숏)")
+        html = sub(html,
+            r'4/\d+ CFTC 기준 · 접근 불가',
+            f'{cot["date"]} · CFTC TFF Lev Funds',
+            label="COT note (HF숏)")
+        html = sub(html,
+            r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|auto)">(?:검색확인|구버전|자동확인)</span>'
+            r'(<span class="verify-note">)\d+/\d+ CFTC 기준 · (?:접근 불가|CFTC TFF Lev Funds)',
+            f'\\g<1>{AUTO_BADGE}\\g<2>{cot["date"]} · CFTC TFF Lev Funds',
+            label="COT badge (HF숏)")
+
     # ── C&I ──
     if ci:
         old_badge = '<span class="vbadge vbadge-old">구버전</span><span class="verify-note">3월 FRED BUSLOANS · 접근 불가</span>'
@@ -372,6 +474,8 @@ def main():
     data["auction"] = safe_fetch("경매IB",  fetch_auction)
     data["spx"]     = safe_fetch("S&P500",  fetch_spx)
     data["vix"]     = safe_fetch("VIX",     fetch_vix)
+    data["dxy"]     = safe_fetch("DXY",     fetch_dxy)
+    data["cot"]     = safe_fetch("COT_UST", fetch_cot_ust10y)
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
