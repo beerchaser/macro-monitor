@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
 macro-monitor 자동 업데이트 스크립트
-- TGA    : Treasury FiscalData API (키 불필요)
-- DGS10  : FRED API
-- SOFR   : NY Fed Markets API (FRED 500 에러 우회)
-- RRP    : FRED API
+- TGA     : Treasury FiscalData API (키 불필요)
+- DGS10   : FRED API
+- SOFR    : FRED API (실패 시 스킵 — 이전 값 유지)
+- RRP     : FRED API
 """
 
 import urllib.request
@@ -46,26 +46,7 @@ def fetch_tga():
     raise ValueError("TGA Closing Balance 행 없음")
 
 
-# ── SOFR : NY Fed Markets API (FRED 우회) ────────────────────────
-def fetch_sofr_nyfed():
-    url = "https://markets.newyorkfed.org/api/rates/sofr/last/1.json"
-    req = urllib.request.Request(url, headers={
-        "User-Agent": "Mozilla/5.0",
-        "Accept": "application/json"
-    })
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        data = json.loads(resp.read().decode())
-
-    rate = data["refRates"][0]
-    val = float(rate["percentRate"])
-    dt = datetime.strptime(rate["effectiveDate"], "%Y-%m-%d")
-    return {
-        "val": val,
-        "date": f"{dt.month}/{dt.day}",
-    }
-
-
-# ── FRED API : DGS10, RRPONTSYD ─────────────────────────────────
+# ── FRED API ─────────────────────────────────────────────────────
 def fetch_fred(series_id):
     if not FRED_API_KEY:
         raise ValueError("FRED_API_KEY 환경변수 없음")
@@ -94,6 +75,7 @@ def fetch_fred(series_id):
 
 # ── HTML 패치 ────────────────────────────────────────────────────
 def patch_html(html, tga, dgs10, sofr, rrp):
+
     # TGA val 셀
     html, n = re.subn(
         r'(<td class="val val-(?:ok|warn)">\$)[\d,.]+B(</td>)',
@@ -110,7 +92,7 @@ def patch_html(html, tga, dgs10, sofr, rrp):
     )
     print(f"  [패치] TGA note: {n}건")
 
-    # TGA threshold
+    # TGA threshold 텍스트
     html, n = re.subn(
         r'\d+/\d+ DTS Closing \$[\d,.]+B\(전일',
         f'{tga["date"]} DTS Closing {tga["val_str"]}(전일',
@@ -150,29 +132,30 @@ def patch_html(html, tga, dgs10, sofr, rrp):
     )
     print(f"  [패치] DGS10 note: {n}건")
 
-    # SOFR val 셀
-    html, n = re.subn(
-        r'(<td class="val val-ok">)([\d.]+%)(\ / [\d.]+%</td>)',
-        lambda m: f'{m.group(1)}{sofr["val"]:.2f}%{m.group(3)}',
-        html, count=1
-    )
-    print(f"  [패치] SOFR val: {n}건")
+    # SOFR — 데이터 있을 때만 패치
+    if sofr:
+        html, n = re.subn(
+            r'(<td class="val val-ok">)([\d.]+%)(\ / [\d.]+%</td>)',
+            lambda m: f'{m.group(1)}{sofr["val"]:.2f}%{m.group(3)}',
+            html, count=1
+        )
+        print(f"  [패치] SOFR val: {n}건")
 
-    # SOFR verify-note
-    html, n = re.subn(
-        r'\d+/\d+ SOFR [\d.]+% · FRED 확인',
-        f'{sofr["date"]} SOFR {sofr["val"]:.2f}% · FRED 확인',
-        html
-    )
-    print(f"  [패치] SOFR note: {n}건")
+        html, n = re.subn(
+            r'\d+/\d+ SOFR [\d.]+% · FRED 확인',
+            f'{sofr["date"]} SOFR {sofr["val"]:.2f}% · FRED 확인',
+            html
+        )
+        print(f"  [패치] SOFR note: {n}건")
 
-    # SOFR Repo Stress verify-note
-    html, n = re.subn(
-        r'\d+/\d+ SOFR [\d.]+% vs IORB [\d.]+% · 역전 해소',
-        f'{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB 3.65% · 역전 해소',
-        html
-    )
-    print(f"  [패치] Repo Stress note: {n}건")
+        html, n = re.subn(
+            r'\d+/\d+ SOFR [\d.]+% vs IORB [\d.]+% · 역전 해소',
+            f'{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB 3.65% · 역전 해소',
+            html
+        )
+        print(f"  [패치] Repo Stress note: {n}건")
+    else:
+        print("  [패치] SOFR: 스킵 (데이터 없음 — 이전 값 유지)")
 
     return html
 
@@ -187,8 +170,13 @@ def main():
     dgs10 = fetch_fred("DGS10")
     print(f"  DGS10 : {dgs10['val']:.2f}% ({dgs10['date']})")
 
-    sofr = fetch_sofr_nyfed()
-    print(f"  SOFR  : {sofr['val']:.2f}% ({sofr['date']}) [NY Fed]")
+    # SOFR — 실패 시 None으로 처리 (이전 값 유지)
+    try:
+        sofr = fetch_fred("SOFR")
+        print(f"  SOFR  : {sofr['val']:.2f}% ({sofr['date']})")
+    except Exception as e:
+        sofr = None
+        print(f"  SOFR  : 조회 실패 ({e}) — 이전 값 유지")
 
     rrp = fetch_fred("RRPONTSYD")
     print(f"  RRP   : {rrp['val']:.3f}B ({rrp['date']})")
