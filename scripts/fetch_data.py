@@ -225,10 +225,23 @@ def patch_html(html, data):
 
     # ── TGA ──
     if tga:
-        html = sub(html,
-            r'(<td class="val val-(?:ok|warn)">\$)[\d,.]+B(</td>)',
-            lambda m: f'{m.group(1)}{tga["bal_b"]:,.1f}B{m.group(2)}',
-            re.DOTALL, "TGA val")
+        # TGA val: DTS Closing note anchor로 정확히 타겟팅
+        old_tga_val = re.search(
+            r'<td class="val val-(?:ok|warn)">\$[\d,.]+B</td>\s*'
+            r'<td class="verify">.*?DTS Closing',
+            html, re.DOTALL
+        )
+        if old_tga_val:
+            old_str = old_tga_val.group(0)
+            new_str = re.sub(
+                r'(\$)[\d,.]+B(</td>)',
+                f'\\g<1>{tga["bal_b"]:,.1f}B\\g<2>',
+                old_str, count=1
+            )
+            html = html.replace(old_str, new_str, 1)
+            print(f"    ✅ TGA val")
+        else:
+            print(f"    ⚠️  미매칭: TGA val")
         new_note = f'{tga["date"]} DTS Closing {tga["val_str"]} · fiscaldata.treasury.gov'
         html = sub(html,
             r'\d+/\d+ DTS Closing \$[\d,.]+B · fiscaldata\.treasury\.gov',
