@@ -523,7 +523,7 @@ def patch_ig_oas(html, ig):
     # val 교체: 새 note 앞에 있는 bp 값
     pos = html.find(new_note)
     segment = html[max(0, pos-150):pos]
-    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', f'\g<1>{bp}bp\g<2>', segment, count=1, flags=re.MULTILINE)
+    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', lambda x: f'{x.group(1)}{bp}bp{x.group(2)}', segment, count=1, flags=re.MULTILINE)
     html = html[:max(0, pos-150)] + new_segment + html[pos:]
     print(f"    ✅ IG OAS {bp}bp ({ig['date']})")
     return html
@@ -541,7 +541,7 @@ def patch_hy_oas(html, hy):
     html = html[:m_note.start()] + new_note + html[m_note.end():]
     pos = html.find(new_note)
     segment = html[max(0, pos-150):pos]
-    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', f'\g<1>{bp}bp\g<2>', segment, count=1, flags=re.MULTILINE)
+    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', lambda x: f'{x.group(1)}{bp}bp{x.group(2)}', segment, count=1, flags=re.MULTILINE)
     html = html[:max(0, pos-150)] + new_segment + html[pos:]
     print(f"    ✅ HY OAS {bp}bp ({hy['date']})")
     return html
