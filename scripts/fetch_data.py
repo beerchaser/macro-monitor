@@ -489,58 +489,39 @@ def patch_ig_oas(html, ig):
     if not ig:
         return html
     bp = round(ig["val"] * 100)
-    # note anchor로 정확히 1건만 타겟팅
-    m = re.search(
-        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
-        r'<td class="verify">.*?FRED [\d]+/[\d]+ · [\d.]+% · BAMLC0A0CM',
-        html, re.DOTALL
-    )
-    if m:
-        old_str = m.group(0)
-        new_str = re.sub(r'(>)[\d~$,.-]+bp(<\/td>)', f'\g<1>{bp}bp\g<2>', old_str, count=1)
-        new_str = re.sub(
-            r'FRED [\d]+/[\d]+ · [\d.]+% · BAMLC0A0CM',
-            f'FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
-            new_str
-        )
-        new_str = re.sub(
-            r'<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>',
-            AUTO_BADGE, new_str, count=1
-        )
-        html = html.replace(old_str, new_str, 1)
-        print(f"    ✅ IG OAS val+note+badge")
-    else:
+    # note 텍스트로 먼저 찾아서 교체 — regex 충돌 방지
+    note_pat = re.compile(r'FRED \d+/\d+ · [\d.]+% · BAMLC0A0CM')
+    m_note = note_pat.search(html)
+    if not m_note:
         print(f"    ⚠️  미매칭: IG OAS")
+        return html
+    new_note = f'FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM'
+    html = html[:m_note.start()] + new_note + html[m_note.end():]
+    # val 교체: 새 note 앞에 있는 bp 값
+    pos = html.find(new_note)
+    segment = html[max(0, pos-150):pos]
+    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', f'\g<1>{bp}bp\g<2>', segment, count=1, flags=re.MULTILINE)
+    html = html[:max(0, pos-150)] + new_segment + html[pos:]
+    print(f"    ✅ IG OAS {bp}bp ({ig['date']})")
     return html
-
 
 def patch_hy_oas(html, hy):
     if not hy:
         return html
     bp = round(hy["val"] * 100)
-    m = re.search(
-        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
-        r'<td class="verify">.*?FRED [\d]+/[\d]+ · [\d.]+% · BAMLH0A0HYM2',
-        html, re.DOTALL
-    )
-    if m:
-        old_str = m.group(0)
-        new_str = re.sub(r'(>)[\d~$,.-]+bp(<\/td>)', f'\g<1>{bp}bp\g<2>', old_str, count=1)
-        new_str = re.sub(
-            r'FRED [\d]+/[\d]+ · [\d.]+% · BAMLH0A0HYM2',
-            f'FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
-            new_str
-        )
-        new_str = re.sub(
-            r'<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>',
-            AUTO_BADGE, new_str, count=1
-        )
-        html = html.replace(old_str, new_str, 1)
-        print(f"    ✅ HY OAS val+note+badge")
-    else:
+    note_pat = re.compile(r'FRED \d+/\d+ · [\d.]+% · BAMLH0A0HYM2')
+    m_note = note_pat.search(html)
+    if not m_note:
         print(f"    ⚠️  미매칭: HY OAS")
+        return html
+    new_note = f'FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2'
+    html = html[:m_note.start()] + new_note + html[m_note.end():]
+    pos = html.find(new_note)
+    segment = html[max(0, pos-150):pos]
+    new_segment = re.sub(r'(>)\d+bp(</td>\s*$)', f'\g<1>{bp}bp\g<2>', segment, count=1, flags=re.MULTILINE)
+    html = html[:max(0, pos-150)] + new_segment + html[pos:]
+    print(f"    ✅ HY OAS {bp}bp ({hy['date']})")
     return html
-
 
 def patch_html(html, data):
     print("\n  [패치 시작]")
