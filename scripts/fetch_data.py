@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """
-macro-monitor 자동 업데이트 스크립트 v13
+macro-monitor 자동 업데이트 스크립트 v14
+개선:
+  - Brent(DCOILBRENTEU), WTI(DCOILWTICO) FRED 자동확인 추가
 개선:
   - http_get: retry 3회 + exponential backoff
   - patch_html: 지표별 함수 분리
@@ -188,7 +190,17 @@ def fetch_cot_ust10y():
     raise ValueError("043602 행 없음")
 
 
+def fetch_oil(series_id):
+    """Brent(DCOILBRENTEU) / WTI(DCOILWTICO) — FRED, 전일 종가"""
+    return fetch_fred(series_id)
+
+
 # ── CSS 보장 ────────────────────────────────────────────────────
+
+def fetch_oas(series_id):
+    """IG OAS(BAMLC0A0CM) / HY OAS(BAMLH0A0HYM2) — FRED, 단위: %"""
+    return fetch_fred(series_id)
+
 
 def ensure_css(html):
     if 'vbadge-auto' not in html:
@@ -432,7 +444,86 @@ def patch_cot(html, cot):
     return html
 
 
+def patch_brent(html, brent):
+    if not brent:
+        return html
+    html = sub(html,
+        r'(<td class="val val-(?:ok|warn)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILBRENTEU)',
+        lambda m: f'{m.group(1)}${brent["val"]:.1f}{m.group(2)}',
+        re.DOTALL, "Brent val")
+    html = sub(html,
+        r'\d+/\d+ 종가 · FRED DCOILBRENTEU',
+        f'{brent["date"]} 종가 · FRED DCOILBRENTEU',
+        label="Brent note")
+    # 배지 자동확인으로 업그레이드
+    html = sub(html,
+        r'(<td class="verify">)<span class="vbadge vbadge-(?:old|ok|ss)">[^<]+</span>'
+        r'(<span class="verify-note">\d+/\d+ 종가 · FRED DCOILBRENTEU)',
+        f'\\g<1>{AUTO_BADGE}\\g<2>',
+        label="Brent badge")
+    return html
+
+
+def patch_wti(html, wti):
+    if not wti:
+        return html
+    html = sub(html,
+        r'(<td class="val val-(?:ok|warn)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILWTICO)',
+        lambda m: f'{m.group(1)}${wti["val"]:.1f}{m.group(2)}',
+        re.DOTALL, "WTI val")
+    html = sub(html,
+        r'\d+/\d+ 종가 · FRED DCOILWTICO',
+        f'{wti["date"]} 종가 · FRED DCOILWTICO',
+        label="WTI note")
+    html = sub(html,
+        r'(<td class="verify">)<span class="vbadge vbadge-(?:old|ok|ss)">[^<]+</span>'
+        r'(<span class="verify-note">\d+/\d+ 종가 · FRED DCOILWTICO)',
+        f'\\g<1>{AUTO_BADGE}\\g<2>',
+        label="WTI badge")
+    return html
+
+
 # ── 메인 패치 ────────────────────────────────────────────────────
+
+def patch_ig_oas(html, ig):
+    if not ig:
+        return html
+    bp = round(ig["val"] * 100)
+    html = sub(html,
+        r'(<td class="val val-(?:ok|warn)">)\d+bp(</td>\s*<td class="verify">.*?BAMLC0A0CM)',
+        lambda m: f'{m.group(1)}{bp}bp{m.group(2)}',
+        re.DOTALL, "IG OAS val")
+    html = sub(html,
+        r'FRED \d+/\d+ · [\d.]+% · BAMLC0A0CM',
+        f'FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
+        label="IG OAS note")
+    html = sub(html,
+        r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>'
+        r'(<span class="verify-note">)FRED \d+/\d+ · [\d.]+% · BAMLC0A0CM',
+        lambda m: f'{m.group(1)}{AUTO_BADGE}{m.group(2)}FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
+        label="IG OAS badge")
+    return html
+
+
+def patch_hy_oas(html, hy):
+    if not hy:
+        return html
+    bp = round(hy["val"] * 100)
+    html = sub(html,
+        r'(<td class="val val-(?:ok|warn)">)\d+bp(</td>\s*<td class="verify">.*?BAMLH0A0HYM2)',
+        lambda m: f'{m.group(1)}{bp}bp{m.group(2)}',
+        re.DOTALL, "HY OAS val")
+    html = sub(html,
+        r'FRED \d+/\d+ · [\d.]+% · BAMLH0A0HYM2',
+        f'FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
+        label="HY OAS note")
+    html = sub(html,
+        r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>'
+        r'(<span class="verify-note">)FRED \d+/\d+ · [\d.]+% · BAMLH0A0HYM2',
+        lambda m: f'{m.group(1)}{AUTO_BADGE}{m.group(2)}FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
+        label="HY OAS badge")
+    return html
+
 
 def patch_html(html, data):
     print("\n  [패치 시작]")
@@ -449,6 +540,10 @@ def patch_html(html, data):
     html = patch_vix(html,     data.get("vix"))
     html = patch_dxy(html,     data.get("dxy"))
     html = patch_cot(html,     data.get("cot"))
+    html = patch_brent(html,   data.get("brent"))
+    html = patch_wti(html,     data.get("wti"))
+    html = patch_ig_oas(html,  data.get("ig_oas"))
+    html = patch_hy_oas(html,  data.get("hy_oas"))
     return html
 
 
@@ -471,6 +566,10 @@ def main():
     data["vix"]     = safe_fetch("VIX",     lambda: fetch_fred("VIXCLS"))
     data["dxy"]     = safe_fetch("DXY",     lambda: fetch_fred("DTWEXBGS"))
     data["cot"]     = safe_fetch("COT_UST", fetch_cot_ust10y)
+    data["brent"]   = safe_fetch("Brent",   lambda: fetch_oil("DCOILBRENTEU"))
+    data["wti"]     = safe_fetch("WTI",     lambda: fetch_oil("DCOILWTICO"))
+    data["ig_oas"]  = safe_fetch("IG OAS",  lambda: fetch_oas("BAMLC0A0CM"))
+    data["hy_oas"]  = safe_fetch("HY OAS",  lambda: fetch_oas("BAMLH0A0HYM2"))
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
