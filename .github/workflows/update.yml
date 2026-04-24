@@ -16,7 +16,6 @@ jobs:
       - name: Fetch data & update HTML
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
-          FINNHUB_API_KEY: ${{ secrets.FINNHUB_API_KEY }}
         run: python3 scripts/fetch_data.py
       - name: Commit & push
         run: |
