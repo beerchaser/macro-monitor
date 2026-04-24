@@ -264,6 +264,42 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="src"><a href="https://fred.stlouisfed.org/series/RRPONTSYD">FRED: RRPONTSYD</a><br>NY Fed 매일</td>
 </tr>
 <tr>
+  <td class="ind">은행 지준 잔고<span class="sub">H.4.1 WRBWFRBL / 주간</span></td>
+  <td class="desc">Fed에 예치된 은행 지준. <b>TGA 드로다운 → 지준 증가, TGA 리빌드 → 지준 감소 구조.</b> RRP가 소진된 상태에서 지준이 급감하면 레포 경색 위험. $3T 이하 = 경계, $2.5T = 경보.</td>
+  <td class="val val-ok">$2,914B</td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 · FRED WRBWFRBL</span></td>
+  <td class="status"><span class="badge badge-ok">정상</span></td>
+    <td class="threshold">
+    <b>$3T 이하 →</b> 경계 / <b>$2.5T 이하 →</b> 레포 경색 위험 / <b>$2T →</b> 2019년 레포 위기 수준<br>
+    🆕 4/22 $2,914B. 4/8 $3,183B에서 급감 — Tax Day 세수 유입으로 TGA 증가·지준 감소. RRP 소진 상태에서 지준이 유일한 유동성 완충.
+  </td>
+  <td class="src"><a href="https://fred.stlouisfed.org/series/WRBWFRBL">FRED: WRBWFRBL</a><br>H.4.1 주간</td>
+</tr>
+<tr>
+  <td class="ind">Fed 대차대조표<span class="sub">총자산 / WALCL 주간</span></td>
+  <td class="desc">연준 보유 자산 총액. <b>QT 종료 여부 직접 확인 지표.</b> QT 중엔 감소, 종료·확대 시 안정·증가. 현재 QT 종료(12/1) 후 안정화 구간.</td>
+  <td class="val val-ok">$6,707B</td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 · FRED WALCL</span></td>
+  <td class="status"><span class="badge badge-ok">정상</span></td>
+    <td class="threshold">
+    <b>주간 감소 지속 →</b> QT 재개 신호 / <b>주간 증가 →</b> 유동성 공급 신호<br>
+    🆕 4/22 $6,707B. QT 종료 후 안정화 구간($6,690~6,710B). 큰 변동 없음 — QT 재개 신호 없음.
+  </td>
+  <td class="src"><a href="https://fred.stlouisfed.org/series/WALCL">FRED: WALCL</a><br>H.4.1 주간</td>
+</tr>
+<tr>
+  <td class="ind">은행 예금 총액<span class="sub">DPSACBW027SBOG / 주간</span></td>
+  <td class="desc">전체 상업은행 예금 잔액. <b>은행 → MMF 이탈(예금 감소 + MMF 증가) vs 복귀 구조 추적.</b> 예금 감소 + MMF 증가 동시 → 은행 조달 비용 상승 경로.</td>
+  <td class="val val-ok">$19,057B</td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/8 · FRED DPSACBW027SBOG</span></td>
+  <td class="status"><span class="badge badge-ok">정상</span></td>
+    <td class="threshold">
+    <b>MMF AUM 증가 + 예금 감소 동시 →</b> 은행 이탈 심화 / <b>예금 증가 →</b> 리스크오프 해소<br>
+    🆕 4/8 $19,057B. MMF AUM($7.64조) 대비 은행 예금 안정 유지. 대규모 이탈 없음.
+  </td>
+  <td class="src"><a href="https://fred.stlouisfed.org/series/DPSACBW027SBOG">FRED: DPSACBW027SBOG</a><br>H.8 주간</td>
+</tr>
+<tr>
   <td class="ind">H.8 은행 국채 보유<span class="sub">전체 상업은행 Non-MBS SA / 매주</span></td>
   <td class="desc"><b>SLR(자본 레버리지 비율) 완화로 자본 여력이 생긴 은행이 실제로 국채를 매수하는지 확인하는 공식 데이터.</b> eSLR은 버퍼 기준 완화 방식 — 자동 매수 아님, 실제 행동 확인 필수. <b>주간 단위 노이즈 vs 월간 트렌드 병행 해석 필수</b></td>
   <td class="val val-warn">🟡 판단 유보</td>
@@ -919,6 +955,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
 </div>
 
 </div>
+
 
 
 
