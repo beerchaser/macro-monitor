@@ -197,6 +197,29 @@ def fetch_oil(series_id):
 
 # ── CSS 보장 ────────────────────────────────────────────────────
 
+
+def fetch_reserves():
+    """은행 지준 잔고 — FRED WRBWFRBL (H.4.1 주간, 단위: 백만달러)"""
+    r = fetch_fred("WRBWFRBL")
+    r["val_b"] = r["val"] / 1_000  # M → B
+    r["display"] = f'${r["val_b"]:,.0f}B ({r["date"]})'
+    return r
+
+
+def fetch_walcl():
+    """Fed 대차대조표 총자산 — FRED WALCL (H.4.1 주간, 단위: 백만달러)"""
+    r = fetch_fred("WALCL")
+    r["val_b"] = r["val"] / 1_000
+    r["display"] = f'${r["val_b"]:,.0f}B ({r["date"]})'
+    return r
+
+
+def fetch_deposits():
+    """은행 예금 총액 — FRED DPSACBW027SBOG (H.8 주간, 단위: 십억달러)"""
+    r = fetch_fred("DPSACBW027SBOG")
+    r["display"] = f'${r["val"]:,.0f}B ({r["date"]})'
+    return r
+
 def fetch_oas(series_id):
     """IG OAS(BAMLC0A0CM) / HY OAS(BAMLH0A0HYM2) — FRED, 단위: %"""
     return fetch_fred(series_id)
@@ -523,6 +546,55 @@ def patch_hy_oas(html, hy):
     print(f"    ✅ HY OAS {bp}bp ({hy['date']})")
     return html
 
+def patch_reserves(html, res):
+    if not res:
+        return html
+    val_b = res["val"] / 1_000
+    status = "val-warn" if val_b < 3000 else "val-ok"
+    # val+note 직접 교체
+    html = re.sub(
+        r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED WRBWFRBL</span></td>)',
+        lambda m: f'<td class="{status}">\${val_b:,.0f}B' + m.group(2),
+        html, count=1
+    )
+    html = sub(html,
+        r'\d+/\d+ · FRED WRBWFRBL',
+        f'{res["date"]} · FRED WRBWFRBL',
+        label="지준 note")
+    return html
+
+
+def patch_walcl(html, walcl):
+    if not walcl:
+        return html
+    val_b = walcl["val"] / 1_000
+    html = re.sub(
+        r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED WALCL</span></td>)',
+        lambda m: f'<td class="val val-ok">\${val_b:,.0f}B' + m.group(2),
+        html, count=1
+    )
+    html = sub(html,
+        r'\d+/\d+ · FRED WALCL',
+        f'{walcl["date"]} · FRED WALCL',
+        label="WALCL note")
+    return html
+
+
+def patch_deposits(html, dep):
+    if not dep:
+        return html
+    html = re.sub(
+        r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED DPSACBW027SBOG</span></td>)',
+        lambda m: f'<td class="val val-ok">\${dep["val"]:,.0f}B' + m.group(2),
+        html, count=1
+    )
+    html = sub(html,
+        r'\d+/\d+ · FRED DPSACBW027SBOG',
+        f'{dep["date"]} · FRED DPSACBW027SBOG',
+        label="예금 note")
+    return html
+
+
 def patch_html(html, data):
     print("\n  [패치 시작]")
     html = patch_tga(html,     data.get("tga"))
@@ -542,6 +614,9 @@ def patch_html(html, data):
     html = patch_wti(html,     data.get("wti"))
     html = patch_ig_oas(html,  data.get("ig_oas"))
     html = patch_hy_oas(html,  data.get("hy_oas"))
+    html = patch_reserves(html, data.get("reserves"))
+    html = patch_walcl(html,    data.get("walcl"))
+    html = patch_deposits(html,  data.get("deposits"))
     return html
 
 
@@ -568,6 +643,9 @@ def main():
     data["wti"]     = safe_fetch("WTI",     lambda: fetch_oil("DCOILWTICO"))
     data["ig_oas"]  = safe_fetch("IG OAS",  lambda: fetch_oas("BAMLC0A0CM"))
     data["hy_oas"]  = safe_fetch("HY OAS",  lambda: fetch_oas("BAMLH0A0HYM2"))
+    data["reserves"] = safe_fetch("지준",     fetch_reserves)
+    data["walcl"]    = safe_fetch("WALCL",    fetch_walcl)
+    data["deposits"] = safe_fetch("예금",     fetch_deposits)
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
