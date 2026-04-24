@@ -17,6 +17,7 @@ import time
 from datetime import datetime
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
+FINNHUB_API_KEY = os.environ.get("FINNHUB_API_KEY", "")
 MONITOR_FILE = "monitor.html"
 AUTO_BADGE = '<span class="vbadge vbadge-auto">자동확인</span>'
 
@@ -189,6 +190,21 @@ def fetch_cot_ust10y():
 
 
 # ── CSS 보장 ────────────────────────────────────────────────────
+
+
+def fetch_gold():
+    """Gold 현물가격 — Finnhub (실시간, 키 필요)"""
+    if not FINNHUB_API_KEY:
+        raise ValueError("FINNHUB_API_KEY 없음")
+    url = f"https://finnhub.io/api/v1/quote?symbol=OANDA:XAU_USD&token={FINNHUB_API_KEY}"
+    data = http_get(url)
+    price = float(data.get("c") or data.get("l") or 0)
+    if price == 0:
+        raise ValueError("Gold 가격 0 반환")
+    from datetime import datetime
+    today = datetime.now()
+    d = f"{today.month}/{today.day}"
+    return {"val": price, "date": d, "display": f"${price:,.0f} ({d})"}
 
 def ensure_css(html):
     if 'vbadge-auto' not in html:
@@ -378,6 +394,36 @@ def patch_vix(html, vix):
     return html
 
 
+
+def patch_gold(html, gold):
+    if not gold:
+        return html
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">\$[\d,]+</td>\s*'
+        r'<td class="verify">.*?(?:COMEX|Finnhub|gold-api)',
+        html, re.DOTALL
+    )
+    if m:
+        old_str = m.group(0)
+        new_str = re.sub(
+            r'(<td class="val val-(?:ok|warn)">\$)[\d,]+(</td>)',
+            lambda x: f'{x.group(1)}{gold["val"]:,.0f}{x.group(2)}',
+            old_str, count=1
+        )
+        html = html.replace(old_str, new_str, 1)
+        print(f"    ✅ Gold val")
+    else:
+        print(f"    ⚠️  미매칭: Gold val")
+    html = sub(html,
+        r'\d+/\d+ · (?:TradingEconomics/Fortune|Finnhub 실시간|gold-api\.com) 검색확인',
+        f'{gold["date"]} · Finnhub 실시간',
+        label="Gold note")
+    html = sub(html,
+        r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>'
+        r'(<span class="verify-note">)\d+/\d+ · (?:TradingEconomics/Fortune|Finnhub 실시간|gold-api\.com)',
+        fr'\g<1>{AUTO_BADGE}\g<2>{gold["date"]} · Finnhub 실시간',
+        label="Gold badge")
+    return html
 def patch_dxy(html, dxy):
     if not dxy:
         return html
@@ -447,6 +493,7 @@ def patch_html(html, data):
     html = patch_ci(html,      data.get("ci"))
     html = patch_spx(html,     data.get("spx"))
     html = patch_vix(html,     data.get("vix"))
+    html = patch_gold(html,    data.get("gold"))
     html = patch_dxy(html,     data.get("dxy"))
     html = patch_cot(html,     data.get("cot"))
     return html
@@ -469,6 +516,7 @@ def main():
     data["auction"] = safe_fetch("경매IB",  fetch_auction)
     data["spx"]     = safe_fetch("S&P500",  lambda: fetch_fred("SP500"))
     data["vix"]     = safe_fetch("VIX",     lambda: fetch_fred("VIXCLS"))
+    data["gold"]    = safe_fetch("Gold",    fetch_gold)
     data["dxy"]     = safe_fetch("DXY",     lambda: fetch_fred("DTWEXBGS"))
     data["cot"]     = safe_fetch("COT_UST", fetch_cot_ust10y)
 
