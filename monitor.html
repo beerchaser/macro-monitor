@@ -266,7 +266,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
 <tr>
   <td class="ind">은행 지준 잔고<span class="sub">H.4.1 WRBWFRBL / 주간</span></td>
   <td class="desc">Fed에 예치된 은행 지준. <b>TGA 드로다운 → 지준 증가, TGA 리빌드 → 지준 감소 구조.</b> RRP가 소진된 상태에서 지준이 급감하면 레포 경색 위험. $3T 이하 = 경계, $2.5T = 경보.</td>
-  <td class="val val-ok">$2,914B</td>
+  <td class="val-warn">\$2,915B</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 · FRED WRBWFRBL</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
@@ -278,7 +278,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
 <tr>
   <td class="ind">Fed 대차대조표<span class="sub">총자산 / WALCL 주간</span></td>
   <td class="desc">연준 보유 자산 총액. <b>QT 종료 여부 직접 확인 지표.</b> QT 중엔 감소, 종료·확대 시 안정·증가. 현재 QT 종료(12/1) 후 안정화 구간.</td>
-  <td class="val val-ok">$6,707B</td>
+  <td class="val val-ok">\$6,707B</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 · FRED WALCL</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
@@ -290,7 +290,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
 <tr>
   <td class="ind">은행 예금 총액<span class="sub">DPSACBW027SBOG / 주간</span></td>
   <td class="desc">전체 상업은행 예금 잔액. <b>은행 → MMF 이탈(예금 감소 + MMF 증가) vs 복귀 구조 추적.</b> 예금 감소 + MMF 증가 동시 → 은행 조달 비용 상승 경로.</td>
-  <td class="val val-ok">$19,057B</td>
+  <td class="val val-ok">\$19,057B</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/8 · FRED DPSACBW027SBOG</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
@@ -624,8 +624,8 @@ tr.alt{background:rgba(0,0,0,0.015)}
 <tr>
   <td class="ind">SOFR / IORB<span class="sub">overnight / %</span></td>
   <td class="desc">SOFR = 미국 국채를 담보로 하는 하루짜리 도매 차입 금리. IORB = Fed가 은행 지준금에 지급하는 이자율. <b>SOFR이 IORB보다 높아지면 은행들이 지준보다 시장 차입을 선호할 만큼 유동성이 부족하다는 신호</b></td>
-  <td class="val val-ok">3.64% / 3.65%</td>
-  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 SOFR 3.64% · FRED 확인</span></td>
+  <td class="val val-ok">3.65% / 3.65%</td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/23 SOFR 3.65% · FRED 확인</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
     <b>🆕 역전 해소:</b> SOFR 4/17 3.65% = IORB 3.65% → 스프레드 0bp. 이전 4/15 SOFR(3.72%) &gt; IORB(3.65%) +7bp 역전에서 Tax Day 이후 정상화. EFFR 고착 여부 지속 모니터링.<br>
@@ -639,7 +639,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="ind">Repo Stress<span class="sub">GCF-SOFR 스프레드</span></td>
   <td class="desc">GCF(일반 담보 금융) 레포와 SOFR의 차이. <b>딜러(대형 증권사)의 밸런스시트가 한계에 달할수록 국채 담보 단기차입 비용이 SOFR 위로 치솟음.</b> 분기말·세금 납부 시즌에 구조적으로 확대</td>
   <td class="val val-ok">284bp</td>
-  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/22 SOFR 3.64% vs IORB 3.65% · 역전 해소</span></td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/23 SOFR 3.65% vs IORB 3.65% · 역전 해소</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
     <b>SOFR+20bp →</b> 분기말·세금시즌 경색 / <b>SOFR+30bp+ →</b> 딜러 밸런스시트 한계<br>
