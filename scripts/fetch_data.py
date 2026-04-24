@@ -554,7 +554,7 @@ def patch_reserves(html, res):
     # val+note 직접 교체
     html = re.sub(
         r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED WRBWFRBL</span></td>)',
-        lambda m: f'<td class="{status}">\${val_b:,.0f}B' + m.group(2),
+        lambda m: f'<td class="{status}">${val_b:,.0f}B' + m.group(2),
         html, count=1
     )
     html = sub(html,
@@ -570,7 +570,7 @@ def patch_walcl(html, walcl):
     val_b = walcl["val"] / 1_000
     html = re.sub(
         r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED WALCL</span></td>)',
-        lambda m: f'<td class="val val-ok">\${val_b:,.0f}B' + m.group(2),
+        lambda m: f'<td class="val val-ok">${val_b:,.0f}B' + m.group(2),
         html, count=1
     )
     html = sub(html,
@@ -585,7 +585,7 @@ def patch_deposits(html, dep):
         return html
     html = re.sub(
         r'(<td class="val val-(?:ok|warn)">)\$[\d,]+B(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">\d+/\d+ · FRED DPSACBW027SBOG</span></td>)',
-        lambda m: f'<td class="val val-ok">\${dep["val"]:,.0f}B' + m.group(2),
+        lambda m: f'<td class="val val-ok">${dep["val"]:,.0f}B' + m.group(2),
         html, count=1
     )
     html = sub(html,
