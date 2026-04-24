@@ -489,19 +489,28 @@ def patch_ig_oas(html, ig):
     if not ig:
         return html
     bp = round(ig["val"] * 100)
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)\d+bp(</td>\s*<td class="verify">.*?BAMLC0A0CM)',
-        lambda m: f'{m.group(1)}{bp}bp{m.group(2)}',
-        re.DOTALL, "IG OAS val")
-    html = sub(html,
-        r'FRED \d+/\d+ · [\d.]+% · BAMLC0A0CM',
-        f'FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
-        label="IG OAS note")
-    html = sub(html,
-        r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>'
-        r'(<span class="verify-note">)FRED \d+/\d+ · [\d.]+% · BAMLC0A0CM',
-        lambda m: f'{m.group(1)}{AUTO_BADGE}{m.group(2)}FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
-        label="IG OAS badge")
+    # note anchor로 정확히 1건만 타겟팅
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
+        r'<td class="verify">.*?FRED [\d]+/[\d]+ · [\d.]+% · BAMLC0A0CM',
+        html, re.DOTALL
+    )
+    if m:
+        old_str = m.group(0)
+        new_str = re.sub(r'(>)[\d~$,.-]+bp(<\/td>)', f'\g<1>{bp}bp\g<2>', old_str, count=1)
+        new_str = re.sub(
+            r'FRED [\d]+/[\d]+ · [\d.]+% · BAMLC0A0CM',
+            f'FRED {ig["date"]} · {ig["val"]:.2f}% · BAMLC0A0CM',
+            new_str
+        )
+        new_str = re.sub(
+            r'<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>',
+            AUTO_BADGE, new_str, count=1
+        )
+        html = html.replace(old_str, new_str, 1)
+        print(f"    ✅ IG OAS val+note+badge")
+    else:
+        print(f"    ⚠️  미매칭: IG OAS")
     return html
 
 
@@ -509,19 +518,27 @@ def patch_hy_oas(html, hy):
     if not hy:
         return html
     bp = round(hy["val"] * 100)
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)\d+bp(</td>\s*<td class="verify">.*?BAMLH0A0HYM2)',
-        lambda m: f'{m.group(1)}{bp}bp{m.group(2)}',
-        re.DOTALL, "HY OAS val")
-    html = sub(html,
-        r'FRED \d+/\d+ · [\d.]+% · BAMLH0A0HYM2',
-        f'FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
-        label="HY OAS note")
-    html = sub(html,
-        r'(<td class="verify">)<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>'
-        r'(<span class="verify-note">)FRED \d+/\d+ · [\d.]+% · BAMLH0A0HYM2',
-        lambda m: f'{m.group(1)}{AUTO_BADGE}{m.group(2)}FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
-        label="HY OAS badge")
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
+        r'<td class="verify">.*?FRED [\d]+/[\d]+ · [\d.]+% · BAMLH0A0HYM2',
+        html, re.DOTALL
+    )
+    if m:
+        old_str = m.group(0)
+        new_str = re.sub(r'(>)[\d~$,.-]+bp(<\/td>)', f'\g<1>{bp}bp\g<2>', old_str, count=1)
+        new_str = re.sub(
+            r'FRED [\d]+/[\d]+ · [\d.]+% · BAMLH0A0HYM2',
+            f'FRED {hy["date"]} · {hy["val"]:.2f}% · BAMLH0A0HYM2',
+            new_str
+        )
+        new_str = re.sub(
+            r'<span class="vbadge vbadge-(?:ok|old|ss|auto)">[^<]+</span>',
+            AUTO_BADGE, new_str, count=1
+        )
+        html = html.replace(old_str, new_str, 1)
+        print(f"    ✅ HY OAS val+note+badge")
+    else:
+        print(f"    ⚠️  미매칭: HY OAS")
     return html
 
 
