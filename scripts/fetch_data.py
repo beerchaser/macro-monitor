@@ -709,7 +709,7 @@ def patch_fhlb(html, fhlb):
 def validate_patches(html, data):
     """패치 후 날짜 기준으로 누락 의심 항목 체크"""
     missing = []
-    skip = {"cpi", "ci"}  # note만 교체하는 항목은 val date 없음
+    skip = {"cpi", "ci"}
     for key, val in data.items():
         if not val or key in skip:
             continue
@@ -720,6 +720,9 @@ def validate_patches(html, data):
         print(f"  ⚠️  패치 후 날짜 미반영 의심: {', '.join(missing)}")
     else:
         print(f"  ✅ 패치 검증 OK")
+
+
+def patch_html(html, data):
     print("\n  [패치 시작]")
     html = patch_tga(html,     data.get("tga"))
     html = patch_rrp(html,     data.get("rrp"))
