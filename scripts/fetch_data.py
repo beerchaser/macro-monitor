@@ -651,14 +651,24 @@ def patch_usdjpy(html, usdjpy):
 def patch_stlfsi(html, stlfsi):
     if not stlfsi:
         return html
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)-?[\d.]+(<\/td>\s*<td class="verify">.*?STLFSI4)',
-        lambda m: f'{m.group(1)}{stlfsi["val"]:.3f}{m.group(2)}',
-        re.DOTALL, "STLFSI4 val")
-    html = sub(html,
-        r'\d+/\d+ · FRED STLFSI4',
-        f'{stlfsi["date"]} · FRED STLFSI4',
-        label="STLFSI4 note")
+    # note anchor로 정확히 1건만 교체
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
+        r'<td class="verify"><span[^>]*>[^<]*</span>'
+        r'<span class="verify-note">\d+/\d+ · FRED STLFSI4</span></td>',
+        html
+    )
+    if not m:
+        print(f"    ⚠️  미매칭: STLFSI4")
+        return html
+    old_str = m.group(0)
+    new_str = (
+        f'<td class="val val-ok">{stlfsi["val"]:.3f}</td>\n  '
+        f'<td class="verify"><span class="vbadge vbadge-auto">자동확인</span>'
+        f'<span class="verify-note">{stlfsi["date"]} · FRED STLFSI4</span></td>'
+    )
+    html = html.replace(old_str, new_str, 1)
+    print(f"    ✅ STLFSI4 {stlfsi['val']:.3f} ({stlfsi['date']})")
     return html
 
 
