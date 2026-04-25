@@ -423,23 +423,24 @@ def patch_spx(html, spx):
 def patch_vix(html, vix):
     if not vix:
         return html
-    # note 위치 찾기
-    note_pat = re.compile(r'\d+/\d+ 종가 · FRED VIXCLS')
-    m_note = note_pat.search(html)
-    if not m_note:
+    # val+note 전체 블록을 note anchor로 정확히 교체
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
+        r'<td class="verify"><span[^>]*>[^<]*</span>'
+        r'<span class="verify-note">\d+/\d+ 종가 · FRED VIXCLS</span></td>',
+        html
+    )
+    if not m:
         print(f"    ⚠️  미매칭: VIX")
         return html
-    new_note = f'{vix["date"]} 종가 · FRED VIXCLS'
-    html = html[:m_note.start()] + new_note + html[m_note.end():]
-    # val 교체: note 앞 150자 안에서만
-    pos = html.find(new_note)
-    segment = html[max(0, pos-150):pos]
-    new_segment = re.sub(
-        r'(>)[\d.]+(</td>\s*$)',
-        lambda x: f'{x.group(1)}{vix["val"]:.2f}{x.group(2)}',
-        segment, count=1, flags=re.MULTILINE
+    old_str = m.group(0)
+    status = "val-warn" if vix["val"] >= 20 else "val-ok"
+    new_str = (
+        f'<td class="val {status}">{vix["val"]:.2f}</td>\n  '
+        f'<td class="verify"><span class="vbadge vbadge-auto">자동확인</span>'
+        f'<span class="verify-note">{vix["date"]} 종가 · FRED VIXCLS</span></td>'
     )
-    html = html[:max(0, pos-150)] + new_segment + html[pos:]
+    html = html.replace(old_str, new_str, 1)
     print(f"    ✅ VIX {vix['val']:.2f} ({vix['date']})")
     return html
 
