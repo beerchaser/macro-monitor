@@ -220,6 +220,17 @@ def fetch_deposits():
     r["display"] = f'${r["val"]:,.0f}B ({r["date"]})'
     return r
 
+
+def fetch_fhlb():
+    """FHLB Advances — FRED BOGZ1FL403069330Q (Fed Financial Accounts Z.1, 분기)
+    FHLB 공식 보고서($676.7B)와 ~$10B 차이 — 집계 방식 상이, 추세 추적용으로 동일하게 유효
+    공식 수치: https://www.fhlb-of.com/ofweb_userWeb/pageBuilder/fhlbank-combined-financial-report
+    """
+    r = fetch_fred("BOGZ1FL403069330Q")
+    r["val_b"] = r["val"] / 1_000
+    r["display"] = f'${r["val_b"]:,.1f}B ({r["date"]})'
+    return r
+
 def fetch_oas(series_id):
     """IG OAS(BAMLC0A0CM) / HY OAS(BAMLH0A0HYM2) — FRED, 단위: %"""
     return fetch_fred(series_id)
@@ -595,6 +606,40 @@ def patch_deposits(html, dep):
     return html
 
 
+def patch_fhlb(html, fhlb):
+    if not fhlb:
+        return html
+    val_b = fhlb["val"] / 1_000
+    # val 교체: FHLB verify-note anchor 기반
+    m = re.search(
+        r'<td class="val val-(?:ok|warn)">[^<]+</td>\s*'
+        r'<td class="verify"><span[^>]*>[^<]*</span>'
+        r'<span class="verify-note">Q\d 20\d\d · FHLB',
+        html
+    )
+    if m:
+        old_str = m.group(0)
+        new_str = re.sub(
+            r'(<td class="val val-(?:ok|warn)">)[^<]+(</td>)',
+            lambda x: f'{x.group(1)}${val_b:,.1f}B{x.group(2)}',
+            old_str, count=1
+        )
+        new_str = re.sub(
+            r'Q\d 20\d\d · FHLB[^<]*',
+            f'Q4 {fhlb["date"][:4]} · FRED Z.1 (FHLB 공식≈$676.7B)',
+            new_str
+        )
+        new_str = new_str.replace(
+            'vbadge-ok">검색확인',
+            'vbadge-auto">자동확인'
+        )
+        html = html.replace(old_str, new_str, 1)
+        print(f"    ✅ FHLB ${val_b:,.1f}B ({fhlb['date']})")
+    else:
+        print(f"    ⚠️  미매칭: FHLB")
+    return html
+
+
 def patch_html(html, data):
     print("\n  [패치 시작]")
     html = patch_tga(html,     data.get("tga"))
@@ -617,6 +662,7 @@ def patch_html(html, data):
     html = patch_reserves(html, data.get("reserves"))
     html = patch_walcl(html,    data.get("walcl"))
     html = patch_deposits(html,  data.get("deposits"))
+    html = patch_fhlb(html,      data.get("fhlb"))
     return html
 
 
@@ -646,6 +692,7 @@ def main():
     data["reserves"] = safe_fetch("지준",     fetch_reserves)
     data["walcl"]    = safe_fetch("WALCL",    fetch_walcl)
     data["deposits"] = safe_fetch("예금",     fetch_deposits)
+    data["fhlb"]     = safe_fetch("FHLB",     fetch_fhlb)
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
