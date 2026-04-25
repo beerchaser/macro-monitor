@@ -221,6 +221,16 @@ def fetch_deposits():
     return r
 
 
+
+def fetch_usdjpy():
+    """USD/JPY 환율 — FRED DEXJPUS (일간)"""
+    return fetch_fred("DEXJPUS")
+
+
+def fetch_stlfsi():
+    """St. Louis Fed 금융 스트레스 지수 — FRED STLFSI4 (주간)"""
+    return fetch_fred("STLFSI4")
+
 def fetch_fhlb():
     """FHLB Advances — FRED BOGZ1FL403069330Q (Fed Financial Accounts Z.1, 분기)
     FHLB 공식 보고서($676.7B)와 ~$10B 차이 — 집계 방식 상이, 추세 추적용으로 동일하게 유효
@@ -606,6 +616,41 @@ def patch_deposits(html, dep):
     return html
 
 
+def patch_usdjpy(html, usdjpy):
+    if not usdjpy:
+        return html
+    m = re.search(
+        r'<td class="val val-(?:ok|warn|alert)">[\d.]+</td>\s*'
+        r'<td class="verify"><span[^>]*>[^<]*</span>'
+        r'<span class="verify-note">\d+/\d+ 종가 · FRED DEXJPUS</span></td>',
+        html
+    )
+    if m:
+        old = m.group(0)
+        new = re.sub(r'(>)[\d.]+(</td>\s*<td class="verify">)', lambda x: f'{x.group(1)}{usdjpy["val"]:.2f}{x.group(2)}', old, count=1)
+        new = re.sub(r'\d+/\d+ 종가 · FRED DEXJPUS', f'{usdjpy["date"]} 종가 · FRED DEXJPUS', new)
+        new = new.replace('vbadge-ok">검색확인', 'vbadge-auto">자동확인')
+        html = html.replace(old, new, 1)
+        print(f"    ✅ USD/JPY {usdjpy['val']:.2f} ({usdjpy['date']})")
+    else:
+        print(f"    ⚠️  미매칭: USD/JPY")
+    return html
+
+
+def patch_stlfsi(html, stlfsi):
+    if not stlfsi:
+        return html
+    html = sub(html,
+        r'(<td class="val val-(?:ok|warn)">)-?[\d.]+(<\/td>\s*<td class="verify">.*?STLFSI4)',
+        lambda m: f'{m.group(1)}{stlfsi["val"]:.3f}{m.group(2)}',
+        re.DOTALL, "STLFSI4 val")
+    html = sub(html,
+        r'\d+/\d+ · FRED STLFSI4',
+        f'{stlfsi["date"]} · FRED STLFSI4',
+        label="STLFSI4 note")
+    return html
+
+
 def patch_fhlb(html, fhlb):
     if not fhlb:
         return html
@@ -663,6 +708,8 @@ def patch_html(html, data):
     html = patch_walcl(html,    data.get("walcl"))
     html = patch_deposits(html,  data.get("deposits"))
     html = patch_fhlb(html,      data.get("fhlb"))
+    html = patch_usdjpy(html,   data.get("usdjpy"))
+    html = patch_stlfsi(html,   data.get("stlfsi"))
     return html
 
 
@@ -693,6 +740,8 @@ def main():
     data["walcl"]    = safe_fetch("WALCL",    fetch_walcl)
     data["deposits"] = safe_fetch("예금",     fetch_deposits)
     data["fhlb"]     = safe_fetch("FHLB",     fetch_fhlb)
+    data["usdjpy"]   = safe_fetch("USD/JPY",  fetch_usdjpy)
+    data["stlfsi"]   = safe_fetch("STLFSI4",  fetch_stlfsi)
 
     with open(MONITOR_FILE, encoding="utf-8") as f:
         html = f.read()
