@@ -706,7 +706,20 @@ def patch_fhlb(html, fhlb):
     return html
 
 
-def patch_html(html, data):
+def validate_patches(html, data):
+    """패치 후 날짜 기준으로 누락 의심 항목 체크"""
+    missing = []
+    skip = {"cpi", "ci"}  # note만 교체하는 항목은 val date 없음
+    for key, val in data.items():
+        if not val or key in skip:
+            continue
+        date = val.get("date", "")
+        if date and date not in html:
+            missing.append(f"{key}({date})")
+    if missing:
+        print(f"  ⚠️  패치 후 날짜 미반영 의심: {', '.join(missing)}")
+    else:
+        print(f"  ✅ 패치 검증 OK")
     print("\n  [패치 시작]")
     html = patch_tga(html,     data.get("tga"))
     html = patch_rrp(html,     data.get("rrp"))
@@ -769,6 +782,7 @@ def main():
 
     html = ensure_css(html)
     html = patch_html(html, data)
+    validate_patches(html, data)
 
     with open(MONITOR_FILE, "w", encoding="utf-8") as f:
         f.write(html)
