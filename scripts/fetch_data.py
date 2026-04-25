@@ -423,20 +423,23 @@ def patch_spx(html, spx):
 def patch_vix(html, vix):
     if not vix:
         return html
-    # note 먼저 교체 후 새 note anchor로 val 교체 (음수값 패턴 충돌 방지)
-    old_note = re.search(r'\d+/\d+ 종가 · FRED VIXCLS', html)
-    if not old_note:
+    # note 위치 찾기
+    note_pat = re.compile(r'\d+/\d+ 종가 · FRED VIXCLS')
+    m_note = note_pat.search(html)
+    if not m_note:
         print(f"    ⚠️  미매칭: VIX")
         return html
-    new_note_str = f'{vix["date"]} 종가 · FRED VIXCLS'
-    html = html.replace(old_note.group(0), new_note_str, 1)
-    # val 교체: 새 note 바로 앞 셀
-    html = re.sub(
-        r'(<td class="val val-(?:ok|warn)">)[\d.]+(</td>\s*<td class="verify"><span[^>]*>[^<]*</span><span class="verify-note">'
-        + re.escape(new_note_str) + r')',
-        lambda m: f'{m.group(1)}{vix["val"]:.2f}{m.group(2)}',
-        html, count=1
+    new_note = f'{vix["date"]} 종가 · FRED VIXCLS'
+    html = html[:m_note.start()] + new_note + html[m_note.end():]
+    # val 교체: note 앞 150자 안에서만
+    pos = html.find(new_note)
+    segment = html[max(0, pos-150):pos]
+    new_segment = re.sub(
+        r'(>)[\d.]+(</td>\s*$)',
+        lambda x: f'{x.group(1)}{vix["val"]:.2f}{x.group(2)}',
+        segment, count=1, flags=re.MULTILINE
     )
+    html = html[:max(0, pos-150)] + new_segment + html[pos:]
     print(f"    ✅ VIX {vix['val']:.2f} ({vix['date']})")
     return html
 
