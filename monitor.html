@@ -135,7 +135,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-brent">
   <td class="ind">Brent Crude<span class="sub">ICE / $/bbl</span></td>
   <td class="desc">북해산 원유 기준가. <b>글로벌 원유 거래의 약 70%가 Brent 기준으로 가격이 매겨짐.</b> 호르무즈 봉쇄 상황을 가장 직접적으로 반영하는 이란전 바로미터</td>
   <td class="val val-alert">$95.48</td>
@@ -149,7 +149,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><span class="src-label">ICE Futures </span> <a href="https://www.investing.com/commodities/brent-oil">Investing.com</a><br>Brent Oil Futures</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-wti">
   <td class="ind">WTI Crude<span class="sub">NYMEX / $/bbl</span></td>
   <td class="desc">미국산 원유 기준가. <b>Brent보다 미국 국내 수급에 민감하며, 미국 휘발유 가격과 직결.</b> 유권자 체감 인플레이션의 핵심 변수로 미드텀 정치 압력에 영향</td>
   <td class="val val-warn">$87.56</td>
@@ -177,7 +177,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-spx">
   <td class="ind">S&amp;P 500<span class="sub">SPX / 200일선 위치</span></td>
   <td class="desc">미국 대형주 500개 시가총액 가중 지수. <b>200일 이동평균선은 중장기 추세의 경계선으로, 이 위에 있어야 상승 추세로 판단.</b> 진입 조건 ③의 직접 판단 기준</td>
   <td class="val val-ok">7,165.08<br><br></td>
@@ -190,10 +190,10 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.investing.com/indices/us-spx-500">Investing.com</a><br>S&amp;P 500 SPX</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-vix">
   <td class="ind">VIX<span class="sub">CBOE 공포지수</span></td>
   <td class="desc">S&amp;P 500 옵션 가격에서 역산한 향후 30일 변동성 기대치. <b>"공포지수"로 불리며 시장 불안심리를 수치화.</b> 20 이하가 정상, 30 이상이면 스트레스 국면</td>
-  <td class="val val-ok">19.31</td>
+  <td class="val val-ok">-0.758</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">4/23 종가 · FRED VIXCLS</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
@@ -203,7 +203,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.cboe.com/tradable-products/vix/">CBOE</a><br>VIX · FRED: VIXCLS</td>
 </tr>
-<tr>
+<tr id="row-gold">
   <td class="ind">Gold<span class="sub">COMEX / $/oz</span></td>
   <td class="desc">법정화폐 신뢰 약화 시 대피처. <b>달러 패권 리스크·전쟁·인플레이션 시 상승하는 구조적 헤지 자산.</b> BTC와의 대체 통화 경쟁 구도에서 양자 동반 상승 여부도 주목</td>
   <td class="val val-warn">$4,833</td>
@@ -238,7 +238,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-tga">
   <td class="ind">TGA 잔고<span class="sub">재무부 현금 / $억</span></td>
   <td class="desc">재무부가 Fed에 보유한 당좌예금 계좌. <b>잔고가 줄면(드로다운) 재정지출로 시중에 돈이 풀리는 유동성 공급 효과.</b> 반대로 세금 납부 시즌엔 잔고가 쌓이며 유동성 흡수</td>
   <td class="val val-warn">$969.8B</td>
@@ -251,7 +251,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fiscal.treasury.gov/reports-statements/treasury-bulletin/">Treasury Fiscal</a><br>Daily TGA</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-rrp">
   <td class="ind">RRP 잔고<span class="sub">역레포 / $억</span></td>
   <td class="desc">Fed가 MMF 등으로부터 하루짜리로 돈을 빌리는 창구. <b>RRP 잔고 = 시중 유동성 잉여분의 주차장.</b> 잔고가 0에 가까울수록 완충 없이 TGA 변동이 직접 시장에 영향</td>
   <td class="val val-ok">$0.08B</td>
@@ -263,7 +263,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/RRPONTSYD">FRED: RRPONTSYD</a><br>NY Fed 매일</td>
 </tr>
-<tr>
+<tr id="row-reserves">
   <td class="ind">은행 지준 잔고<span class="sub">H.4.1 WRBWFRBL / 주간</span></td>
   <td class="desc">Fed에 예치된 은행 지준. <b>TGA 드로다운 → 지준 증가, TGA 리빌드 → 지준 감소 구조.</b> RRP가 소진된 상태에서 지준이 급감하면 레포 경색 위험. $3T 이하 = 경계, $2.5T = 경보.</td>
   <td class="val val-warn">$2,915B</td>
@@ -275,7 +275,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/WRBWFRBL">FRED: WRBWFRBL</a><br>H.4.1 주간</td>
 </tr>
-<tr>
+<tr id="row-walcl">
   <td class="ind">Fed 대차대조표<span class="sub">총자산 / WALCL 주간</span></td>
   <td class="desc">연준 보유 자산 총액. <b>QT 종료 여부 직접 확인 지표.</b> QT 중엔 감소, 종료·확대 시 안정·증가. 현재 QT 종료(12/1) 후 안정화 구간.</td>
   <td class="val val-ok">$6,707B</td>
@@ -287,7 +287,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/WALCL">FRED: WALCL</a><br>H.4.1 주간</td>
 </tr>
-<tr>
+<tr id="row-deposits">
   <td class="ind">은행 예금 총액<span class="sub">DPSACBW027SBOG / 주간</span></td>
   <td class="desc">전체 상업은행 예금 잔액. <b>은행 → MMF 이탈(예금 감소 + MMF 증가) vs 복귀 구조 추적.</b> 예금 감소 + MMF 증가 동시 → 은행 조달 비용 상승 경로.</td>
   <td class="val val-ok">$19,099B</td>
@@ -299,7 +299,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/DPSACBW027SBOG">FRED: DPSACBW027SBOG</a><br>H.8 주간</td>
 </tr>
-<tr>
+<tr id="row-h8-bank">
   <td class="ind">H.8 은행 국채 보유<span class="sub">전체 상업은행 Non-MBS SA / 매주</span></td>
   <td class="desc"><b>SLR(자본 레버리지 비율) 완화로 자본 여력이 생긴 은행이 실제로 국채를 매수하는지 확인하는 공식 데이터.</b> eSLR은 버퍼 기준 완화 방식 — 자동 매수 아님, 실제 행동 확인 필수. <b>주간 단위 노이즈 vs 월간 트렌드 병행 해석 필수</b></td>
   <td class="val val-warn">🟡 SLR 미확인</td>
@@ -315,7 +315,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8</a><br>매주 금 4:15PM ET</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-h8-foreign">
   <td class="ind">🆕 H.8 외국계 지점 Non-MBS<span class="sub">Table 10 Line 5 SA / 매주</span></td>
   <td class="desc"><b>외국계 은행 미국 지점의 UST 보유 — TIC·JGB 수익률과 함께 "일본 리패트리에이션" 검증 레이어.</b> 리패트리에이션이 실제 진행 중이라면 이 라인도 감소해야 정합. 현재는 <b>반대 방향 증거</b> — 내러티브 반증용</td>
   <td class="val val-warn">$156.8B</td>
@@ -330,7 +330,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8 Table 10</a><br>매주 금</td>
 </tr>
-<tr>
+<tr id="row-h8-nonbank">
   <td class="ind">🆕 H.8 비은행 금융기관 대출<span class="sub">Line 26 SA / 매주</span></td>
   <td class="desc"><b>은행이 헤지펀드·PE·private credit·보험·증권사에 제공하는 대출.</b> Pozsar 섀도우 뱅킹 레버리지 팽창의 정통 지표. SLR 완화로 생긴 은행 자본 여력이 UST 대신 이 채널로 흐르는지 추적</td>
   <td class="val val-alert">$1,970.5B</td>
@@ -362,7 +362,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-mmf">
   <td class="ind">MMF AUM · 행선지<span class="sub">ICI 주간 / $조</span></td>
   <td class="desc">머니마켓펀드 총 운용자산. <b>TGA 드로다운 → 은행 지준 증가 → MMF 유입 → T-bill 매수 경로의 하류 지표.</b> RRP ~0이므로 추가 유입분은 T-bill로만 소화. 장기채(7Y+) 직접 연결은 약함. 대기자금 성격 — 감소 전환이 리스크온 신호</td>
   <td class="val val-warn">$7.64조</td>
@@ -376,7 +376,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.ici.org/research/stats/mmf">ICI.org</a><br>매주 목요일</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-auction">
   <td class="ind">국채 경매 Indirect Bidder<span class="sub">자산운용사·외국계 / 경매별</span></td>
   <td class="desc"><b>BlackRock·PIMCO 등 자산운용사와 외국계 기관의 국채 매수 강도.</b> Indirect Bidder = 브로커·딜러 통해 입찰하는 최종 매수자(운용사·외국 중앙은행). 비율 하락 = 7Y~30Y 장기채 실질 수요 약화. SLR과 완전 무관하게 독립 작동</td>
   <td class="val val-ok">64.5% (10Y)</td>
@@ -393,7 +393,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-cot">
   <td class="ind">CFTC COT 국채 선물<span class="sub">헤지펀드 Net / 화요일 기준</span></td>
   <td class="desc"><b>헤지펀드의 국채 선물 Net 포지션. Basis Trade(현물 매수·선물 공매도) 레버리지 누적 시 청산 = 국채 급매도 발생.</b> 2019년 9월 레포 발작·2020년 3월 국채 발작의 주된 경로. 봉쇄 불확실성 + 금리 변동성 확대 구간에서 청산 꼬리 리스크 증가</td>
   <td class="val val-warn">Net Short 2,019K계약</td>
@@ -408,7 +408,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.cftc.gov/MarketReports/CommitmentsofTraders/">CFTC COT</a><br>TFF / 매주 금</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-tic">
   <td class="ind">TIC 외국인 UST 보유<span class="sub">국가별 / 월간 후행</span></td>
   <td class="desc"><b>외국 정부·기관의 미국채 보유 잔액. 일본·중국·영국 상위 3개국이 전체의 35%+.</b> JGB 리패트리에이션 가설의 주 근거이나 약 6주 후행 + H.8 Table 10(외국계 지점)과 <b>교차검증 필수</b> — 현재 두 채널이 엇갈린 신호</td>
   <td class="val val-warn">$9.31조 (1월)</td>
@@ -425,7 +425,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-bdc">
   <td class="ind">Private Credit BDC<span class="sub">PIK·논어크루얼 / 분기</span></td>
   <td class="desc"><b>사모신용(Private Credit)은 국채 직접 참여자 아님.</b> SLR 완화로 은행이 국채 보유 늘릴수록 기업 대출 여력 감소 → Private Credit 수요 증가하는 경쟁 관계. 신용 사이클 악화의 선행 지표 역할 — 크레딧 섹션과 연동</td>
   <td class="val val-warn">PIK 8%</td>
@@ -465,7 +465,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-dgs10">
   <td class="ind">10Y UST<span class="sub">미국채 10년물</span></td>
   <td class="desc">장기 금리의 글로벌 기준점. <b>주식 밸류에이션·모기지·회사채 금리가 모두 여기서 파생되며, Fed 정책 기대와 인플레이션 전망이 동시에 반영됨.</b> 이란전 재정 압력 + JGB 이탈이 상방 요인</td>
   <td class="val val-ok">4.3%</td>
@@ -478,7 +478,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield">Investing.com</a><br>FRED: DGS10</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-move">
   <td class="ind">MOVE Index<span class="sub">채권 변동성 / ICE BofA</span></td>
   <td class="desc">미국채 옵션 가격에서 역산한 금리 변동성 지수. <b>"채권시장의 VIX"로 불리며, 높을수록 금리 방향 불확실성 증가 → 국채 발행 비용 상승 · 금융기관 헤징 부담 가중.</b> 130 이상 시 경보</td>
   <td class="val val-ok">67.94</td>
@@ -493,7 +493,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-jgb">
   <td class="ind">10Y JGB<span class="sub">일본 국채 10년물</span></td>
   <td class="desc">일본 국채 10년물 금리. <b>일본 생보·연기금의 미국채 보유 비용(헤지 비용)의 기준선.</b> JGB 수익률 상승 → 미국채 헤지 비용이 수익률을 초과 → 미국채 팔고 JGB로 귀환(repatriation) 발동 <b>가설</b> — H.8 Table 10과 교차검증 필요</td>
   <td class="val val-alert">2.42%</td>
@@ -507,7 +507,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-swap">
   <td class="ind">UST 스왑 스프레드<span class="sub">10Y / bp · 베이시스 트레이드 경보</span></td>
   <td class="desc">미국채 현물 수익률과 고정금리 스왑(IRS) 금리의 차이. <b>헤지펀드 베이시스 트레이드(현물 롱+선물 숏)가 대규모 청산될 때 스프레드가 급격히 음수(-)로 확대됨.</b> Pozsar 담보 체인 스트레스의 실시간 지표</td>
   <td class="val val-warn">~-14bp</td>
@@ -524,7 +524,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-stlfsi">
   <td class="ind">금융 스트레스 지수<span class="sub">STLFSI4 / St. Louis Fed</span></td>
   <td class="desc">18개 지표(금리 7개·스프레드 6개·기타 5개) 합산 주간 금융 스트레스 지수. <b>0 = 정상, 양수 = 스트레스 상승, 음수 = 완화.</b> MOVE·스왑스프레드·OAS를 개별로 못 가져오는 항목을 간접 포괄.</td>
   <td class="val val-ok">-0.758</td>
@@ -554,7 +554,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-ig-oas">
   <td class="ind">IG OAS<span class="sub">ICE BofA BAMLC0A0CM / bp</span></td>
   <td class="desc">투자등급(BBB- 이상) 회사채가 국채 대비 추가로 제공하는 금리 프리미엄. <b>IG 스프레드 축소 = 우량 회사채 수요 강함 = 보수적 리스크온 신호. HY와 함께 보면 크레딧 시장 차별화 구조 파악 가능.</b> MMF→IG→HY→주식 순서로 자금 이동 확인</td>
   <td class="val val-ok">80bp</td>
@@ -569,7 +569,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/BAMLC0A0CM">FRED: BAMLC0A0CM</a><br>ICE BofA</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-hy-oas">
   <td class="ind">HY OAS<span class="sub">ICE BofA BAMLH0A0HYM2 / bp</span></td>
   <td class="desc">투자부적격(BB 이하) 회사채가 국채 대비 추가로 제공하는 금리 프리미엄. <b>신용위험을 보상하는 값으로, 넓어질수록 기업 부도 우려 증가.</b> 경기침체 6~12개월 선행 지표. IG와 함께 보면 리스크온 강도 측정 가능</td>
   <td class="val val-warn">286bp</td>
@@ -587,7 +587,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-eu-cds">
   <td class="ind">EU Bank CDS<span class="sub">iTraxx Sr Fin 5Y / bp</span></td>
   <td class="desc">유럽 대형 은행 부도 시 손실을 보상하는 파생상품의 가격. <b>은행 건전성에 대한 시장 신뢰도의 척도로, 이란전 유가 급등으로 에너지 대출 익스포저가 큰 유럽 은행이 먼저 반응함</b></td>
   <td class="val val-ok">BNP 40bp / DB 56bp</td>
@@ -602,7 +602,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-bdc-pik">
   <td class="ind">BDC PIK 비율<span class="sub">섹터 평균 / 분기 업데이트</span></td>
   <td class="desc">BDC(사모대출 전문 펀드)가 차주로부터 현금 대신 추가 대출증권으로 이자를 받는 비율. <b>차주가 현금 부족 상태임을 의미하며, HY OAS보다 2~3분기 앞서 민간신용 스트레스를 포착</b></td>
   <td class="val val-warn">8%</td>
@@ -633,7 +633,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-sofr">
   <td class="ind">SOFR / IORB<span class="sub">overnight / %</span></td>
   <td class="desc">SOFR = 미국 국채를 담보로 하는 하루짜리 도매 차입 금리. IORB = Fed가 은행 지준금에 지급하는 이자율. <b>SOFR이 IORB보다 높아지면 은행들이 지준보다 시장 차입을 선호할 만큼 유동성이 부족하다는 신호</b></td>
   <td class="val val-ok">3.65% / 3.65%</td>
@@ -647,7 +647,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-repo">
   <td class="ind">Repo Stress<span class="sub">GCF-SOFR 스프레드</span></td>
   <td class="desc">GCF(일반 담보 금융) 레포와 SOFR의 차이. <b>딜러(대형 증권사)의 밸런스시트가 한계에 달할수록 국채 담보 단기차입 비용이 SOFR 위로 치솟음.</b> 분기말·세금 납부 시즌에 구조적으로 확대</td>
   <td class="val val-ok">284bp</td>
@@ -662,7 +662,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr>
+<tr id="row-hf-short">
   <td class="ind">HF 레버리지 숏<span class="sub">CFTC · 레버리지드 펀드 UST 선물 순숏</span></td>
   <td class="desc">CFTC가 매주 발표하는 선물 포지션 보고서(COT)에서 레버리지드 펀드(헤지펀드)의 미국채 선물 순매도 포지션. <b>베이시스 트레이드 규모의 간접 추정치 — 급감 시 강제 청산, 유지·확대 시 트레이드 재구축.</b></td>
   <td class="val val-warn">~2,019K계약</td>
@@ -679,7 +679,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   
   
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-fhlb">
   <td class="ind">FHLB 차입 잔고<span class="sub">연방주택대출은행 / $억</span></td>
   <td class="desc">지역은행·중소은행이 FHLB에서 단기 차입한 잔액. <b>스트레스 시 급증 — SVB 사태(2023) 때 $3,750억→$1조 급등.</b> BDC·민간신용 스트레스가 지역은행으로 전이될 때 가장 먼저 반응하는 선행 경보</td>
   <td class="val val-ok">$666.0B</td>
@@ -711,7 +711,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-usdjpy">
   <td class="ind">USD/JPY<span class="sub">엔캐리 척도</span></td>
   <td class="desc">엔캐리 트레이드의 핵심 통화쌍. <b>저금리 엔화를 빌려 고금리 달러자산에 투자하는 구조로, 수치가 낮아질수록(엔 강세) 이 포지션이 손실을 보며 강제 청산 → 미국채 매도 연쇄 발동</b></td>
   <td class="val val-warn">158.10</td>
@@ -724,7 +724,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://tradingeconomics.com/japan/currency">tradingeconomics</a><br>USD/JPY</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-usdcny">
   <td class="ind">USD/CNY<span class="sub">PBOC 고시환율</span></td>
   <td class="desc">PBOC가 매일 설정하는 위안화 기준환율(고시환율). <b>중국 정부의 환율 정책 의도를 가장 직접적으로 반영하며, 시장 환율이 이 기준 ±2% 이내에서만 움직일 수 있음.</b> 약세 허용 시 관세 보복 또는 자본유출 신호</td>
   <td class="val val-ok">~6.82</td>
@@ -736,7 +736,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src">PBOC 매일 고시<br>FRED: DEXCHUS</td>
 </tr>
-<tr>
+<tr id="row-dxy">
   <td class="ind">DXY<span class="sub">달러 인덱스</span></td>
   <td class="desc">EUR(57.6%)·JPY·GBP·CAD·SEK·CHF 6개 통화 대비 달러 강도를 나타내는 지수(기준 100). <b>글로벌 달러 수요의 종합 척도로, 상승 시 신흥국 부채 압박·원자재 가격 하락, 하락 시 리스크자산 상승 경향</b></td>
   <td class="val val-ok">118.079</td>
@@ -766,7 +766,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-btc">
   <td class="ind">BTC<span class="sub">비트코인 / USD</span></td>
   <td class="desc">탈중앙화 디지털 자산으로 총 공급량 2,100만 개가 고정된 희소 자산. <b>리스크온 환경에서 상승, 리스크오프 시 매도되지만 최근 금·BTC 동반 상승으로 대체 통화 성격도 강화.</b> 호르무즈 해소가 리스크온 트리거</td>
   <td class="val val-ok">~$75,000</td>
@@ -780,7 +780,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://finance.yahoo.com/quote/BTC-USD/">Yahoo Finance</a><br>Fortune / CME BTC</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-btc-etf">
   <td class="ind">BTC ETF 순유입<span class="sub">주간·월간 / $억</span></td>
   <td class="desc">BlackRock IBIT 등 미국 상장 현물 BTC ETF의 자금 유출입. <b>기관 투자자의 BTC 수요를 가장 직접적으로 보여주는 지표로, 가격 하락 중 순유입이 지속되면 저점 매집 신호.</b> 순유출 전환이 센티먼트 변화의 선행 신호</td>
   <td class="val val-ok">~$10억</td>
@@ -792,7 +792,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src">Bloomberg ETF 플로우<br>IBIT 주간 유입</td>
 </tr>
-<tr>
+<tr id="row-clarity">
   <td class="ind">CLARITY Act<span class="sub">Polymarket 통과 확률</span></td>
   <td class="desc">미국 상원에서 논의 중인 디지털자산 시장구조 법안. <b>통과 시 코인의 증권·상품 분류 기준이 확정되며 기관 자금 유입 법적 토대가 완성.</b> Polymarket 확률은 시장 참여자들의 통과 기대를 실시간으로 반영</td>
   <td class="val val-warn">51%</td>
@@ -821,7 +821,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-sloos">
   <td class="ind">SLOOS<span class="sub">대출 기준 조사 / 분기</span></td>
   <td class="desc">Fed가 분기마다 실시하는 시니어 대출담당자 의견조사. <b>은행이 기업·가계 대출 기준을 완화 또는 강화하는지 방향을 직접 묻는 설문.</b> 신용창출 재개의 공급 측 선행지표 — H.8 실물 데이터보다 1~2분기 앞서 신호 포착.</td>
   <td class="val val-alert">기준 강화 지속</td>
@@ -836,7 +836,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/sloos/">Fed SLOOS</a><br>분기 발표</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-ci">
   <td class="ind">H.8 C&amp;I 대출<span class="sub">상업·산업 대출 / 격주</span></td>
   <td class="desc">H.8 보고서 내 기업 운전·설비자금 대출(Commercial &amp; Industrial Loans) 잔액. <b>AI 인프라·설비 투자 사이클이 시작되면 C&amp;I 대출 증가로 먼저 나타남.</b> 기존 H.8 항목(국채 보유 확인용)과 별도로 대출 측면 추적.</td>
   <td class="val val-ok">$2,864.5B</td>
@@ -851,7 +851,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/BUSLOANS">FRED: BUSLOANS</a><br>H.8 월간 SA</td>
 </tr>
-<tr>
+<tr id="row-m2v">
   <td class="ind">M2 Velocity<span class="sub">화폐 유통속도 / 분기</span></td>
   <td class="desc">명목 GDP ÷ M2 통화량. <b>이미 풀린 돈이 실제 경제에서 얼마나 빠르게 순환하는지 보여주는 지표.</b> 낮을수록 돈이 금융권에 고여 있고, 반등 시 민간 신용창출·소비 재개의 최종 확인 신호.</td>
   <td class="val val-warn">1.409</td>
@@ -882,7 +882,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <th style="width:120px;min-width:120px">출처</th>
 </tr></thead>
 <tbody>
-<tr>
+<tr id="row-nfp">
   <td class="ind">NFP<span class="sub">비농업 고용 / 월간</span></td>
   <td class="desc">미국 비농업 부문 신규 고용자 수. <b>Fed 이중 책무(물가+고용) 중 고용 측면의 핵심 지표.</b> 연속 마이너스 시 경기침체 경보, 플러스 유지 시 Fed 인하 명분 약화</td>
   <td class="val val-ok">3월: +178K</td>
@@ -897,7 +897,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.bls.gov/news.release/empsit.toc.htm">BLS 고용상황</a><br>매월 첫 금요일</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-cpi">
   <td class="ind">Core CPI / Core PCE<span class="sub">근원 물가 / 전년비</span></td>
   <td class="desc">식품·에너지 제외 근원 인플레이션. <b>Fed의 물가 목표(PCE 2%) 달성 여부를 판단하는 핵심 지표.</b> 이란전 유가 전이가 헤드라인을 밀어올려도 근원이 안정되면 인하 여지 유지</td>
   <td class="val val-alert">헤드라인 CPI 3.3% / Core 2.6%</td>
@@ -912,7 +912,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.bls.gov/cpi/">BLS CPI</a><br>4/10 발표 · 3월</td>
 </tr>
-<tr>
+<tr id="row-unrate">
   <td class="ind">실업률<span class="sub">가계조사 / %</span></td>
   <td class="desc">경제활동인구 중 실업자 비율. <b>Fed 완전고용 목표의 직접 척도.</b> 4.5% 돌파 시 경기침체 신호로 시장 인식 — 이 구간에서 Fed는 인플레보다 고용을 우선시할 수 있음</td>
   <td class="val val-warn">4.3%</td>
@@ -925,7 +925,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   </td>
   <td class="src"><a href="https://www.bls.gov/news.release/empsit.toc.htm">BLS 고용상황</a><br>NFP 동시</td>
 </tr>
-<tr class="alt">
+<tr class="alt" id="row-fedwatch">
   <td class="ind">Fed 인하 확률<span class="sub">CME FedWatch / 연내</span></td>
   <td class="desc">금리선물 시장이 반영한 Fed 연내 금리인하 횟수 기대치. <b>시장 전반의 통화정책 기대를 실시간으로 수치화.</b> 인하 기대 변화가 주식·채권·달러 방향성을 동시에 결정</td>
   <td class="val val-warn">4/29 동결 98%+ · 연내 인하 기대 급감</td>
