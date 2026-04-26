@@ -260,19 +260,24 @@ def ensure_css(html):
 def patch_tga(html, tga):
     if not tga:
         return html
-    # val: DTS Closing note anchor로 정확히 1건만
-    m = re.search(
-        r'<td class="val val-(?:ok|warn)">\$[\d,.]+B</td>\s*'
-        r'<td class="verify">.*?DTS Closing',
-        html, re.DOTALL
+    # val+note 전체 블록: DTS Closing note 텍스트로 정확히 타겟팅
+    note_pat = re.compile(r'\d+/\d+ DTS Closing \$[\d,.]+B · fiscaldata\.treasury\.gov')
+    m_note = note_pat.search(html)
+    if not m_note:
+        print(f"    ⚠️  미매칭: TGA")
+        return html
+    new_note = f'{tga["date"]} DTS Closing {tga["val_str"]} · fiscaldata.treasury.gov'
+    html = html[:m_note.start()] + new_note + html[m_note.end():]
+    # val 교체: 새 note 앞 150자 안에서
+    pos = html.find(new_note)
+    segment = html[max(0, pos-150):pos]
+    new_segment = re.sub(
+        r'(>\$)[\d,.]+B(</td>)',
+        lambda x: f'{x.group(1)}{tga["bal_b"]:,.1f}B{x.group(2)}',
+        segment, count=1
     )
-    if m:
-        old = m.group(0)
-        new = re.sub(r'(\$)[\d,.]+B(</td>)', f'\\g<1>{tga["bal_b"]:,.1f}B\\g<2>', old, count=1)
-        html = html.replace(old, new, 1)
-        print(f"    ✅ TGA val")
-    else:
-        print(f"    ⚠️  미매칭: TGA val")
+    html = html[:max(0, pos-150)] + new_segment + html[pos:]
+    print(f"    ✅ TGA {tga['val_str']} ({tga['date']})")
 
     html = sub(html,
         r'\d+/\d+ DTS Closing \$[\d,.]+B · fiscaldata\.treasury\.gov',
