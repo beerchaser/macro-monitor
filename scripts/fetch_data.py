@@ -239,6 +239,22 @@ def fetch_fhlb():
     r = fetch_fred("BOGZ1FL403069330Q")
     r["val_b"] = r["val"] / 1_000
     r["display"] = f'${r["val_b"]:,.1f}B ({r["date"]})'
+    # year 필드 별도 추출 (patch_fhlb에서 "Q4 2025" 형식 구성에 사용)
+    if not FRED_API_KEY:
+        return r
+    try:
+        params = __import__('urllib.parse', fromlist=['urlencode']).urlencode({
+            "series_id": "BOGZ1FL403069330Q", "api_key": FRED_API_KEY,
+            "file_type": "json", "sort_order": "desc", "limit": 5
+        })
+        data = http_get(f"https://api.stlouisfed.org/fred/series/observations?{params}")
+        for obs in data.get("observations", []):
+            if obs["value"] != ".":
+                dt = datetime.strptime(obs["date"], "%Y-%m-%d")
+                r["year"] = str(dt.year)
+                break
+    except Exception:
+        r["year"] = "2025"
     return r
 
 def fetch_oas(series_id):
@@ -508,7 +524,7 @@ def patch_brent(html, brent):
     if not brent:
         return html
     html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILBRENTEU)',
+        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILBRENTEU)',
         lambda m: f'{m.group(1)}${brent["val"]:.1f}{m.group(2)}',
         re.DOTALL, "Brent val")
     html = sub(html,
@@ -528,7 +544,7 @@ def patch_wti(html, wti):
     if not wti:
         return html
     html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILWTICO)',
+        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILWTICO)',
         lambda m: f'{m.group(1)}${wti["val"]:.1f}{m.group(2)}',
         re.DOTALL, "WTI val")
     html = sub(html,
@@ -697,7 +713,7 @@ def patch_fhlb(html, fhlb):
         )
         new_str = re.sub(
             r'Q\d 20\d\d · FHLB[^<]*',
-            f'Q4 {fhlb["date"][:4]} · FRED Z.1 (FHLB 공식≈$676.7B)',
+            f'Q4 {fhlb.get("year", fhlb["date"][-4:])} · FRED Z.1 (FHLB 공식≈$676.7B)',
             new_str
         )
         new_str = new_str.replace(
