@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-macro-monitor 자동 업데이트 스크립트 v15
-v15 (5/30):
-  - 로직 변경 없음 (regex/패치 함수 동일).
-  - 문서화: monitor.html에 H.8 「기타 대출(마진·증권담보) Line 27」 row 신규 추가됨.
-    이 row는 H.8 PDF 수동 갱신 항목 → 본 스크립트는 의도적으로 패치하지 않음.
-    (Non-MBS line5·NDFI line26·외국계 Table10과 동일 범주)
-  - 모의 데이터 패치 시뮬레이션으로 새 row가 기존 자동 패치와 비충돌 확인.
+macro-monitor 자동 업데이트 스크립트 v16
+v16 (5/30):
+  - [하드닝] patch_rrp/dgs10/spx/brent/wti/unrate 의 val 교체를
+    lazy DOTALL(.*?ANCHOR) → note-anchor 방식으로 전환.
+    (코딩 규칙: val 셀 교체 시 DOTALL 광역 패턴 금지. note 먼저 찾고
+     note 직전 val 셀만 bounded 교체 → row 추가 시 오매칭 방지)
+    동작 동등성: 동일 데이터로 v14와 byte-identical 출력 확인.
+  - [문서화] monitor.html에 H.8 「기타 대출(마진·증권담보) Line 27」 row 추가됨.
+    H.8 PDF 수동 항목 → 본 스크립트는 의도적으로 패치하지 않음
+    (Non-MBS line5·NDFI line26·외국계 Table10과 동일 범주).
 v14:
   - Brent(DCOILBRENTEU), WTI(DCOILWTICO) FRED 자동확인 추가
   - http_get: retry 3회 + exponential backoff
@@ -98,6 +101,31 @@ def sub(html, pattern, replacement, flags=0, label=""):
     else:
         print(f"    ✅ {n}건: {tag}")
     return result
+
+
+def _patch_val_by_note(html, note_regex, new_note, val_regex, val_repl, label):
+    """note-anchor val 교체 (DOTALL 미사용).
+    1) note 정규식으로 위치 확정  2) note 교체
+    3) note 직전 마지막 <td class="val ...> 셀만 bounded 교체.
+    row가 추가/삭제돼도 .*? 가 인접하지 않은 셀을 잡는 오매칭이 발생하지 않음."""
+    m = re.search(note_regex, html)
+    if not m:
+        print(f"    ⚠️  미매칭: {label}")
+        return html
+    pos = m.start()
+    html = html[:pos] + new_note + html[m.end():]          # note 먼저 교체 (pos 고정)
+    seg_start = html.rfind('<td class="val', 0, pos)        # note 직전 val 셀 시작
+    if seg_start == -1:
+        print(f"    ⚠️  val 셀 못 찾음: {label}")
+        return html
+    segment = html[seg_start:pos]                           # val~note 직전까지 bounded
+    new_segment, n = re.subn(val_regex, val_repl, segment, count=1)
+    if n == 0:
+        print(f"    ⚠️  val 미매칭: {label}")
+        return html
+    html = html[:seg_start] + new_segment + html[pos:]
+    print(f"    ✅ {label}")
+    return html
 
 
 # ── 데이터 조회 ──────────────────────────────────────────────────
@@ -323,29 +351,25 @@ def patch_tga(html, tga):
 def patch_rrp(html, rrp):
     if not rrp:
         return html
-    html = sub(html,
-        r'(<td class="val val-ok">\$)[\d.]+B(</td>\s*<td class="verify">.*?RRPONTSYD)',
-        lambda m: f'{m.group(1)}{rrp["val"]:.2f}B{m.group(2)}',
-        re.DOTALL, "RRP val")
-    html = sub(html,
+    return _patch_val_by_note(
+        html,
         r'\d+/\d+ · FRED RRPONTSYD [\d.]+B',
         f'{rrp["date"]} · FRED RRPONTSYD {rrp["val"]:.3f}B',
-        label="RRP note")
-    return html
+        r'(<td class="val val-ok">\$)[\d.]+B(</td>)',
+        lambda m: f'{m.group(1)}{rrp["val"]:.2f}B{m.group(2)}',
+        "RRP")
 
 
 def patch_dgs10(html, dgs10):
     if not dgs10:
         return html
-    html = sub(html,
-        r'(<td class="val val-ok">)([\d.]+%)(</td>\s*<td class="verify">.*?FRED DGS10)',
-        lambda m: f'{m.group(1)}{dgs10["val"]:.2f}%{m.group(3)}',
-        re.DOTALL, "DGS10 val")
-    html = sub(html,
+    return _patch_val_by_note(
+        html,
         r'\d+/\d+ 종가 · FRED DGS10',
         f'{dgs10["date"]} 종가 · FRED DGS10',
-        label="DGS10 note")
-    return html
+        r'(<td class="val val-ok">)[\d.]+%(</td>)',
+        lambda m: f'{m.group(1)}{dgs10["val"]:.2f}%{m.group(2)}',
+        "DGS10")
 
 
 def patch_sofr(html, sofr):
@@ -409,15 +433,13 @@ def patch_cpi(html, cpi):
 def patch_unrate(html, unrate):
     if not unrate:
         return html
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)([\d.]+%)(</td>\s*<td class="verify">.*?3월 BLS)',
-        lambda m: f'{m.group(1)}{unrate["val"]:.1f}%{m.group(3)}',
-        re.DOTALL, "실업률 val")
-    html = sub(html,
+    return _patch_val_by_note(
+        html,
         r'3월 BLS · \d+/\d+ 발표',
         f'3월 BLS · {unrate["date"]} 발표',
-        label="실업률 note")
-    return html
+        r'(<td class="val val-(?:ok|warn)">)[\d.]+%(</td>)',
+        lambda m: f'{m.group(1)}{unrate["val"]:.1f}%{m.group(2)}',
+        "실업률")
 
 
 def patch_ci(html, ci):
@@ -443,16 +465,13 @@ def patch_ci(html, ci):
 def patch_spx(html, spx):
     if not spx:
         return html
-    # val: <br> 포함 패턴
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn)">)([\d,]+\.?\d*)(<br>(?:<br>)?</td>\s*<td class="verify">.*?SP500)',
-        lambda m: f'{m.group(1)}{spx["val"]:,.2f}{m.group(3)}',
-        re.DOTALL, "SPX val")
-    html = sub(html,
+    return _patch_val_by_note(
+        html,
         r'\d+/\d+ 종가 · FRED SP500',
         f'{spx["date"]} 종가 · FRED SP500',
-        label="SPX note")
-    return html
+        r'(<td class="val val-(?:ok|warn)">)[\d,]+\.?\d*(<br>(?:<br>)?</td>)',
+        lambda m: f'{m.group(1)}{spx["val"]:,.2f}{m.group(2)}',
+        "SPX")
 
 
 def patch_vix(html, vix):
@@ -537,15 +556,14 @@ def patch_cot(html, cot):
 def patch_brent(html, brent):
     if not brent:
         return html
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILBRENTEU)',
-        lambda m: f'{m.group(1)}${brent["val"]:.1f}{m.group(2)}',
-        re.DOTALL, "Brent val")
-    html = sub(html,
+    html = _patch_val_by_note(
+        html,
         r'\d+/\d+ 종가 · FRED DCOILBRENTEU',
         f'{brent["date"]} 종가 · FRED DCOILBRENTEU',
-        label="Brent note")
-    # 배지 자동확인으로 업그레이드
+        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>)',
+        lambda m: f'{m.group(1)}${brent["val"]:.1f}{m.group(2)}',
+        "Brent")
+    # 배지 자동확인으로 업그레이드 (bounded regex 유지)
     html = sub(html,
         r'(<td class="verify">)<span class="vbadge [^"]+">[^<]+</span>'
         r'(<span class="verify-note">\d+/\d+ 종가 · FRED DCOILBRENTEU)',
@@ -557,14 +575,13 @@ def patch_brent(html, brent):
 def patch_wti(html, wti):
     if not wti:
         return html
-    html = sub(html,
-        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>\s*<td class="verify">.*?DCOILWTICO)',
-        lambda m: f'{m.group(1)}${wti["val"]:.1f}{m.group(2)}',
-        re.DOTALL, "WTI val")
-    html = sub(html,
+    html = _patch_val_by_note(
+        html,
         r'\d+/\d+ 종가 · FRED DCOILWTICO',
         f'{wti["date"]} 종가 · FRED DCOILWTICO',
-        label="WTI note")
+        r'(<td class="val val-(?:ok|warn|alert)">)\$?[\d.]+(\s*(?:/bbl)?</td>)',
+        lambda m: f'{m.group(1)}${wti["val"]:.1f}{m.group(2)}',
+        "WTI")
     html = sub(html,
         r'(<td class="verify">)<span class="vbadge [^"]+">[^<]+</span>'
         r'(<span class="verify-note">\d+/\d+ 종가 · FRED DCOILWTICO)',
