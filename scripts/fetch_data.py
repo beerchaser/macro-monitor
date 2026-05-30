@@ -1,12 +1,26 @@
 #!/usr/bin/env python3
 """
-macro-monitor 자동 업데이트 스크립트 v14
-개선:
+macro-monitor 자동 업데이트 스크립트 v15
+v15 (5/30):
+  - 로직 변경 없음 (regex/패치 함수 동일).
+  - 문서화: monitor.html에 H.8 「기타 대출(마진·증권담보) Line 27」 row 신규 추가됨.
+    이 row는 H.8 PDF 수동 갱신 항목 → 본 스크립트는 의도적으로 패치하지 않음.
+    (Non-MBS line5·NDFI line26·외국계 Table10과 동일 범주)
+  - 모의 데이터 패치 시뮬레이션으로 새 row가 기존 자동 패치와 비충돌 확인.
+v14:
   - Brent(DCOILBRENTEU), WTI(DCOILWTICO) FRED 자동확인 추가
-개선:
   - http_get: retry 3회 + exponential backoff
   - patch_html: 지표별 함수 분리
   - FRED API key 없으면 해당 항목 스킵 (전체 중단 없음)
+
+[자동 패치 항목 — FRED/Treasury 전용]
+  TGA, RRP, DGS10, SOFR, 경매IB(10Y), NFP, CoreCPI, 실업률, C&I(BUSLOANS),
+  SPX, VIX, DXY, COT(UST10Y), Brent, WTI, IG/HY OAS, 지준, WALCL, 예금, FHLB, USDJPY, STLFSI
+
+[자동 패치 제외 — H.8 PDF 수동 갱신 (스크립트가 건드리지 않음)]
+  Non-MBS(Table2 line5), NDFI(line26), 외국계 지점 Non-MBS(Table10 line5),
+  기타 대출 line27(마진·증권담보), Large Time Deposits, MMF, MOVE, 스왑스프레드,
+  EU Bank CDS, BDC PIK, BTC, Gold 등
 """
 
 import urllib.request
