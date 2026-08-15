@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # ========================================================================
-# macro-monitor 자동 업데이트 스크립트 v17.1
+# macro-monitor 자동 업데이트 스크립트 v17.2
+# v17.2 (8/15):
+#   - [긴급수정] v17.1 리팩터링 중 fetch_unrate가 삭제되어 실행 시 NameError.
+#     py_compile은 통과하고 patch 단계만 mock 테스트해서 배포 후에야 발견됨.
+#   - [재발방지] preflight(): main이 참조하는 fetcher 이름을 네트워크 호출 전에 검증.
 # v17.1 (8/15):
 #   - [회귀수정] patch_cpi 정규식이 val 셀의 수동 헤드라인 값까지 삼켜 삭제.
 #     ("헤드라인 3.8%(수동) / Core 2.8%" → "Core 2.8%" 로 조용히 사라짐)
@@ -54,7 +58,7 @@ import os
 import time
 from datetime import datetime
 
-SCRIPT_VERSION = "v17.1"
+SCRIPT_VERSION = "v17.2"
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
 MONITOR_FILE = "monitor.html"
@@ -293,6 +297,11 @@ def fetch_cpi():
             "index": core["index"], "month": f"{dt.month}월",
             "date": f"{dt.month}/{dt.day}",
             "display": f'헤드라인 {head["yoy"]:.1f}% / Core {core["yoy"]:.1f}% ({dt.month}월)'}
+
+
+def fetch_unrate():
+    """실업률 — FRED UNRATE. note에 월 표기를 넣기 위해 month 필드를 함께 사용."""
+    return fetch_fred("UNRATE")
 
 
 def fetch_cot_ust10y():
@@ -951,10 +960,30 @@ def patch_html(html, data):
 
 # ── Main ─────────────────────────────────────────────────────────
 
+def preflight():
+    """v17.2: main()이 참조하는 fetcher 이름이 전부 존재하는지 네트워크 호출 전에 확인.
+    v17.1에서 리팩터링 중 fetch_unrate가 삭제됐는데, py_compile은 통과하고
+    patch 단계만 mock으로 테스트해 배포 후에야 NameError로 터졌다.
+    이름 해석 실패는 조회를 시작하기 전에 잡아야 한다."""
+    required = [
+        "fetch_tga", "fetch_fred", "fetch_nfp", "fetch_cpi", "fetch_unrate",
+        "fetch_auction", "fetch_cot_ust10y", "fetch_oil", "fetch_oas",
+        "fetch_reserves", "fetch_walcl", "fetch_deposits", "fetch_fhlb",
+        "fetch_usdjpy", "fetch_stlfsi", "_yoy_from_fred",
+    ]
+    g = globals()
+    missing = [n for n in required if not callable(g.get(n))]
+    if missing:
+        print(f"  \U0001F534 preflight 실패 — 정의되지 않은 함수: {', '.join(missing)}")
+        raise SystemExit(1)
+    print(f"  \u2705 preflight OK ({len(required)}개 fetcher 확인)")
+
+
 def main():
     # 버전을 먼저 찍는다. 로그 첫 줄만 보면 어느 버전이 도는지 즉시 확인 가능
     # (v16이 남아 있는데 v17로 착각해 오진하는 일을 방지)
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M')}] fetch_data {SCRIPT_VERSION} 시작\n")
+    preflight()
 
     data = {}
     data["tga"]     = safe_fetch("TGA",     fetch_tga)
