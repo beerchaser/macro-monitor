@@ -76,6 +76,20 @@ tr.alt{background:rgba(0,0,0,0.015)}
 @media(prefers-color-scheme:dark){.src{color:#666;border-left-color:#2a2927}.src a{color:#6ab0d4}}
 /* 임계값 */
 .threshold{font-size:9.5px;color:#5f5e5a;line-height:1.65}
+/* 임계셀 4단 구조: 임계(규칙) / 지금(판독) / 다음(관찰) / 이력(1줄) */
+.th{display:block;margin-bottom:5px;padding-left:38px;text-indent:-38px}
+.th:last-of-type{margin-bottom:0}
+.th-k{display:inline-block;width:32px;text-indent:0;font-size:8px;font-weight:700;letter-spacing:.04em;
+      padding:1px 0;margin-right:6px;border-radius:2px;text-align:center;vertical-align:1px}
+.k-rule{background:#EEF1F6;color:#41506B}
+.k-now{background:#FFF6E5;color:#8A5A00}
+.k-next{background:#EDF6EE;color:#1A6B33}
+.k-log{background:#F2F1EE;color:#8A8A82}
+.th-log{color:#9a988f;font-size:8.5px}
+@media(prefers-color-scheme:dark){
+  .k-rule{background:#22293a;color:#9db2d6}.k-now{background:#3a2f18;color:#d9ab5c}
+  .k-next{background:#1d2f22;color:#7fc194}.k-log{background:#26251f;color:#8a887f}
+  .th-log{color:#6f6d66}}
 @media(prefers-color-scheme:dark){.threshold{color:#9c9a92}}
 .threshold b{color:#1a1a18;font-weight:600}
 @media(prefers-color-scheme:dark){.threshold b{color:#e8e6de}}
@@ -144,14 +158,13 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="desc">북해산 원유 기준가. <b>글로벌 원유 거래의 약 70%가 Brent 기준으로 가격이 매겨짐.</b> 호르무즈 봉쇄 상황을 가장 직접적으로 반영하는 이란전 바로미터</td>
   <td class="val val-alert">$93.3</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/11 종가 · FRED DCOILBRENTEU</span></td>
-  <td class="status"><span class="badge badge-ok">정상</span></td>
+  <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>$130+ →</b> 지상전·폭격 확대 / <b>$115~130 →</b> 봉쇄 장기화·구조적 인플레 위험<br>
-    <b>$100~115 →</b> 봉쇄 지속·핵 교착 고착 / <b>$85~95 →</b> 협상 교착·부분 통항 ← <b>현재 $93.3 해당</b> / <b>$70↓ →</b> 전면 봉쇄 해제 확인<br>
-    <b>🔴 7월 "봉쇄 해제" 서사 전면 폐기(8/15 갱신):</b> 7/1 $71~73 저점 → <b>8/11 $93.3(+30%)</b>. 7/2에 기록한 "전면 개방 확인·공급 과잉 전환·에너지發 인플레 되감기" 판독은 <b>완전히 틀렸고, 원인은 호르무즈 재봉쇄</b>다. EIA 8/11 STEO는 <b>호르무즈 통항의 심각한 제약이 8월 내내 지속</b>된다고 가정하며 중동 셧인 생산 추정치를 7월 전망 대비 <b>상향</b>했고, 역내 생산의 pre-conflict 수준 복귀 시점을 <b>2027년 초</b>로, 잔존 차질 <b>일 60만 배럴을 2027년 말까지</b>로 제시했다. 미-이란 협상은 교착, 후티의 사우디 Jazan 정유시설 타격도 발생. <b>52주 고점은 4/30 $120.88.</b><br>
-    <b>🔴 투자 프레임 영향 — 되돌려야 할 결론 2개:</b> ① <b>"9월 FOMC dovish hold(유가 하락 사후 인용)" 시나리오의 핵심 재료가 사라졌다.</b> ② <b>에너지發 인플레 되감기 → 헤드라인 CPI 하락 경로도 무효.</b> 8월 중 발표된 물가 지표들이 압력 지속을 가리킨 것과 정합. <b>「나쁜 경기 → 연준 완화 → 자산 상승」 삼각 공식이 깨지는 스태그플레이션 경로가 실제로 열린 구간</b>(inflation_framework_ref의 유보 항목이 현실화).<br>
-    <b>다음 관찰:</b> ① EIA 3Q26 Brent 평균 전망 <b>$85</b> 대비 실제가 위/아래 ② $100 돌파 시 구조적 인플레 위험 구간 재진입 ③ 협상 재개·통항 정상화 신호 — 이게 나와야 조건 ①·③ 이전에 <b>지정학 선결조건</b>이 다시 열린다.<br>
-    <span class="tag tag-alert">🔴 $93.3(8/11) — 7/1 저점 $71 대비 +30%, <b>호르무즈 재봉쇄로 7월 "해제" 판독 폐기</b> · EIA 차질 전망 2027년 말까지 연장 · <b>진입 지정학 선결조건 다시 미충족</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$130+ →</b> 지상전·폭격 확대 / <b>$115~130 →</b> 봉쇄 장기화·구조적 인플레 / <b>$100~115 →</b> 봉쇄 지속·핵 교착 / <b>$85~95 →</b> 협상 교착·부분 통항 ← 해당 / <b>$70↓ →</b> 전면 해제 확인</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$93.3</b>(8/11) — 7/1 저점 $71~73 대비 <b>+30%</b>. <b>호르무즈 재봉쇄</b>가 원인으로, EIA 8/11 STEO는 통항 제약이 8월 내내 지속된다고 가정하며 중동 셧인 추정치를 <b>상향</b>했고 생산 정상화를 <b>2027년 초</b>, 잔존 차질 <b>일 60만 배럴을 2027년 말까지</b>로 제시. 미-이란 협상 교착, 후티의 사우디 Jazan 정유시설 타격. 52주 고점은 4/30 $120.88.<br><b>투자 프레임 영향:</b> ① 「9월 dovish hold(유가 하락 사후 인용)」 재료 소멸 ② 「에너지發 인플레 되감기 → 헤드라인 하락」 경로 무효 ③ <b>진입 지정학 선결조건 (b) 재차 미충족</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① EIA 3Q26 전망 $85 대비 실제 위치 ② $100 돌파 시 구조적 인플레 구간 재진입 ③ 협상 재개·통항 정상화 — 이게 나와야 선결조건이 다시 열림</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/2 "전면 개방 확인·공급 과잉 전환" 판독 → <b>8/15 재봉쇄로 전면 폐기</b></span>
+    <span class="tag tag-alert">🔴 $93.3 — 7월 저점 대비 +30%, <b>호르무즈 재봉쇄로 7월 판독 폐기</b> · EIA 차질 전망 2027년 말까지 · <b>진입 선결조건 재차 미충족</b></span>
   </td>
   <td class="src"><span class="src-label">ICE Futures </span> <a href="https://www.investing.com/commodities/brent-oil">Investing.com</a><br>Brent Oil Futures</td>
 </tr>
@@ -160,13 +173,13 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="desc">미국산 원유 기준가. <b>Brent보다 미국 국내 수급에 민감하며, 미국 휘발유 가격과 직결.</b> 유권자 체감 인플레이션의 핵심 변수로 미드텀 정치 압력에 영향</td>
   <td class="val val-alert">$84.8</td>
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/11 종가 · FRED DCOILWTICO</span></td>
-  <td class="status"><span class="badge badge-ok">정상</span></td>
+  <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>$110+ →</b> 봉쇄 장기화·에너지 인플레 구조화 / <b>$90~105 →</b> 협상 교착·부분 통항 / <b>$80↓ →</b> 전면 개방 확인<br>
-    <b>Brent-WTI 스프레드 $10+ →</b> 아시아 수급 차별·호르무즈 프리미엄 유지 / <b>스프레드 $5 이하 →</b> 정상화 ← 현재 <b>약 $8.5</b>(Brent $93.3 − WTI $84.8)<br>
-    <b>🔴 8/15 갱신:</b> 7/1 저점권 → <b>8/11 $84.8</b>로 $80 상회 재진입. 7/2에 적어둔 "$80↓ 전면 개방 확인 구간 진입"과 "WTI&gt;Brent 역전(걸프 물량 방출)"은 <b>둘 다 소멸</b> — 스프레드가 정상 방향($8.5 프리미엄)으로 복원됐고 이는 <b>호르무즈 프리미엄이 다시 붙었다</b>는 뜻. 미국 원유 재고는 8월 첫째 주 <b>+1,740만 배럴 대폭 증가</b>했음에도 가격이 지지된 점이 공급 차질의 강도를 보여줌.<br>
-    <b>정치 연동:</b> 휘발유 가격 상승 = 미드텀 앞 행정부 정치적 역풍 + <b>Warsh 인하 명분 소멸</b>. 7월에 "정치적 순풍·인하 재료"로 적었던 방향이 정확히 반대로 뒤집혔다.<br>
-    <span class="tag tag-alert">🔴 $84.8(8/11) — $80 상회 재진입, Brent 스프레드 $8.5로 <b>호르무즈 프리미엄 복원</b> · 재고 +1,740만 배럴에도 가격 지지 = 공급 차질 우위</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$110+ →</b> 에너지 인플레 구조화 / <b>$90~105 →</b> 협상 교착·부분 통항 / <b>$80↓ →</b> 전면 개방 확인<br><b>Brent-WTI 스프레드 $10+ →</b> 호르무즈 프리미엄 유지 / <b>$5 이하 →</b> 정상화</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$84.8</b>(8/11) — $80 상회 재진입. 스프레드는 <b>약 $8.5</b>(Brent $93.3 − WTI $84.8)로 정상 방향 복원 = <b>호르무즈 프리미엄이 다시 붙었다</b>는 뜻. 7/2의 "$80↓ 전면 개방"과 "WTI&gt;Brent 역전" 모두 소멸. 미국 원유 재고가 8월 첫 주 <b>+1,740만 배럴 대폭 증가</b>했음에도 가격이 지지된 점이 공급 차질의 강도를 보여줌.<br><b>정치 연동:</b> 휘발유 상승 = 미드텀 앞 행정부 역풍 + <b>Warsh 인하 명분 소멸</b> — 7월에 "정치적 순풍·인하 재료"로 적었던 방향이 정반대로 뒤집힘.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 스프레드 $10 돌파 시 프리미엄 확대 판정 ② $90 돌파 여부 ③ 재고 증가에도 가격 지지가 이어지는지</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/2 "전면 개방 확인·걸프 물량 방출發 역전" → 8/15 프리미엄 복원으로 폐기</span>
+    <span class="tag tag-alert">🔴 $84.8 — $80 상회 재진입, 스프레드 $8.5로 <b>호르무즈 프리미엄 복원</b> · 재고 +1,740만 배럴에도 가격 지지</span>
   </td>
   <td class="src"><span class="src-label">NYMEX </span> <a href="https://www.investing.com/commodities/crude-oil">Investing.com</a><br>WTI Crude Futures</td>
 </tr>
@@ -194,11 +207,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/14 종가 · FRED SP500</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>200일선 탈환 + 3일 유지 →</b> 진입 조건 ③ 충족. ⚠️ <b>단순 돌파만으로 충족 인정 금지</b><br>
-    <b>✅ 조건 ③ 충족 유지(8/15 갱신):</b> <b>8/14 종가 7,785.76</b> — 3월말 저점 6,344 대비 +23%, 6월 피크(7,600대)도 상회하며 <b>사상 최고권</b>. 200일선(6/30 기준 ~6,934) 대비 <b>+12% 이상 상회</b>로 격차가 오히려 확대됐다. 3일 유지 조건은 수개월째 연속 충족.<br>
-    <b>⚠️ 그러나 ③ 충족이 진입 신호는 아님 — 이 행의 상시 경고:</b> 조건 ③은 <b>세 게이트 중 하나</b>일 뿐이며, 현재 <b>조건 ①(TGA 드로다운)은 리빌드로 재후퇴</b>(row-tga)했고 <b>지정학 선결조건은 호르무즈 재봉쇄로 다시 닫혔다</b>(row-brent). <b>병목은 여전히 ③이 아니라 ①과 지정학이며, ③만 보고 사이징하지 말 것.</b><br>
-    <b>⚠️ 지수 신고점 vs 내부 신호 괴리:</b> VIX 14.63·IG OAS 79bp로 시장 스트레스는 없으나, 같은 시점에 Gold 급등·유가 재상승·C&amp;I 연환산 마이너스가 동시 진행 중. <b>주가만 이 조합에서 홀로 강한 상태가 얼마나 지속되는지가 관찰 포인트</b>이며, 이 괴리 자체를 강세 근거로 쓰면 안 된다.<br>
-    <span class="tag tag-ok">🟢 7,785.76(8/14) · 200일선 +12% 상회 — ③ 충족 유지 · <b>단 병목은 ①(TGA 리빌드 재후퇴)과 지정학(호르무즈 재봉쇄), ③ 단독으로 진입 근거 불가</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>200일선 탈환 + 3일 유지 →</b> 진입 조건 ③ 충족. ⚠️ 단순 돌파만으로 충족 인정 금지<br><b>③은 세 게이트 중 하나일 뿐 — ③ 단독으로 사이징 금지</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>7,785.76</b>(8/14) — 200일선(~6,934) 대비 <b>+12% 이상 상회</b>로 격차 확대, 3일 유지 조건은 수개월째 연속 충족. 3월말 저점 6,344 대비 +23%.<br><b>그러나 병목은 ③이 아니다:</b> 조건 ①(TGA)은 리빌드로 재후퇴, 지정학 선결조건은 호르무즈 재봉쇄로 다시 닫힘. <b>③만 충족된 상태.</b><br><b>⚠️ 지수와 내용의 괴리:</b> VIX 14.63·IG OAS 79bp로 표면 스트레스는 없으나 같은 시점에 유가 $93·10Y 4.63%·C&amp;I 연환산 마이너스·NFP -23K가 진행 중. <b>이 괴리 자체를 강세 근거로 쓰면 안 된다.</b></span>
+    <span class="th"><span class="th-k k-next">다음</span>① 주가만 홀로 강한 상태가 얼마나 지속되는지 ② 조건 ①·지정학이 열리는지 — <b>진입은 이쪽이 결정</b> ③ 200일선 레벨 재확인(분기 1회)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6월 "재이탈 점검" 우려는 200일선 레벨 오추정(7,400대로 오인)에서 비롯 → 7/2 정정·충족 확인 → 이후 유지</span>
+    <span class="tag tag-ok">🟢 7,785.76 · 200일선 +12% — ③ 충족 유지 · <b>병목은 ①(TGA 리빌드)과 지정학(호르무즈), ③ 단독 진입 근거 불가</b></span>
   </td>
   <td class="src"><a href="https://www.investing.com/indices/us-spx-500">Investing.com</a><br>S&amp;P 500 SPX</td>
 </tr>
@@ -209,10 +222,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/13 종가 · FRED VIXCLS</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>&lt;20 →</b> 리스크온 정상 ← <b>현재 해당</b> / <b>20~30 →</b> 주의 / <b>30~40 →</b> 스트레스 / <b>40+ →</b> 패닉 / <b>50+ →</b> 위기<br>
-    <b>8/13 14.63</b> — 20 하회 안정 지속, 5월(16.76) 대비 추가 하락하며 <b>올해 최저권</b>. SPX 사상 최고권과 정합. (판단 배지 주의→정상 정정: 값이 정상 구간인데 배지만 주의로 남아 있던 오류)<br>
-    <b>⚠️ 낮은 VIX의 역설적 해석:</b> 호르무즈 재봉쇄·유가 $93·Gold 급등·인상확률 74.6%가 동시에 진행 중인데 <b>주식 변동성만 14대</b>. 이건 안심 근거가 아니라 <b>주식시장이 에너지·금리 리스크를 아직 가격에 반영하지 않았다는 뜻</b>일 수 있다. MOVE(채권 변동성) 76대와 함께 <b>양대 변동성 지표가 모두 저점 = 충격 발생 시 되돌림 폭이 커지는 구조</b>.<br>
-    <span class="tag tag-ok">🟢 14.63(8/13) 올해 최저권 — 단 <b>지정학·에너지·금리 리스크 동시 진행 중의 저변동성</b>은 미반영 가능성으로 해석</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>&lt;20 →</b> 리스크온 정상 ← 해당 / <b>20~30 →</b> 주의 / <b>30~40 →</b> 스트레스 / <b>40+ →</b> 패닉 / <b>50+ →</b> 위기</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>14.63</b>(8/13) — 5월 16.76 대비 추가 하락하며 <b>올해 최저권</b>, SPX 사상 최고권과 정합.<br><b>⚠️ 역설적 해석:</b> 호르무즈 재봉쇄·유가 $93·Gold 급등·인상확률 74.6%가 동시 진행 중인데 주식 변동성만 14대다. <b>안심 근거가 아니라 주식시장이 에너지·금리 리스크를 아직 가격에 반영하지 않았다는 뜻</b>일 수 있다. MOVE 76과 함께 <b>양대 변동성 지표가 모두 저점 = 충격 시 되돌림 폭이 커지는 구조</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 20 상향 돌파 ② MOVE와 동반 상승하는지 ③ 유가·금리 리스크가 언제 반영되기 시작하는지</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>값은 정상 구간인데 판단 배지만 「주의」로 남아 있던 오류 8/15 정정</span>
+    <span class="tag tag-ok">🟢 14.63 올해 최저권 — 단 <b>지정학·에너지·금리 리스크 동시 진행 중의 저변동성은 미반영 가능성</b></span>
   </td>
   <td class="src"><a href="https://www.cboe.com/tradable-products/vix/">CBOE</a><br>VIX · FRED: VIXCLS</td>
 </tr>
@@ -223,13 +237,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">8/14 Comex 종가 $4,380.40(주간 상승) · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    ⚠️ <b>배지 해석:</b> Gold 급등 = 리스크오프 심화 신호(Gold 자체가 위험한 게 아님)<br>
-    <b>$4,000↓ →</b> ETF 청산 2차 파동 트리거 / <b>$4,000~4,500 →</b> 현재 구간 / <b>$4,500 상향 돌파 →</b> 리스크오프 재점화 / <b>$5,000+ →</b> 달러 패권 위기·지상전 우려 본격화<br>
-    <b>🔺 급반등 — 8월 초 바닥 후 V자(8/15 갱신):</b> 8/3 스팟 약 $4,038로 $4,000 지지 확인 → <b>8/10 선물 $4,400 개장(6월 초 이후 최고)</b> → <b>8/14 $4,380.40</b>. 6/30 $3,992 저점 대비 <b>+10%</b>. 6/30에 기록한 "$4,000 라인 붕괴·$5,000 재도전 거리상 낮음" 판독은 <b>1개월 만에 무효화</b>.<br>
-    <b>🔑 반등 트리거 — 금리인상 기대 후퇴:</b> 8/7 <b>부진한 7월 고용지표</b>로 9월 인상 기대가 큰 폭 되돌려진 것이 직접 원인(12월 인상확률 80.3% → 74.6%, row-fedwatch 연동). <b>즉 이번 상승은 지정학보다 금리 경로 재가격이 1차 동인</b>이며, 여기에 호르무즈 재봉쇄(row-brent)가 겹친 구도.<br>
-    <b>⚠️ 6/30 "Gold·BTC 동반 약세 = 달러 강세에 양쪽 눌림" 재해석의 유효성:</b> 8월에는 <b>Gold만 급등하고 BTC는 $62.5K로 약세</b> — 동반 관계가 다시 깨졌다. <b>안전자산만 오르고 위험자산은 못 오르는 구도 = 전형적 스태그플레이션 가격 반응</b>으로, 리스크온 전환 신호가 아니다.<br>
-    <b>다음 관찰:</b> ① $4,500 돌파 시 리스크오프 재점화 판정 ② $4,000 재이탈 시 ETF 청산 2차 파동 ③ <b>Gold↑ + BTC↓ 괴리 지속 여부 — 지속되면 위험자산 진입 시점이 아니라는 강한 방증</b><br>
-    <span class="tag tag-warn">🟡 $4,380.40(8/14·+10% vs 6/30 저점) — <b>8/7 약한 고용 → 인상 기대 후퇴가 1차 동인</b>, 호르무즈 재봉쇄가 2차 · <b>Gold↑·BTC↓ 괴리 = 스태그플레이션형 반응, 리스크온 아님</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$4,000↓ →</b> ETF 청산 2차 파동 / <b>$4,000~4,500 →</b> 현재 구간 / <b>$4,500 상향 →</b> 리스크오프 재점화 / <b>$5,000+ →</b> 달러 패권 위기<br>⚠️ 배지 해석: Gold 급등 = <b>리스크오프 심화 신호</b>(Gold 자체가 위험한 게 아님)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$4,380.40</b>(8/14) — 8/3 $4,038로 $4,000 지지 확인 후 8/10 $4,400 개장(6월 초 이후 최고). 6/30 저점 $3,992 대비 <b>+10%</b>.<br><b>1차 동인은 지정학이 아니라 금리 경로 재가격</b> — 8/7 부진한 고용지표로 9월 인상 기대가 되돌려진 것이 직접 트리거(12월 인상확률 80.3→74.6%). 호르무즈 재봉쇄는 2차.<br><b>🔑 BTC와 갈라섰다:</b> 같은 8월에 Gold +10%인데 BTC는 $62.5K 약세. <b>안전자산만 오르고 위험자산은 못 오르는 구도 = 전형적 스태그플레이션 반응</b>이지 리스크온 전환이 아니다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① $4,500 돌파 시 리스크오프 재점화 ② $4,000 재이탈 시 ETF 청산 2차 파동 ③ <b>Gold↑·BTC↓ 괴리 지속 여부 — 지속되면 위험자산 진입 시점이 아니라는 방증</b></span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6/30 "$4,000 붕괴·$5,000 거리 멂" → 8/15 +10% 반등으로 폐기. 당시 "Gold·BTC 동반 약세" 해석도 이번엔 디커플링으로 무효</span>
+    <span class="tag tag-warn">🟡 $4,380.40 — <b>8/7 약한 고용發 인상 기대 후퇴가 1차 동인</b> · <b>Gold↑·BTC↓ 괴리 = 스태그플레이션형 반응, 리스크온 아님</b></span>
   </td>
   <td class="src"><span class="src-label">COMEX </span> <a href="https://www.investing.com/commodities/gold">Investing.com</a><br>Gold Futures</td>
 </tr>
@@ -262,11 +274,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/13 DTS Closing $966.6B · fiscaldata.treasury.gov</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>TGA peak 확인 후 감소 전환 →</b> 진입 조건 ① 충족 / <b>$5,000억 이하 →</b> 드로다운 피크 근접<br>
-    <b>🔴 재드로다운 철회 — 리빌드 국면 재진입(8/15 갱신):</b> 6/26 피크 $895.6B → 7/16 저점 <b>$822.5B(-$73B)</b>까지 드로다운했으나, 이후 <b>8/13 $966.6B로 +$144B 리빌드</b>. <b>7/18에 기록한 "재드로다운 개시(잠정)" 판정은 철회하고 조건 ①을 다시 「미충족」으로 되돌린다.</b> 같은 기간 지준 $3,100B → $2,948B(<b>-$152B</b>)로 리빌드분이 거의 1:1 전달됨(row-reserves 참조) — RRP $0.25B 완충 부재 구조에서 6월에 시연된 메커니즘의 세 번째 재현.<br>
-    <b>🆕 임계 재정의 — 「일시 드로다운」과 「구조적 드로다운」 구분(신설):</b> 조건 ① 충족은 <b>피크 대비 감소 + 4주 이상 지속 + 지준 동반 회복</b> 3개 동시 성립을 최소 요건으로 한다. 7월 사례처럼 <b>3~4주짜리 드로다운 후 재리빌드</b>는 세수·지출 캘린더의 계절 변동이지 유동성 국면 전환이 아니다. 이 규칙 없이는 분기마다 조건 ①이 켜졌다 꺼졌다 반복된다.<br>
-    <b>🟢 부채한도 무제약 유지:</b> OBBBA로 한도 이미 인상, 다음 이슈 2027년. 8/4 QRA의 TGA 목표 잔고와 쿠폰 계획이 이번 리빌드의 종착점을 결정 — 목표 상향 확인 시 지준 추가 잠식 경로.<br>
-    <b>다음 관찰:</b> ① $966B에서 추가 상승 여부(목표 잔고 도달 시 리빌드 종료) ② 9월 분기납세(9/15) 전후 재흡수 ③ <b>지준 $2.9T 하향 이탈 동반 시 경보 격상</b> — 리빌드 자체보다 지준 레벨이 실질 임계.
+    <span class="th"><span class="th-k k-rule">임계</span><b>조건 ① 충족 = 피크 대비 감소 + 4주 이상 지속 + 지준 동반 회복 3개 동시</b>(재정의) / <b>$5,000억 이하 →</b> 드로다운 피크 근접<br>3~4주짜리 드로다운 후 재리빌드는 <b>세수·지출 캘린더의 계절 변동이지 국면 전환이 아니다</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$966.6B</b>(8/13) — 7/16 저점 $822.5B에서 <b>+$144B 리빌드</b>, 6/26 피크($895.6B)마저 상회. <b>조건 ①은 「재드로다운 개시」에서 「미충족」으로 되돌아감.</b> 같은 기간 지준 $3,100 → $2,948B(-$152B)로 리빌드분이 거의 1:1 전달 — RRP $0.25B 완충 부재 구조에서 <b>6·7·8월 3회 연속 시연된 확립된 메커니즘</b>.<br>부채한도는 OBBBA로 무제약(다음 이슈 2027년).</span>
+    <span class="th"><span class="th-k k-next">다음</span>① $966B에서 추가 상승 여부(목표 도달 시 리빌드 종료) ② <b>9/15 분기납세</b> 전후 재흡수 ③ 지준 $2.9T 이탈 동반 시 경보 격상 — 리빌드 자체보다 지준 레벨이 실질 임계</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 "사실상 충족" → 6월 역전으로 철회 → 7/18 "재드로다운 개시(잠정)" → 8/15 리빌드로 재후퇴·판정 철회</span>
+    <span class="tag tag-warn">🟡 $966.6B 리빌드 — <b>조건 ① 재후퇴</b> · TGA→지준 1:1 전달 3회 연속 시연 · 9/15 분기납세가 최대 시험대</span>
   </td>
   <td class="src"><a href="https://fiscal.treasury.gov/reports-statements/treasury-bulletin/">Treasury Fiscal</a><br>Daily TGA</td>
 </tr>
@@ -277,11 +289,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/14 · FRED RRPONTSYD 0.250B</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    RRP 거의 소진 상태 = 시스템 내 유동성 완충 없음(<b>8/14 $0.25B</b>)<br>
-    <b>🔴 비대칭성 3회 연속 시연(8/15 갱신):</b> RRP 완충 소멸 상태에서 TGA 리빌드 시 <b>지준이 직접 깎이는</b> 경로가 <b>6월·7월·8월 세 차례 반복 확인</b>됐다. 최근 사례: <b>TGA 7/16 $822.5B → 8/13 $966.6B(+$144B)</b> ↔ <b>지준 7/15 $3,100B → 8/12 $2,948B(-$152B)</b>. <b>이제 가설이 아니라 확립된 메커니즘으로 취급하며, TGA 방향만 보면 지준 방향을 예측할 수 있다.</b><br>
-    <b>⚠️ 듀레이션 소화 구조(갱신):</b> 은행 채널은 7월에 흡수를 재개했으나 <b>8/5 기준 대형은행 Non-MBS +$0.5B로 정지</b>(row-h8-bank). <b>RRP 완충 부재 + 은행 흡수 정지 + 외국계 축소</b>가 겹친 현재, 쿠폰 듀레이션은 <b>경매 Indirect(76.7%·운용사·외국 중앙은행)에 거의 전적으로 의존</b>한다. <b>유동성 환경 tail이 아니라 가격(금리) tail</b>이라는 6/6 판정은 유지되며, 실제로 10Y가 4.63%로 4.5% 임계를 넘어선 것이 그 발현.<br>
-    <b>다음 관찰:</b> ① RRP가 $0에서 의미 있게 올라오면 완충 재형성(현재 신호 없음) ② <b>9월 분기납세(9/15)</b> — TGA 흡수 + 분기말 수요 중첩으로 올해 최대 시험대 ③ SOFR-IORB 스프레드 축소 추이(row-sofr, 현재 -3bp)<br>
-    <span class="tag tag-warn">🟡 $0.25B(8/14) 완충 소멸 유지 — <b>TGA→지준 1:1 전달 메커니즘 3회 연속 시연으로 확립</b> · 은행 흡수 정지·외국계 축소로 <b>듀레이션 소화가 경매 Indirect에 집중 의존</b> · 9/15 분기납세가 최대 시험대</span>
+    <span class="th"><span class="th-k k-rule">임계</span>RRP ~0 = 시스템 내 유동성 완충 없음 → <b>TGA 변동이 지준에 직접 전달</b><br>RRP가 $0에서 의미 있게 올라오면 완충 재형성 신호</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$0.25B</b>(8/14) 완충 소멸 유지. <b>TGA→지준 1:1 전달이 6·7·8월 3회 연속 시연</b>돼 이제 가설이 아니라 확립된 메커니즘 — 최근 사례는 TGA +$144B ↔ 지준 -$152B.<br><b>듀레이션 소화 구조:</b> RRP 완충 부재 + <b>대형은행 Non-MBS +$0.5B로 흡수 정지</b> + 외국계 축소가 겹쳐, 쿠폰 듀레이션은 <b>경매 Indirect(76.7%·운용사·외국 중앙은행)에 거의 전적으로 의존</b>. 이는 <b>유동성 환경 tail이 아니라 가격(금리) tail</b>이며 10Y 4.63% 돌파가 그 발현.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① RRP가 $0에서 올라오는지(현재 신호 없음) ② <b>9/15 분기납세</b> — TGA 흡수 + 분기말 수요 중첩 ③ SOFR−IORB 축소 추이(현재 -3bp)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5/24 비대칭성 지적 → 6월 첫 시연 → 8/15 3회 연속으로 <b>메커니즘 확립 판정</b></span>
+    <span class="tag tag-warn">🟡 $0.25B 완충 소멸 — <b>TGA→지준 1:1 전달 3회 연속 시연으로 확립</b> · 듀레이션 소화가 경매 Indirect에 집중 의존</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/RRPONTSYD">FRED: RRPONTSYD</a><br>NY Fed 매일</td>
 </tr>
@@ -292,11 +304,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/12 · FRED WRBWFRBL</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>$3T 이하 →</b> 경계 ← <b>현재 해당(재이탈)</b> / <b>$2.5T 이하 →</b> 레포 경색 위험 / <b>$2T →</b> 2019년 레포 위기 수준<br>
-    <b>🔴 $3T 재이탈(8/15 갱신):</b> 6/24 저점 $2,954B → 7/15 $3,100B 회복 → <b>8/12 $2,948B(-$152B)</b>로 <b>1개월 만에 회복분 전액 반납</b>. 같은 기간 TGA가 $822.5B → $966.6B로 <b>+$144B 리빌드</b> — 감소분과 리빌드분이 거의 일치한다. <b>RRP $0.25B로 완충이 없는 구조에서 TGA 변동이 지준에 1:1 전달되는 비대칭성이 6월·7월·8월 세 차례 연속 시연됐다. 이제 이건 가설이 아니라 확립된 메커니즘으로 취급한다.</b><br>
-    <b>🆕 임계 재정의 — 레벨보다 「TGA 연동 진폭」이 실질 지표(신설):</b> $2.9~3.1T 사이 등락은 TGA 캘린더에 따른 정상 진폭이므로 단독으로 경보 근거가 되지 않는다. <b>경보 격상 요건은 ① $2.9T 하향 이탈 + ② SOFR ≥ IORB 역전 + ③ TGA 리빌드 종료 후에도 미회복, 3개 동시 성립</b>으로 명확화한다. 현재 ①에 근접($48B 여유)하나 ②③ 미충족.<br>
-    <b>현황 교차 확인:</b> SOFR-IORB 정상·STLFSI4 -0.771로 스트레스 전이 없음. H.8 8/5 은행 현금은 -$31.0B이나 <b>대형은행은 +$52.2B 반등</b>(감소는 외국계 -$82.6B 주도) — 국내 은행 유동성 압박은 아직 관찰되지 않음.<br>
-    <b>다음 관찰:</b> ① <b>$2.9T 하향 이탈 여부가 1차 판정점</b> ② 9월 분기납세(9/15) 전후 추가 흡수 — 이 구간이 올해 가장 위험한 조합 ③ TGA 리빌드 종료 후 지준이 $3T로 복귀하는지(복귀하면 계절 변동 확정, 미복귀 시 구조적 감소).
+    <span class="th"><span class="th-k k-rule">임계</span><b>$3T 이하 →</b> 경계 ← 해당 / <b>$2.5T →</b> 레포 경색 위험 / <b>$2T →</b> 2019년 위기 수준<br><b>경보 격상은 3개 동시:</b> ① $2.9T 이탈 ② SOFR ≥ IORB 역전 ③ TGA 리빌드 종료 후에도 미회복. <b>$2.9~3.1T 등락은 TGA 캘린더에 따른 정상 진폭</b>이라 단독 경보 근거가 아니다</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$2,948B</b>(8/12) — 7/15 $3,100B에서 <b>1개월 만에 회복분 전액 반납</b>, $3T 재이탈. 같은 기간 TGA +$144B와 거의 일치. <b>$2.9T까지 $48B 여유.</b><br>격상 3요건 중 ①에 근접하나 ②③ 미충족 — SOFR-IORB -3bp·STLFSI4 -0.771로 스트레스 전이 없음. H.8 8/5 은행 현금은 -$31.0B이나 <b>대형은행은 +$52.2B 반등</b>(감소는 외국계 주도)이라 국내 은행 압박은 미확인.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>$2.9T 이탈이 1차 판정점</b> ② <b>9/15 분기납세</b> — TGA 흡수 + 분기말 수요 중첩이 올해 최대 시험대 ③ 리빌드 종료 후 $3T 복귀 여부(복귀=계절, 미복귀=구조적 감소)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6월 저점 $2,954B → 7/18 "$3T 회복" → 8/15 재이탈. 3회 반복으로 TGA 연동 진폭임이 확인돼 임계를 레벨 단독에서 3요건으로 재정의</span>
+    <span class="tag tag-warn">🟡 $2,948B $3T 재이탈 — $2.9T까지 $48B · 격상 3요건 중 ①만 근접, ②③ 미충족 · 9/15가 최대 시험대</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/WRBWFRBL">FRED: WRBWFRBL</a><br>H.4.1 주간</td>
 </tr>
@@ -307,11 +319,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/12 · FRED WALCL</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>주간 감소 지속 →</b> QT 재개 신호 / <b>주간 증가 →</b> 유동성 공급 신호<br>
-    <b>8/12 $6,760B</b> — QT 종료(12/1) 후 안정화 구간이었던 $6,690~6,710B를 <b>상향 이탈해 완만한 증가 추세</b>. 5/6 $6,710B 대비 +$50B. QT 재개 신호 없음이 아니라 <b>대차대조표가 소폭 확대 방향</b>이라는 게 정확한 기술.<br>
-    <b>⚠️ 단 이건 조건 ①과 별개:</b> WALCL 증가는 Fed 자산 측 변화일 뿐이며, 실제 시중 유동성은 <b>TGA·지준</b>이 결정한다. 현재 <b>WALCL은 늘고 있는데 지준은 $2,948B로 $3T를 재이탈</b>(row-reserves) — TGA 리빌드가 그 차이를 흡수 중. <b>Fed 대차대조표만 보고 유동성 완화로 읽으면 오독.</b><br>
-    <b>다음 관찰:</b> 증가 추세 지속 시 QT 종료를 넘어 <b>완만한 재확대 국면</b> 진입 여부 / 지준과 방향이 계속 엇갈리는지<br>
-    <span class="tag tag-ok">🟢 $6,760B(8/12) — 안정화 밴드 상향 이탈·소폭 확대 · <b>단 지준은 동시에 $3T 재이탈 — WALCL 단독으로 유동성 판단 금지</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>주간 감소 지속 →</b> QT 재개 / <b>주간 증가 →</b> 유동성 공급<br><b>단독 판단 금지</b> — 실제 시중 유동성은 TGA·지준이 결정한다</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$6,760B</b>(8/12) — QT 종료 후 안정 밴드($6,690~6,710B)를 <b>상향 이탈해 완만한 증가</b>, 5/6 대비 +$50B. QT 재개 신호는 없음.<br><b>⚠️ 방향이 엇갈린다:</b> WALCL은 늘고 있는데 <b>지준은 $2,948B로 $3T 재이탈</b> — TGA 리빌드가 그 차이를 흡수 중. <b>Fed 대차대조표만 보고 유동성 완화로 읽으면 오독.</b></span>
+    <span class="th"><span class="th-k k-next">다음</span>① 증가 추세 지속 시 QT 종료를 넘어 <b>완만한 재확대 국면</b> 진입 여부 ② 지준과 계속 방향이 엇갈리는지</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 "안정화 구간 $6,690~6,710B 유지" → 8/15 상향 이탈 확인</span>
+    <span class="tag tag-ok">🟢 $6,760B 소폭 확대 — <b>단 지준은 동시에 $3T 재이탈, WALCL 단독 유동성 판단 금지</b></span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/WALCL">FRED: WALCL</a><br>H.4.1 주간</td>
 </tr>
@@ -322,11 +334,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/5 · FRED DPSACBW027SBOG</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>MMF AUM 증가 + 예금 감소 동시 →</b> 은행 이탈 심화 / <b>예금 증가 →</b> 리스크오프 해소<br>
-    <b>8/5 $19,496B</b>(FRED SA) — 7/29 $19,368B 대비 <b>+$128B 급반등</b>. 7월 하순 2주 연속 감소(-$104B)를 1주 만에 전액 회복하며 신고점. H.8 원본과 일치(row-ltd ② 참조).<br>
-    <b>⚠️ MMF와 동시 증가 = 이탈이 아니라 총량 팽창:</b> 같은 기간 MMF AUM도 $7.928T(+$18.3B)로 증가. <b>예금·MMF가 동시에 늘고 있으므로 「은행 → MMF 이탈」 구도는 현재 해당 없음.</b> 4월 시점(예금 $19,113B·MMF $7.626T)과 비교하면 <b>양쪽 모두 증가</b> — 현금성 자산 총량이 계속 쌓이는 중이며, 이는 <b>대기자금이 위험자산으로 나가지 않고 있다는 뜻</b>이기도 하다.<br>
-    <b>다음 관찰:</b> 예금 증가 + MMF 감소 동시 발생 시 비로소 대기자금 이동 신호 / 8/12 주간에 예금이 다시 빠지면 7월 패턴 재점검<br>
-    <span class="tag tag-ok">🟢 $19,496B(8/5·+$128B·신고점) — 7월 하순 감소분 전액 회복 · <b>MMF와 동시 증가 = 이탈 아님, 현금성 총량 누적 = 대기자금 미이동</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>MMF 증가 + 예금 감소 동시 →</b> 은행 이탈 심화 / <b>예금 증가 →</b> 리스크오프 해소<br><b>예금·MMF 동시 증가는 이탈이 아니라 현금성 총량 누적</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$19,496B</b>(8/5·+$128B) — 7월 하순 2주 연속 감소(-$104B)를 1주 만에 전액 회복하며 신고점. H.8 원본과 일치.<br>같은 기간 MMF도 +$18.3B로 증가 — <b>은행→MMF 이탈 구도는 현재 해당 없음</b>. 4월 대비 양쪽 모두 증가했고, 이는 <b>대기자금이 위험자산으로 나가지 않고 있다</b>는 뜻이기도 하다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>예금 증가 + MMF 감소 동시</b> 발생 시 비로소 대기자금 이동 신호 ② 8/12에 다시 빠지면 7월 패턴 재점검</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/29 2주 연속 감소로 "조달 기반 축소" 우려 → 8/15 전액 회복으로 세납 왜곡 판정</span>
+    <span class="tag tag-ok">🟢 $19,496B 신고점 — 7월 감소분 전액 회복 · <b>MMF와 동시 증가 = 이탈 아님, 대기자금 미이동</b></span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/DPSACBW027SBOG">FRED: DPSACBW027SBOG</a><br>H.8 주간</td>
 </tr>
@@ -337,15 +349,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $2,074.9B(Table2 Line5 SA) · H.8 원본 PDF 대조(8/14 릴리스)</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>임계:</b> $2,000B 하향 이탈 → SLR 여력 소진·은행 UST 매도 전환 / <b>$2,040B 상향 돌파 2주+ 지속 → 구조적 흡수 재개</b> ← <b>✅ 5주 연속 충족(7/8~8/5)</b> / <b>다음 임계 $2,100B</b>(현재 -$25.1B 거리)<br>
-    <b>🆕 임계 추가 — 주간 vs 월간 충돌 시 규칙:</b> 주간 방향과 Table 1 월간 연환산 방향이 <b>반대일 때는 어느 쪽으로도 격상하지 않는다</b>(신설). 이번 회차가 정확히 그 사례 — 주간 -$7.9B vs Jul 연환산 +14.6%.<br>
-    <b>🟡 4주 증가 후 첫 감소 — 단 판정 불가:</b> 주간 7/15 $2,069.1 → 7/22 $2,068.0 → 7/29 $2,082.8 → <b>8/5 $2,074.9B(-$7.9B)</b>. 4주 연속 증가가 끊겼으나 <b>격상 3요건 (a) 주간 2회 연속이 미충족(1주)</b>이므로 본 파일 규율상 "흡수 중단"으로 격상 불가. 3월 프론트런 피크($2,019.4) 대비 여전히 +$55.5B. (7/15·7/22·7/29 각각 $2,068.8→$2,069.1 / $2,067.6→$2,068.0 / $2,082.4→$2,082.8로 소폭 상향 개정)<br>
-    <b>🟢 반대 신호 — Jul 월간 연환산이 급가속:</b> Line 3(Tsy&amp;agency) 월간 연환산 <b>Apr -2.4% → May 1.0% → Jun 5.1% → Jul 14.6%</b>로 <b>7월이 올해 최고</b>. Line 2(증권 전체)도 Jun 3.4% → Jul 10.6%. <b>즉 7월 한 달 전체로 보면 국채 흡수가 가장 강했던 달이고, 8/5 주간 감소는 그 흐름의 첫 되돌림에 불과할 수 있다.</b> 지난 회차의 "재원 소진으로 8월 중 흡수 중단 가능성" 경고는 <b>월간 데이터로 지지받지 못했으므로 하향 조정</b>.<br>
-    <b>🔑 주체 분해(Table 6/8/10) — 감소는 대형은행이 아님:</b> 대형은행 $1,684.3 → <b>$1,684.8B(+$0.5B·사실상 정지)</b> / 소형 $246.5 → $242.6B(<b>-$3.9B</b>) / 외국계 $152.0 → $147.5B(<b>-$4.5B</b>). <b>주간 감소분 $7.9B는 전부 소형은행·외국계에서 나왔고 eSLR 대상 GSIB는 매도하지 않았다.</b> "규제 완화 → 대상 기관 흡수" 인과는 유지되나, 대형은행도 증가는 멈춘 상태.<br>
-    <b>⚠️ 이번엔 교체도 아님:</b> Line 3 $4,837.9 → <b>$4,827.2B(-$10.7B)</b>, MBS(Line 4) $2,755.2 → <b>$2,752.3B(-$2.9B)</b>. 지난 회차의 "MBS 팔아 UST 교체" 구도와 달리 <b>이번엔 국채·MBS가 동반 감소</b> — 증권 북 전체를 소폭 줄인 주간. 단 1주치.<br>
-    <b>⚠️ 남은 유보:</b> Non-MBS는 <b>bill/coupon 구분 불가</b> — Jul 연환산 14.6% 급가속이 8/4 QRA 전 bill 선매수일 가능성 배제 못 함. 8월 중순~9월 H.8 반응으로만 판별 가능.<br>
-    <b>다음 관찰:</b> ① 8/12 주간도 감소하면 (a) 충족 → 그때 Aug 월간 방향과 함께 재판정 ② 대형은행이 감소로 돌아서는지(현재 +$0.5B로 정지) ③ $2,100B 돌파 여부 ④ 외국계 Non-MBS가 $145B를 이탈하는지(별도 채널·row-h8-foreign 참조)<br>
-    <span class="tag tag-warn">🟡 $2,074.9B(8/5·-$7.9B·4주 만의 첫 감소) — 단 <b>Jul 월간 연환산 14.6%로 오히려 급가속</b>, 주간·월간 방향 충돌로 <b>판정 불가</b> · 감소분은 전량 소형·외국계, <b>대형 GSIB는 매도 안 함(+$0.5B)</b> · $2,040B 5주 연속 통과 유지</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$2,040B 2주+ 유지 →</b> 구조적 흡수 / <b>$2,100B →</b> 듀레이션 복귀 논의 / <b>$2,000B 이탈 →</b> SLR 여력 소진 · <b>주간·월간 방향 충돌 시 어느 쪽으로도 격상 금지</b>(신설)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$2,074.9B</b>(8/5·-$7.9B) — 4주 연속 증가가 끊겼으나 <b>Jul 월간 연환산 Line 3은 14.6%로 올해 최고</b>(Jun 5.1%). 주간·월간이 정면 충돌해 <b>판정 불가</b>. 감소분은 전량 소형(-$3.9B)·외국계(-$4.5B)이고 <b>eSLR 대상 대형은행은 +$0.5B로 정지(매도 아님)</b>. Line 3(-$10.7B)·MBS(-$2.9B) 동반 감소로 이번엔 교체도 아님. $2,040B는 5주 연속 통과.<br><b>유보:</b> Non-MBS는 bill/coupon 구분 불가 — Jul 급가속이 QRA 전 bill 선매수일 가능성 배제 못 함.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 8/12도 감소 시 2주 요건 충족 → Aug 월간과 함께 재판정 ② 대형은행이 감소 전환하는지 ③ $2,100B 돌파</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/24 "은행 이탈" 락인결론 폐기 → 8/7 "MBS 매도로 교체" → 8/15 주간·월간 충돌로 판정 보류</span>
+    <span class="tag tag-warn">🟡 $2,074.9B — 주간↓·월간↑ 충돌로 판정 불가 · 대형 GSIB 매도 안 함, <b>「흡수 지속」이 아니라 「흡수 정지」</b></span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8</a><br>매주 금 4:15PM ET</td>
 </tr>
@@ -356,15 +364,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $147.5B(Table10 Line5 SA) · H.8 원본 PDF 대조(8/14 릴리스)</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>임계:</b> $145B 하향 이탈 → 리패트리에이션 가속 신호로 전환 ← <b>현재 $2.5B 거리, 사상 최근접</b> / $148~155B 박스권 유지 → 가속 내러티브 미지지 / $160B 상향 이탈 → 외국계 순매집 확대<br>
-    <b>🆕 임계 추가 — 단일 라인이 아니라 "미국 내 익스포저 축소" 3종 세트로 판정(신설):</b> Non-MBS $145B 이탈 + Line 3(Tsy&amp;agency) 3주+ 연속 감소 + 총자산 감소가 <b>동시</b> 확인될 때만 리패트리에이션 격상. Non-MBS 단독 이탈은 여전히 관찰 단계. ← <b>현재 3개 중 2개 충족</b><br>
-    <b>구조:</b> TIC 공식기관(중앙은행·SWF)과 H.8 Table 10(외국계 상업은행 지점)은 별도 채널 — TIC가 매도를 보여도 H.8이 반대 방향이면 리패트리에이션 가속 단정 불가. 두 채널 교차 필수.<br>
-    <b>🔴 현황(8/5) — $150B 재이탈, 이번엔 되돌림 없음:</b> 주간 7/15 $153.5 → 7/22 $149.7 → 7/29 $152.0 → <b>8/5 $147.5B(-$4.5B)</b>. 7/22에도 $150B를 이탈했다 1주 만에 복귀했으나 <b>이번엔 그때보다 더 낮은 레벨</b>. 7/15 대비 3주 누적 <b>-$6.0B</b>. <b>$145B 하단까지 $2.5B — 본 파일 운용 이래 가장 가까운 거리.</b><br>
-    <b>🔴 Tsy&amp;agency 전체(Line 3) 4주 연속 감소:</b> $214.5 → $210.0 → $208.6 → <b>$206.4B</b>. 지난 회차에 "3주째 이어지면 하단 이탈 전조로 격상 검토"라고 적어둔 조건이 <b>4주로 충족</b>. MBS(Line 4)는 $56.6 → $58.9B(+$2.3B)로 반등했으므로 <b>감소는 국채(Non-MBS) 쪽이 주도</b> — 국내 대형은행의 "MBS 팔고 UST 사기"와 정확히 반대 방향.<br>
-    <b>🔴 대차대조표 자체가 축소 중 — 이번 회차 신규 발견:</b> 외국계 Cash assets $1,231.8 → <b>$1,149.2B(-$82.6B)</b>, 총자산 $3,572.7 → <b>$3,478.6B(-$94.1B)</b>, Net due to related foreign offices $873.5 → <b>$803.8B(-$69.7B)</b>. <b>본지점 순채무가 줄었다는 건 미국 지점이 본국으로 자금을 되돌려보냈다는 직접 증거에 가깝다.</b> 단 이 계정은 주간 진폭이 크므로 2주 연속 확인 필요.<br>
-    <b>⚠️ 국내 vs 외국계 대비 — 방향이 정반대로 갈림:</b> 국내 대형은행 Non-MBS는 +$0.5B로 유지, 외국계는 -$4.5B. <b>eSLR 완화 수혜가 국내 GSIB에만 국한된다는 규제 구분과 정합</b> — 두 채널 합산 판독 금지 근거 유지.<br>
-    <b>다음 관찰:</b> ① <b>$145B 이탈 여부가 최우선</b> — 이탈 + Line 3 5주 연속 감소 동시 시 <b>"리패트리에이션 가속" 경보로 격상</b>(5개월간 유보해온 판정) ② Net due to related foreign offices 2주 연속 감소 여부 ③ <b>TIC 6월 데이터(8/17 발표)</b>가 이 방향을 확인하는지 — 두 채널이 처음으로 같은 방향을 가리킬 가능성. JGB 10Y 2.80% 고점권 지속.<br>
-    <span class="tag tag-warn">🟡 $147.5B(8/5·-$4.5B·$150B 재이탈) — <b>$145B 하단까지 $2.5B, 사상 최근접</b> · Line 3 <b>4주 연속 감소</b> + Cash -$82.6B·총자산 -$94.1B·본지점 순채무 -$69.7B = <b>미국 내 익스포저 축소 국면</b> · 격상 3종 중 2개 충족, $145B 이탈이 판정점</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$145B 이탈 →</b> 리패트리에이션 가속 / <b>$148~155B →</b> 박스권 / <b>$160B 상향 →</b> 순매집 확대<br><b>격상은 3종 동시:</b> ① $145B 이탈 ② Line 3 3주+ 연속 감소 ③ 총자산 감소 ← <b>현재 2/3</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$147.5B</b>(8/5·-$4.5B) — $150B 재이탈, <b>$145B까지 $2.5B로 사상 최근접</b>. Tsy&amp;agency(Line 3) $214.5 → $206.4B로 <b>4주 연속 감소</b>. 여기에 Cash -$82.6B·총자산 -$94.1B·본지점 순채무 -$69.7B가 동반 — <b>미국 지점이 본국으로 자금을 되돌리는 그림과 정합하는 지표가 5개 동시</b>.<br><b>주의:</b> Table 10은 외국계 <b>상업은행 지점</b>이고 리패트리에이션 주 행위자는 생보·연기금이라 채널 불일치. 경매 Indirect 76.7%는 오히려 견조.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>$145B 이탈 여부가 최우선</b> — 이탈+Line 3 5주 연속이면 5개월 유보해온 판정 격상 ② 본지점 순채무 2주 연속 감소 ③ <b>TIC 6월(8/17)</b>이 같은 방향인지</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>3월~7월 "가속 반증" 유지 → 7/22 일시 이탈 후 복귀(1주 규율 적중) → 8/15 재이탈·격상 검토 단계</span>
+    <span class="tag tag-warn">🟡 $147.5B — <b>$145B까지 $2.5B</b> · Line 3 4주 연속↓ + 대차대조표 5개 지표 동시 축소 · 격상 2/3, TIC 6월이 분기점</span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8 Table 10</a><br>매주 금</td>
 </tr>
@@ -375,15 +379,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $2,016.1B(Table2 Line26 SA) · H.8 원본 PDF 대조(8/14 릴리스)</span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>임계:</b> $2,000B 유지 + C&amp;I 동반 상승 → 대출 팽창(환경 긍정) / <b>$2,000B 유지 + C&amp;I 둔화 동시 → SLR 여력이 실수요에서 섀도우뱅킹으로 이동 = 질적 변화 경보</b> ← <b>🔴 8/5 조건 충족·경보 발동</b> / $2,000B 하향 이탈 2주 연속 → 레버리지 사이클 피크아웃 판정 / $1,950B 이탈 → 축소 확정 / <b>$2,050B 돌파 → 재가속 확정</b>(상단 신설)<br>
-    <b>구조:</b> YoY +20%대(2025/7 $1,674.7B → 2026/8 $2,016.1B, <b>+$341.4B</b>). ① 1차: NDFI 팽창 = 신용창출 활발(환경 긍정). ② 2차: 섀도우뱅킹 레버리지 누적 = 장기 시스템 tail. 동전 양면.<br>
-    <b>🔴 피크아웃 후보 폐기 — 사상 최고 경신:</b> 주간 7/15 $2,011.5 → 7/22 $2,005.0 → 7/29 $2,000.0 → <b>8/5 $2,016.1B(+$16.1B)</b>. 지난 회차에 "7/15 $2,014.0B가 사이클 피크 후보"로 적어뒀으나 <b>1주 만에 그 레벨을 넘어서며 피크아웃 가설이 무너졌다.</b> 격상 3요건을 지키느라 "피크아웃 확정"으로 올리지 않았던 판단이 결과적으로 옳았던 사례 — 2주 연속 감소도 3주째엔 뒤집힐 수 있다는 실증. (7/15·7/22·7/29 각각 $2,014.0→$2,011.5 / $2,007.4→$2,005.0 / $2,002.5→$2,000.0 하향 개정)<br>
-    <b>🔑 주체 분해 — 대형은행이 단독 주도:</b> 대형은행 $1,285.7 → <b>$1,300.6B(+$14.9B·증가분의 93%)</b> / 소형 $192.3 → $193.3B(+$1.0B) / 외국계 $522.0 → $522.2B(+$0.2B). <b>eSLR 대상 GSIB가 국채(Non-MBS +$0.5B)는 멈추고 비은행 금융기관 대출은 +$14.9B 늘렸다</b> — 같은 주 같은 주체가 자본 여력의 행선지를 바꾼 직접 증거.<br>
-    <b>🔴 경보 발동 근거 — C&amp;I 월간 마이너스와 동시 발생:</b> Jul 월간 연환산이 처음 공개되며 <b>C&amp;I -1.1%(Jun 4.0%에서 마이너스 전환)</b>인 반면 <b>Line 25(All other loans) Jul +9.6%로 여전히 높은 플러스</b>. 본 행의 임계 정의 "$2,000B 유지 + C&amp;I 둔화 동시 = 질적 변화 경보"에 정확히 해당. 지난 회차엔 주간 기준 C&amp;I↑·NDFI↓로 조합이 해제됐으나, <b>월간 데이터가 나오면서 원래의 경보 조합이 재성립</b>했다.<br>
-    <b>⚖️ 격상 3요건 판정 — 3/3 충족(경보 격상):</b> (a) 방향성 — 2주 연속은 아니나 <b>사상 최고 경신으로 감소 추세 자체가 무효화</b> ✅ / (b) 월간 연환산 방향 일치 — Line 25 Jul +9.6% 플러스 유지 ✅ / (c) 주체 집중 — <b>대형은행이 증가분의 93%</b> ✅. <b>「실수요 감속 + 섀도우뱅킹 재가속 + 대형은행 주도」 3박자가 모두 확인되므로 관찰 → 경보로 격상.</b><br>
-    <b>🆕 AI 프라이빗크레딧 채널 가설 — 하향 유지:</b> NDFI 재가속이 AI 프라이빗크레딧 때문인지는 이 데이터로 여전히 판별 불가(헤지펀드·PE·보험·증권사 혼재). <b>AI capex 직접 게이지는 하이퍼스케일러 IG본드 발행량·스프레드로 일원화</b> 유지.<br>
-    <b>다음 관찰:</b> ① $2,050B 돌파 시 재가속 확정 ② Aug 월간 연환산이 두 자릿수로 복귀하는지 ③ <b>C&amp;I Aug 연환산이 마이너스를 유지하면 경보 유지, 플러스 복귀 시 경보 해제 검토</b> ④ 대형은행 집중도가 계속 90%+인지 — 지속 시 SLR 여력의 행선지가 구조적으로 비은행으로 고정된 것으로 판단.<br>
-    <span class="tag tag-alert">🔴 $2,016.1B(8/5·<b>+$16.1B·사상 최고 경신</b>) — 피크아웃 가설 폐기 · 증가분 93%가 대형은행 단독 · <b>Jul C&amp;I 연환산 -1.1%와 동시 발생 = "실수요→섀도우뱅킹 행선지 이동" 경보 조건 충족, 관찰→경보 격상</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>$2,000B + C&amp;I 동반 상승 →</b> 대출 팽창(긍정) / <b>$2,000B + C&amp;I 둔화 →</b> <b>실수요→섀도우뱅킹 이동 = 질적 변화 경보</b> ← 충족 / <b>$2,050B →</b> 재가속 확정 / <b>$2,000B 이탈 2주 →</b> 피크아웃</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$2,016.1B</b>(8/5·+$16.1B·<b>사상 최고</b>) — 7/15 피크아웃 후보가 1주 만에 무너짐. <b>증가분의 93%가 대형은행 단독</b>(+$14.9B)인데 <b>같은 주 같은 주체의 국채는 +$0.5B로 정지</b>. 자본 여력의 행선지가 바뀐 직접 증거.<br><b>경보 근거:</b> Jul 월간 <b>C&amp;I -1.1%</b> vs <b>Line 25 +9.6%</b> — 실물은 꺾이는데 비은행 대출만 두 자릿수 근처. 격상 3요건 3/3 충족.<br>YoY +20%대(2025/7 $1,674.7B → +$341.4B).</span>
+    <span class="th"><span class="th-k k-next">다음</span>① $2,050B 돌파 시 재가속 확정 ② <b>C&amp;I Aug가 2개월 연속 마이너스면 구조 확정, 플러스 복귀 시 경보 해제 검토</b> ③ 대형은행 집중도 90%+ 지속 여부</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/29 2주 감소로 "피크아웃 후보" → 규율대로 격상 보류 → 8/15 사상최고로 가설 폐기·경보 격상</span>
+    <span class="tag tag-alert">🔴 $2,016.1B 사상 최고 · 증가분 93% 대형은행 · <b>C&amp;I 월간 마이너스와 동시 = 행선지 이동 경보</b></span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8 Line 26</a><br>매주 금</td>
 </tr>
@@ -394,13 +394,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $1,288.3B(Table2 Line27 SA) · H.8 원본 PDF 대조(8/14 릴리스)</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>임계:</b> 2주 연속 주간 +$20B 이상 → 레버리지 빌드업 가속 / <b>2주 연속 감소 → 리스크온 행선지 후퇴</b>(1주 감소는 노이즈 처리) / $1,300B 돌파 시 신규 국면 / <b>$1,270B 하향 이탈 → 레버리지 되돌림</b><br>
-    <b>구조:</b> grab-bag(각주18) — 마진론·주정부채·외국은행 대출·농업대출·리스채권 혼재. <b>단독 해석 금지.</b> 대형은행 집중(Table 6) + SPX 고점 겹칠 때만 레버리지 개연성 프록시로 사용.<br>
-    <b>현황(8/5) — 신고점이나 4주째 좁은 밴드:</b> 주간 7/15 $1,286.5 → 7/22 $1,283.3 → 7/29 $1,284.7 → <b>8/5 $1,288.3B(+$3.6B)</b>. 레벨은 신고점이나 <b>4주간 ±$5B 내 횡보</b> — 증가·감소 어느 쪽도 2주 연속 조건 미충족이므로 <b>판정 없음(관찰 유지)</b>가 3주 연속 이어짐. $1,300B까지 $11.7B.<br>
-    <b>주체 분해(Table 6/8/10):</b> 대형은행 $836.5 → <b>$836.7B(+$0.2B·사실상 정지)</b> · 소형 $310.8 → $312.0B(+$1.2B) · <b>외국계 $137.4 → $139.5B(+$2.1B)</b>. <b>증가분의 대부분이 외국계·소형에서 나왔고 대형은행은 3주 연속 사실상 무증</b>(7/15 $836.5 → 8/5 $836.7). 마진·증권담보 성격이라면 <b>대형은행發 레버리지 확대는 7/15에 이미 멈춘 상태</b>.<br>
-    <b>⚠️ 교차 신호 갱신 — 지난 회차 경고는 완화:</b> 지난 회차엔 "대형은행 현금 -$81.1B 급감 국면에서 기타대출만 횡보 = 신규 마진 여신 공급 제약"으로 읽었으나, 8/5에 <b>대형은행 Cash가 $1,323.8 → $1,376.0B(+$52.2B)로 반등</b>했음에도 기타대출은 여전히 +$0.2B에 그쳤다. <b>즉 제약은 재원(현금) 문제가 아니라 수요·의사 문제일 개연성이 높아짐</b> — $1,300B 돌파 시나리오 확률은 계속 낮게 유지.<br>
-    <b>다음 관찰:</b> $1,300B 돌파 + SPX 고점 동반 → 레버리지 재점화 격상 / $1,270B 이탈 2주 연속 → 후퇴 판정 / <b>대형은행 기여분이 4주째 0 근처면 "레버리지 사이클 정체" 판정으로 격상 검토</b>(신설) / 단독 판단 금지, Line 26(NDFI)·C&amp;I와 3분할 방향 비교로만 사용.<br>
-    <span class="tag tag-warn">🟡 $1,288.3B(8/5·+$3.6B·4주 횡보) — 레벨 신고점이나 <b>대형은행 기여 3주 연속 0 근처</b> · 현금 반등에도 기타대출 무증 = 재원이 아니라 수요 제약 시사 · 상·하 어느 쪽도 2주 조건 미충족 → 판정 보류</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>2주 연속 +$20B →</b> 레버리지 빌드업 / <b>2주 연속 감소 →</b> 리스크온 후퇴(1주는 노이즈) / <b>$1,300B →</b> 신규 국면 / <b>$1,270B 이탈 →</b> 되돌림 / <b>대형은행 기여 4주째 0 근처 →</b> 레버리지 정체 판정(신설)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$1,288.3B</b>(8/5·+$3.6B) — 레벨은 신고점이나 <b>4주간 ±$5B 밴드 횡보</b>로 증감 어느 쪽도 2주 요건 미충족, <b>판정 없음</b>이 3주 연속. 증가분은 외국계(+$2.1B)·소형(+$1.2B)에서 나왔고 <b>대형은행은 3주 연속 사실상 무증</b>($836.5 → $836.7B).<br><b>구조:</b> 마진론·주정부채·외국은행 대출 혼재한 grab-bag(각주18) — <b>단독 해석 금지</b>, 대형은행 집중 + SPX 고점 겹칠 때만 레버리지 프록시.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① $1,300B 돌파 + SPX 고점 동반 → 레버리지 재점화 ② 대형은행 기여가 4주째 0 근처면 정체 판정 격상 ③ NDFI·C&amp;I와 3분할 방향 비교로만 사용</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/29 "현금 급감 국면의 횡보 = 공급 제약" → 8/15 현금 반등(+$52.2B)에도 무증이라 <b>재원이 아니라 수요 제약</b>으로 해석 수정</span>
+    <span class="tag tag-warn">🟡 $1,288.3B 4주 횡보 — <b>대형은행 기여 3주 연속 0 근처</b> · 현금 반등에도 무증 = 수요 제약</span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8 Line 27</a><br>매주 금</td>
 </tr>
@@ -428,12 +426,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">8/12 주간 $7.928T(+$18.26B WoW) · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>MMF 감소 + IG/HY 스프레드 축소 + 위험자산 상승 동시 →</b> 대기자금 위험자산 이동 확인<br>
-    <b>MMF 급증 →</b> 리스크오프 심화 / <b>MMF 감소 지속 →</b> 대기자금 시장 진입 신호<br>
-    <b>🔴 7/15 "첫 감소 전환" 판독 폐기(8/15 갱신):</b> 7/15 $7.89T(-$59.9B)를 "대기자금 이동 시작 가능성"으로 적어뒀으나, 이후 <b>8/5 $7.909T(+$55.4B) → 8/12 $7.928T(+$18.3B)로 2주 연속 재증가하며 사상 최고 경신</b>. <b>7월 감소는 세납·결제 노이즈였고 대기자금 이동 시나리오는 성립하지 않았다.</b> 본 파일의 "1주 방향 전환은 임계로 쓰지 않는다" 규율이 또 한 번 옳았던 사례.<br>
-    <b>⚠️ 은행 예금과 동시 증가 = 현금 총량 누적:</b> 같은 기간 은행 예금도 +$128B(row-deposits). <b>MMF와 예금이 함께 늘고 있으므로 자금은 은행↔MMF 사이를 이동하는 게 아니라 위험자산 밖에 계속 머무는 중.</b> BTC 약세·ETF 순유출과 정합.<br>
-    <b>다음 관찰:</b> <b>2주 연속 감소 + $7.8T 접근이 최소 요건</b>(1주 감소는 노이즈로 처리) / RRP ~$0 구조에서 MMF 증가분은 T-bill로만 소화 — <b>bill 소화에는 우호적이나 쿠폰(듀레이션) 소화와는 무관</b>하다는 점 유지.<br>
-    <span class="tag tag-warn">🟡 $7.928T(8/12·+$18.3B·2주 연속↑·사상 최고) — <b>7월 "첫 감소 전환" 판독 폐기</b> · 예금과 동시 증가 = 대기자금이 위험자산 밖에 계속 체류</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>MMF 감소 + 스프레드 축소 + 위험자산 상승 동시 →</b> 대기자금 이동 확인 / <b>급증 →</b> 리스크오프 / <b>2주 연속 감소 + $7.8T 접근이 최소 요건</b>(1주는 노이즈)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$7.928T</b>(8/12·+$18.3B·2주 연속↑·사상 최고). 7/15 -$59.9B를 "대기자금 이동 시작"으로 봤으나 <b>2주 연속 재증가로 시나리오 미성립</b>.<br><b>은행 예금(+$128B)과 동시 증가</b>이므로 자금은 은행↔MMF 사이를 오가는 게 아니라 <b>위험자산 밖에 계속 머무는 중</b>. BTC 약세·ETF 순유출과 정합.<br>RRP ~$0 구조에서 MMF 증가분은 T-bill로만 소화 — <b>bill에는 우호적이나 쿠폰(듀레이션) 소화와는 무관</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 2주 연속 감소 + $7.8T 접근 ② 예금과 방향이 갈리는지(MMF↓ + 예금↑ = 진짜 이동) ③ bill 소화 부담과 연계 관찰</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/15 "첫 감소 전환" 판독 → 8/15 2주 연속 재증가로 폐기. 1주 방향 전환을 임계로 쓰지 않는 규율이 또 적중</span>
+    <span class="tag tag-warn">🟡 $7.928T 사상 최고 — <b>7월 "첫 감소 전환" 판독 폐기</b> · 예금과 동시 증가 = 대기자금이 위험자산 밖 체류</span>
   </td>
   <td class="src"><a href="https://www.ici.org/research/stats/mmf">ICI.org</a><br>매주 목요일</td>
 </tr>
@@ -444,12 +441,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">10Y 8/12 경매 · fiscaldata 확인</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>Indirect Bidder &gt; 65% →</b> 외부 수요 건전 ← <b>현재 76.7% 해당</b> / <b>&lt; 55% →</b> 수요 약화 경보<br>
-    <b>🟢 최신 실수치(8/15 갱신): 8/12 10Y 경매 Indirect Bidder 76.7%</b>(fiscaldata 자동확인). 4/8 리오프닝 당시 64.14%(30Y) 대비 <b>+12.6%p 대폭 개선</b>이며 <b>65% 건전 기준을 크게 상회</b>. 4/15 기준으로 적어둔 "64.14% = 경계선 상단" 서술은 4개월 지난 값이라 폐기.<br>
-    <b>🔑 이 수치의 구조적 의미 — 이번 국면에서 가장 중요한 단일 지표일 수 있음:</b> H.8에서 <b>은행 채널의 국채 흡수가 정지</b>(대형은행 Non-MBS +$0.5B)하고 <b>외국계 지점은 4주 연속 축소</b>(row-h8-foreign)하는 상황에서, <b>경매 Indirect가 76.7%로 견조하다는 건 자산운용사·외국 중앙은행이 은행을 대신해 한계 듀레이션 매수자 역할을 하고 있다는 직접 증거</b>다. 8월 QRA 쿠폰 증발 흡수 시나리오는 이 채널에 의존한다.<br>
-    <b>⚠️ 단 채널 간 상충 주의:</b> H.8 Table 10(외국계 <b>상업은행 지점</b>)과 경매 Indirect(외국 <b>중앙은행·운용사</b>)는 별개 주체다. <b>지점은 줄이는데 경매 Indirect는 높은 현재 조합은 모순이 아니라 주체 구성이 다르다는 뜻</b> — 합산 판독 금지.<br>
-    <b>다음 관찰:</b> ① 30Y·20Y 경매 Indirect 비율(듀레이션 수요의 진짜 시험대) ② 76.7%가 유지되는지 — <b>65% 하회 전환 시 은행·외국계·운용사 3채널이 동시에 후퇴하는 것이므로 경보 격상</b> ③ TIC 6월(8/17)과 교차 확인.<br>
-    <span class="tag tag-ok">🟢 76.7%(8/12 10Y) — 65% 기준 크게 상회, 4월 64.14% 대비 대폭 개선 · <b>은행 흡수 정지·외국계 축소 국면에서 운용사·외국 중앙은행이 한계 매수자 역할 대체 중</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>&gt;65% →</b> 외부 수요 건전 ← 해당 / <b>&lt;55% →</b> 수요 약화 경보<br>Indirect = 브로커 통해 입찰하는 최종 매수자(운용사·외국 중앙은행) · <b>SLR과 무관하게 독립 작동</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>76.7%</b>(8/12 10Y) — 4/8 리오프닝 64.14%(30Y) 대비 <b>+12.6%p 대폭 개선</b>, 65% 기준 크게 상회.<br><b>🔑 이번 국면에서 가장 중요한 단일 지표일 수 있다:</b> H.8에서 <b>은행 흡수는 정지</b>(대형 +$0.5B)하고 <b>외국계 지점은 4주 연속 축소</b>하는데, 경매 Indirect가 견조하다는 건 <b>운용사·외국 중앙은행이 은행을 대신해 한계 듀레이션 매수자 역할</b>을 하고 있다는 직접 증거. QRA 쿠폰 흡수는 이 채널에 의존.<br>⚠️ H.8 Table 10(외국계 <b>상업은행 지점</b>)과 경매 Indirect(외국 <b>중앙은행·운용사</b>)는 별개 주체 — <b>합산 판독 금지</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>30Y·20Y 경매 Indirect</b>가 듀레이션 수요의 진짜 시험대 ② <b>65% 하회 시 은행·외국계·운용사 3채널 동시 후퇴로 경보 격상</b> ③ TIC 6월(8/17) 교차 확인</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4월 64.14%로 "경계선 상단" → 8/15 76.7%로 개선 확인</span>
+    <span class="tag tag-ok">🟢 76.7%(10Y) — 65% 크게 상회 · <b>은행 정지·외국계 축소 국면에서 운용사·외국 중앙은행이 한계 매수자 역할 대체</b></span>
   </td>
   <td class="src"><a href="https://www.treasurydirect.gov/auctions/auction-query/">TreasuryDirect</a><br><small>경매 결과</small></td>
   
@@ -462,13 +458,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/11 · CFTC TFF Lev Funds</span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>구조적 특성:</b> 헤지펀드(Leveraged Funds)는 Basis Trade(현물 매수·선물 공매도) 구조상 국채 선물에서 <em>구조적 Net Short</em>을 유지 — 이는 정상. 문제는 <b>Short 규모 급팽창</b> 또는 <b>급격한 포지션 전환</b>이 발생할 때 청산 리스크.<br>
-    <b>🔴 사상 최대권 경신(8/15 갱신): 8/11 Net Short 2,123K계약</b>. 5/19 1,952K → 6/9 1,913K → <b>8/11 2,123K</b>로 <b>2개월간 +210K(+11%) 증가</b>. 2023~2024 피크 당시 명목가치 ~$8,000억(OFR) 기준을 넘어서는 규모로 <b>베이시스 트레이드가 재구축을 넘어 확대 국면</b>.<br>
-    <b>⚠️ 왜 지금 위험한가 — 조합이 나쁨:</b> ① 포지션 사상 최대권 ② <b>MOVE 76대·VIX 14대로 변동성이 저점</b>(레버리지가 싸게 조달되는 환경) ③ <b>은행 채널 국채 흡수 정지</b>로 현물 측 완충 부족 ④ 호르무즈 재봉쇄로 지정학 충격 tail 상존. <b>변동성이 낮을 때 포지션이 최대가 되는 건 전형적인 청산 사고 전조 배열</b>이며, 2019년 9월 레포 발작·2020년 3월 국채 발작이 모두 이 구도에서 나왔다.<br>
-    <b>임계:</b> <b>주간 -50K 이상 급감 →</b> 강제 청산 본격화·10Y UST 급등 연동 / <b>유지·확대 →</b> 재구축 지속 / <b>2,200K 돌파 →</b> 규모 경보 격상(신설)<br>
-    <b>교차 확인:</b> 스왑스프레드(row-swap)와 병행 필수 — 현재 generic -19bp/SOFR -40bp대로 <b>SOFR 기준은 -50bp 강제청산 임계에 근접</b>. 산식 불일치 미해결 상태라 이 조합에서는 <b>보수적으로 SOFR 기준을 채택</b>하는 게 안전.<br>
-    ⚠️ 케이맨 헤지펀드 $1.4조 TIC 과소집계 — 실제 포지션은 COT보다 클 수 있음<br>
-    <span class="tag tag-alert">🔴 2,123K계약(8/11·사상 최대권) — 2개월 +11% 확대 · <b>저변동성(MOVE 76·VIX 14) + 사상 최대 포지션 + 은행 흡수 정지 = 청산 사고 전조 배열</b> · SOFR 스왑스프레드 -50bp 임계 근접과 병행 주시</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>주간 -50K 이상 급감 →</b> 강제 청산 본격화·10Y 급등 연동 / <b>유지·확대 →</b> 재구축 지속 / <b>2,200K 돌파 →</b> 규모 경보 격상(신설)<br>헤지펀드는 Basis Trade 구조상 <b>구조적 Net Short이 정상</b> — 문제는 규모 급팽창과 급격한 전환</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>Net Short 2,123K계약</b>(8/11·<b>사상 최대권</b>) — 5/19 1,952K → 6/9 1,913K → 8/11 2,123K로 <b>2개월 +11%</b>. 2023~24 피크 명목 ~$8,000억(OFR)을 넘는 규모로 재구축을 넘어 <b>확대 국면</b>.<br><b>🔴 조합이 나쁘다:</b> ① 포지션 사상 최대 ② <b>MOVE 76·VIX 14로 변동성 저점</b>(레버리지가 싸게 조달되는 환경) ③ 은행 국채 흡수 정지로 현물 완충 부족 ④ 호르무즈 재봉쇄 tail. <b>저변동성에서 포지션이 최대가 되는 건 2019년 9월·2020년 3월 사고의 공통 배열.</b><br>⚠️ 케이맨 헤지펀드 $1.4조 TIC 과소집계 — 실제는 COT보다 클 수 있음.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 스왑스프레드 SOFR 기준 -50bp 도달 시 <b>포지션 급감 여부 즉시 확인</b> — 둘이 동시면 청산 진행 중 ② 2,200K 돌파 ③ 10Y 4.75% 돌파 시 재확인</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4/2 관세 충격으로 1차 청산(스왑 -65bp) → 재구축 → 8/15 사상 최대권 경신</span>
+    <span class="tag tag-alert">🔴 2,123K 사상 최대권 — 2개월 +11% · <b>저변동성 + 최대 포지션 + 얇은 현물 완충 = 사고 배열</b></span>
   </td>
   <td class="src"><a href="https://www.cftc.gov/MarketReports/CommitmentsofTraders/">CFTC COT</a><br>TFF / 매주 금</td>
 </tr>
@@ -479,12 +473,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">5월 TIC 총 순유입 $132.2B·민간 +$172.0B·공식 -$39.9B — 6월 TIC는 8/17 발표 예정, 최신값 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>✅ TIC 5월 2026(최신):</b> 총 순유입 <b>$132.2B</b>(4월 $26.1B → 대폭 회복). <b>민간 +$172.0B · 공식기관 -$39.9B</b>.<br>
-    <b>🔑 4월과 정확히 반대 구도 — 이번 판독의 핵심:</b> 4월은 민간 순유출(-$23.1B)을 공식기관(+$49.2B)이 방어한 그림이었는데, <b>5월은 민간이 +$172.0B로 대거 복귀하고 공식기관이 -$39.9B로 순유출</b>했다. <b>관세 충격(4/2 Liberation Day) 반영 국면이 한 달 만에 되돌려진 것</b>으로, "민간 이탈 트렌드 지속"이라는 4월 기준 우려는 <b>미실현·폐기</b>.<br>
-    <b>교차검증 현황 — 채널별로 신호가 갈림:</b> ① TIC 민간 <b>+$172.0B 복귀</b> ② 경매 Indirect <b>76.7% 견조</b>(row-auction) ③ H.8 외국계 지점 <b>4주 연속 축소</b>(row-h8-foreign). <b>①②는 외국 수요 건재, ③만 반대</b> — 주체가 다르기 때문(운용사·중앙은행 vs 상업은행 지점)이며 <b>합산 판독 금지</b>. 다만 <b>공식기관 -$39.9B는 ③과 방향이 같아 별도 주시</b>.<br>
-    <b>실시간 proxy:</b> Indirect Bidder 비율 + USD/JPY(157.54, 145 임계와 거리 유지). JGB 2.80% 고점권.<br>
-    <b>다음:</b> <b>TIC 6월 8/17 발표</b> — ① 민간 복귀가 5월 일시 반등인지 추세인지 ② <b>공식기관 순유출이 2개월 연속인지</b>(연속 시 중앙은행 채널 이탈로 격상) ③ 일본 보유 잔액이 H.8 외국계 축소와 같은 방향인지 — <b>본 파일에서 5개월간 유보해온 리패트리에이션 판정의 최대 분기점</b>.<br>
-    <span class="tag tag-warn">🟡 5월 총 $132.2B(4월 $26.1B에서 회복) · <b>민간 +$172.0B 대거 복귀, 공식기관 -$39.9B 순유출로 4월과 정반대</b> · 민간 이탈 우려는 폐기, <b>공식기관 이탈이 새 관찰 대상</b> · 8/17 6월 데이터가 분기점</span>
+    <span class="th"><span class="th-k k-rule">임계</span>민간 vs 공식기관 분해가 핵심 — 총계만 보면 오독 / 약 6주 후행 / <b>H.8 Table 10과 교차검증 필수</b><br>실시간 proxy: 경매 Indirect 비율 + USD/JPY</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>5월 총 순유입 $132.2B</b>(4월 $26.1B에서 회복) · <b>민간 +$172.0B · 공식기관 -$39.9B</b>.<br><b>4월과 정확히 반대 구도</b> — 4월은 민간 이탈(-$23.1B)을 공식기관(+$49.2B)이 방어했는데, 5월은 민간이 대거 복귀하고 공식기관이 순유출. 관세 충격 반영이 한 달 만에 되돌려져 <b>"민간 이탈 지속" 우려는 폐기</b>.<br><b>채널별 신호가 갈린다:</b> TIC 민간 복귀 ✅ · 경매 Indirect 76.7% ✅ · <b>H.8 외국계 지점 4주 연속 축소 ❌</b>. 주체가 달라서(운용사·중앙은행 vs 상업은행 지점) 합산 금지이나, <b>공식기관 -$39.9B는 H.8과 방향이 같아 별도 주시</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>TIC 6월 8/17 발표</b> — 민간 복귀가 추세인지 ② <b>공식기관 순유출이 2개월 연속이면 중앙은행 채널 이탈로 격상</b> ③ 일본 보유 잔액이 H.8 외국계 축소와 같은 방향인지 — <b>5개월 유보해온 리패트리에이션 판정의 최대 분기점</b></span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4월 "민간 이탈·공식 방어" 구도 → 5월 정반대로 반전, 우려 폐기</span>
+    <span class="tag tag-warn">🟡 5월 $132.2B · <b>민간 +$172.0B 복귀, 공식기관 -$39.9B로 4월과 정반대</b> · 공식기관 이탈이 새 관찰 대상 · 8/17이 분기점</span>
   </td>
   <td class="src"><a href="https://home.treasury.gov/data/treasury-international-capital-tic-system">Treasury TIC</a><br><small>월간 · 6주 후행</small></td>
   
@@ -497,12 +490,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ss">스크린샷</span><span class="verify-note">PIK 8% 유지 / public BDC 평균 약 7.7% — 새 종합지표 제한적 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>PIK 비율 &gt;10% →</b> BDC 현금흐름 미스매치 임계(상세는 아래 「BDC PIK 비율」 섹션)<br>
-    <b>H.8 C&amp;I 감소 →</b> 은행 기업대출 후퇴 = Private Credit 흡수 확대 신호 ← <b>🔴 8/15 조건 충족</b><br>
-    <b>🔴 이 행의 전제가 실제로 성립한 회차:</b> C&amp;I 월간 연환산이 <b>Jul -1.1%로 마이너스 전환</b>(row-ci)하는 동시에 <b>NDFI(은행→비은행 금융기관 대출)는 사상 최고 $2,016.1B</b>(row-h8-nonbank). <b>은행이 기업에 직접 빌려주는 대신 프라이빗 크레딧 등 비은행에 자금을 대는 구도가 데이터로 확인</b>됐다. 이 행이 예상한 "경쟁 관계 → Private Credit 흡수 확대" 경로가 현실화된 것.<br>
-    <b>⚠️ 그러나 그 확대가 건전한지는 별개:</b> PIK 8%·다운그레이드 YoY +19%·논어크루얼 2.9%로 <b>선행지표는 이미 악화 방향</b>. <b>차주 질이 나빠지는 국면에서 흡수만 늘어나는 건 신용 사이클 후반부의 전형</b>이며, HY OAS 271bp의 표면 안정과 정면 배치.<br>
-    <b>다음 관찰:</b> Q2 2026 BDC 실적에서 PIK·논어크루얼 추이 / <b>C&amp;I 마이너스 + NDFI 신고점 조합이 2개월 연속이면 구조 확정</b><br>
-    <span class="tag tag-alert">🔴 PIK 8% · <b>C&amp;I 연환산 마이너스 + NDFI 사상 최고로 「은행→비은행 흡수 확대」 전제 현실화</b> · 단 PIK·다운그레이드 악화 중이라 질은 반대 방향 · 상세는 아래 BDC PIK 섹션</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>PIK 10% 초과 →</b> 미스매치 임계(상세는 아래 「BDC PIK 비율」) / <b>H.8 C&amp;I 감소 →</b> 은행 기업대출 후퇴 = Private Credit 흡수 확대 ← <b>충족</b><br>은행이 국채 보유를 늘릴수록 기업대출 여력 감소 → Private Credit 수요 증가하는 경쟁 관계</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>PIK 8%</b> — 이 행의 전제가 실제로 성립한 국면이다. <b>C&amp;I 월간 연환산 Jul -1.1%</b>로 마이너스 전환하는 동시에 <b>NDFI는 사상 최고 $2,016.1B</b>. <b>은행이 기업에 직접 빌려주는 대신 비은행에 자금을 대는 구도가 데이터로 확인</b>됐다.<br><b>⚠️ 확대가 건전한지는 별개:</b> PIK 8%·다운그레이드 +19%·논어크루얼 2.9%로 <b>선행지표는 악화 방향</b>. 차주 질이 나빠지는데 흡수만 늘어나는 건 <b>신용 사이클 후반부의 전형</b>이며 HY OAS 271bp의 표면 안정과 배치.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① Q2 2026 BDC 실적의 PIK·논어크루얼 추이 ② <b>C&amp;I 마이너스 + NDFI 신고점 조합이 2개월 연속이면 구조 확정</b></span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>3/24 FSK 14.7%·Moody's 강등 → 8/15 C&amp;I·NDFI 조합으로 <b>경쟁 관계 전제가 현실화</b> 확인</span>
+    <span class="tag tag-alert">🔴 PIK 8% · <b>C&amp;I 마이너스 + NDFI 사상 최고로 「은행→비은행 흡수 확대」 전제 현실화</b> · 단 PIK·다운그레이드는 반대 방향</span>
   </td>
   <td class="src">BDC 분기 보고서<br>Morningstar</td>
 </tr>
@@ -545,12 +537,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/13 종가 · FRED DGS10</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>4.0% 하향 →</b> 채권 랠리·리스크온 / <b>4.5%+ →</b> Term premium 확대·밸류 압박 ← <b>현재 4.63% 해당</b> / <b>5.0%+ →</b> VaR 쇼크<br>
-    <b>🔺 4.5% 임계 상향 돌파(8/15 갱신): 8/13 4.63%</b>. 5/21 4.3% → <b>+33bp 상승</b>하며 <b>"4.5%+ Term premium 확대" 구간에 진입</b>. 5월에 기록한 "4.5% 재테스트 없이 4.3% 유지 — 예상보다 견고"는 무효.<br>
-    <b>🔑 상승 요인 3개가 동시에:</b> ① <b>호르무즈 재봉쇄·유가 $93</b>로 인플레 기대 재상승(row-brent) ② <b>은행 채널 국채 흡수 정지</b>(대형은행 Non-MBS +$0.5B)와 외국계 4주 연속 축소 ③ 8월 QRA 쿠폰 공급. <b>다만 경매 Indirect 76.7%(row-auction)로 운용사·외국 중앙은행 수요는 견조</b>해 5% 방향으로의 무질서한 상승은 아직 제어되는 구도.<br>
-    <b>⚠️ 밸류에이션 함의:</b> SPX가 7,785로 사상 최고권인데 10Y가 4.63%로 올라온 조합은 <b>주식 밸류에이션에 직접 압박</b>. 5월에는 "인상 확률 반영에도 10Y 안정 = 동결 장기화 반영"으로 읽었으나, <b>이제 금리가 실제로 올라오면서 그 완충이 사라졌다.</b><br>
-    <b>다음 관찰:</b> ① <b>4.75% 돌파 시 VaR 쇼크 경로 진입 경계</b> ② COT 사상 최대 숏(2,123K)과 겹치는 구간이라 급등 시 청산 연쇄 tail(row-cot) ③ JGB 2.80% 고점권 지속 여부.<br>
-    <span class="tag tag-warn">🟡 4.63%(8/13) — <b>4.5% Term premium 임계 상향 돌파</b> · 유가 재상승 + 은행 흡수 정지 + QRA 공급 3중 압력 · <b>SPX 사상 최고권과의 조합은 밸류 압박</b> · 경매 Indirect 76.7%가 유일한 완충</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>4.0% 하향 →</b> 채권 랠리·리스크온 / <b>4.5%+ →</b> Term premium 확대·밸류 압박 ← 해당 / <b>5.0%+ →</b> VaR 쇼크 / <b>4.75% 돌파 →</b> VaR 경로 경계(신설)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>4.63%</b>(8/13) — 5/21 4.3%에서 <b>+33bp</b>, 4.5% 임계 상향 돌파.<br><b>상승 요인 3개 동시:</b> ① 호르무즈 재봉쇄·유가 $93로 인플레 기대 재상승 ② 은행 국채 흡수 정지 + 외국계 4주 연속 축소 ③ QRA 쿠폰 공급. <b>경매 Indirect 76.7%가 유일한 완충</b>이라 무질서한 상승은 아직 제어되는 구도.<br><b>밸류 함의:</b> SPX 7,785 사상 최고권 + 10Y 4.63% 조합은 <b>주식 밸류에이션에 직접 압박</b>. 5월의 "동결 장기화 반영으로 10Y 안정"이라는 완충이 사라졌다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>4.75% 돌파 시 VaR 쇼크 경로 경계</b> ② COT 사상 최대 숏과 겹쳐 급등 시 청산 연쇄 tail ③ JGB 2.80% 고점권 지속 여부</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 "4.5% 재테스트 없이 4.3% 유지 — 예상보다 견고" → 8/15 돌파로 무효</span>
+    <span class="tag tag-warn">🟡 4.63% — <b>4.5% Term premium 임계 돌파</b> · 유가·흡수 정지·QRA 3중 압력 · <b>SPX 신고점과의 조합은 밸류 압박</b></span>
   </td>
   <td class="src"><a href="https://www.investing.com/rates-bonds/u.s.-10-year-bond-yield">Investing.com</a><br>FRED: DGS10</td>
 </tr>
@@ -561,11 +552,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">76.09(7/28 공개 확인값) — 이후 직접값 확인 제한, 최신값 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>&lt;80 →</b> 채권 안정 ← <b>현재 해당</b> / <b>80~120 →</b> 변동성 확대 / <b>130+ →</b> 경보·국채 발행 비용 급등 / <b>160+ →</b> 위기<br>
-    <b>76.09(7/28 확인값·이후 직접값 제한)</b> — 5/22 74.33 대비 소폭 상승했으나 <b>&lt;80 정상 구간 지속</b>.<br>
-    <b>🔴 저변동성의 위험한 조합 — 이 행의 핵심 경고:</b> 10Y가 4.3% → <b>4.63%로 33bp 상승</b>하고 유가가 $71 → $93로 재급등하는 동안 <b>MOVE는 오히려 낮은 수준에 머물렀다</b>. 여기에 <b>헤지펀드 국채 선물 숏이 사상 최대권(2,123K·row-cot)</b>. <b>변동성이 낮을 때 레버리지 포지션이 최대가 되는 배열은 청산 사고의 전형적 전조</b>이며, MOVE 급등은 그 사고의 <b>결과</b>로 나타나므로 이 지표로 미리 피할 수 없다.<br>
-    <b>다음 관찰:</b> ① <b>80 상향 돌파가 1차 경보</b> — 돌파 시 COT 포지션 급감 여부 즉시 확인 ② 데이터 취득 제한 상태이므로 <b>TradingView ^MOVE 직접 확인 루틴 필요</b>(현재 7/28 값으로 3주째 고정).<br>
-    <span class="tag tag-warn">🟡 76.09(7/28·이후 미갱신) — 정상 구간이나 <b>10Y +33bp·유가 +30% 국면에서의 저변동성 = 미반영</b> · <b>사상 최대 베이시스 숏과 결합 시 청산 tail</b> · 값 자체가 3주 고정으로 갱신 필요</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>&lt;80 →</b> 채권 안정 ← 해당 / <b>80~120 →</b> 변동성 확대 / <b>130+ →</b> 경보·발행 비용 급등 / <b>160+ →</b> 위기<br><b>이 지표로는 사고를 미리 피할 수 없다</b> — MOVE 급등은 청산의 <b>결과</b>로 나타난다</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>76.09</b>(7/28 확인값·이후 직접값 취득 제한으로 3주째 고정) — 5/22 74.33 대비 소폭 상승, 정상 구간 유지.<br><b>🔴 저변동성의 위험:</b> 10Y가 4.3→4.63%(+33bp), 유가가 $71→$93(+30%)로 움직이는 동안 <b>MOVE는 낮은 수준에 머물렀다</b>. 여기에 <b>국채선물 숏 사상 최대권(2,123K)</b>. <b>변동성이 낮을 때 레버리지가 최대가 되는 배열</b>이 문제.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>80 돌파가 1차 경보</b> — 돌파 시 COT 포지션 급감 여부 즉시 확인 ② <b>값이 3주 고정이므로 TradingView ^MOVE 직접 확인 루틴 필요</b></span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>취득처 제한으로 갱신 빈도가 낮음 — 8/15 점검에서 3주 고정 확인·명시</span>
+    <span class="tag tag-warn">🟡 76.09(3주 고정·갱신 필요) — 정상 구간이나 <b>10Y +33bp·유가 +30% 국면의 저변동성은 미반영 신호</b> · 사상 최대 숏과 결합 시 tail</span>
   </td>
   <td class="src"><a href="https://finance.yahoo.com/quote/%5EMOVE/">Yahoo: ^MOVE</a><br>ICE BofAML</td>
   
@@ -578,12 +569,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">2.80% 부근 — 8월 중순 고점권 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>임계 1.5% 이미 돌파</b>. 30Y JGB ~3.71%대(임계 2.5% 돌파)<br>
-    <b>현황(8월 중순) 2.80% 부근</b> — 6/30 2.678% 대비 추가 상승하며 <b>고점권 유지</b>. 이론상 미국채 매도·본국 귀환 압력 구조.<br>
-    <b>🔺 5개월 만에 처음으로 실물 채널이 반응 조짐:</b> 그동안 "JGB 금리 상승 → 미국채 매도" 가설은 <b>H.8 외국계 지점이 박스권을 유지해 미지지</b> 상태였다. 그러나 8/5 H.8에서 <b>외국계 Non-MBS $147.5B로 $150B 재이탈($145B 하단까지 $2.5B)·Tsy&amp;agency 4주 연속 감소·본지점 순채무 -$69.7B</b>가 동시 확인(row-h8-foreign). <b>가설과 실물의 5개월 괴리가 처음으로 좁혀지는 구간</b>.<br>
-    <b>⚠️ 단 아직 확정 아님:</b> H.8 Table 10은 <b>외국계 상업은행 지점</b>이고 리패트리에이션의 주 행위자는 <b>생보·연기금</b>이라 채널이 완전히 일치하지 않는다. <b>경매 Indirect는 76.7%로 오히려 견조</b>(row-auction)해 외국 수요 전체가 빠지는 그림은 아니다.<br>
-    <b>다음 관찰:</b> ① <b>TIC 6월(8/17)</b> — 일본 보유 잔액이 감소하면 두 채널이 처음으로 같은 방향 ② 외국계 Non-MBS $145B 이탈 여부 ③ BOJ 추가 인상 시점.<br>
-    <span class="tag tag-alert">🔴 2.80%(8월 중순·고점권) — <b>H.8 외국계 채널이 5개월 만에 처음 같은 방향으로 반응 시작</b>($150B 재이탈·Line3 4주 연속↓) · <b>단 경매 Indirect 76.7% 견조로 외국 수요 전체 이탈은 아님</b> · TIC 6월(8/17)이 교차 확인점</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>임계 1.5% 이미 돌파</b>(30Y ~3.71%대도 2.5% 돌파) — 레벨 자체보다 <b>H.8 Table 10 실물 매도 채널이 반응하는지</b>가 판정 기준<br>이론상 JGB 상승 → 미국채 헤지비용 초과 → 본국 귀환 압력</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>2.80% 부근</b>(8월 중순·고점권) — 6/30 2.678%에서 추가 상승.<br><b>🔺 5개월 만에 실물 채널이 처음 반응 조짐:</b> 그동안 이 가설은 H.8 외국계가 박스권이라 <b>미지지</b> 상태였는데, 8/5에 <b>Non-MBS $147.5B로 $150B 재이탈($145B까지 $2.5B)·Tsy&amp;agency 4주 연속 감소·본지점 순채무 -$69.7B</b>가 동시 확인됐다. <b>가설과 실물의 괴리가 처음 좁혀지는 구간.</b><br>⚠️ 단 Table 10은 <b>외국계 상업은행 지점</b>이고 리패트리에이션 주 행위자는 <b>생보·연기금</b>이라 채널 불일치. 경매 Indirect 76.7%는 견조해 외국 수요 전체 이탈은 아님.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>TIC 6월(8/17)</b> — 일본 보유 감소 시 두 채널이 처음 같은 방향 ② 외국계 Non-MBS $145B 이탈 ③ BOJ 추가 인상 시점</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>3~7월 "JGB 상승 → 미국채 매도 가설 5개월째 미지지" 유지 → 8/15 외국계 채널 반응 시작으로 격상 검토</span>
+    <span class="tag tag-alert">🔴 2.80% 고점권 — <b>H.8 외국계 채널이 5개월 만에 처음 같은 방향 반응</b> · 단 경매 Indirect 견조로 전체 이탈은 아님 · TIC 6월이 교차 확인점</span>
   </td>
   <td class="src"><a href="https://tradingeconomics.com/japan/government-bond-yield">tradingeconomics</a><br>JP10Y</td>
   
@@ -596,13 +586,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">SOFR 스왑 기준 약 -40bp대 · 10Y UST 4.63%(8/13 DGS10) — <b>generic -19bp 계열 폐기(8/15)</b> · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>✅ 산식 확정(8/15) — 4개월 미해결 종결:</b> LIBOR 종료 이후 <b>10Y 스왑 스프레드의 정의는 「10Y SOFR 스왑금리 − 10Y UST」 하나뿐</b>이다. 병기해온 <b>generic 기준 -19bp 계열은 폐기</b>한다(레거시 산출로 추정되며 현행 시장 관행과 불일치). <b>본 행은 SOFR 기준 단일 정의만 사용한다.</b><br>
-    <b>📌 기록 규칙(신설) — 결과값이 아니라 양쪽 다리를 남긴다:</b> 갱신 시 <b>① 10Y SOFR 스왑금리 ② 같은 영업일 DGS10 ③ 출처·일자</b>를 함께 기록한다. 결과값만 적으면 산식이 다시 갈라져도 알 수 없다 — 이번 4개월 미해결의 직접 원인.<br>
-    <b>구간 재정의:</b> <b>음수는 정상</b>(장기 구간에서 스왑금리가 국채금리를 하회하는 것이 최근 수년의 구조). 절대 부호가 아니라 <b>확대 속도</b>가 신호. <b>-50bp →</b> 베이시스 트레이드 강제 청산 본격화 ← <b>현재 약 10bp 거리</b> / <b>-65bp →</b> 역대 최대(Liberation Day 4/8~9)<br>
-    <b>🔴 현재 조합이 위험한 이유:</b> ① 스프레드 -40bp대로 <b>-50bp 임계까지 약 10bp</b> ② <b>헤지펀드 국채선물 숏 2,123K계약 사상 최대권</b>(row-cot) ③ <b>MOVE 76·VIX 14로 변동성 저점</b> ④ 은행 국채 흡수 정지·외국계 축소로 현물 완충 부족. <b>저변동성 + 최대 포지션 + 얇은 완충은 2019년 9월·2020년 3월 사고의 공통 배열</b>이다.<br>
-    <b>✅ 4/2 관세 충격 후 -65bp 기록 → 4/8 휴전 후 부분 회복</b>(당시 기록도 SOFR 기준으로 재확인 필요 — 산식 확정 이전 값이므로 비교 시 유의).<br>
-    <b>다음 관찰:</b> ① <b>-50bp 도달 시 COT 포지션 급감 여부 즉시 확인</b> — 둘이 동시면 청산 진행 중 ② 10Y가 4.75% 돌파 시 재확인 ③ 데이터 취득처 고정(BlueGamma·ICE Swap Rate·CME 중 하나로 일원화).<br>
-    <span class="tag tag-alert">🔴 약 -40bp(SOFR 기준·산식 확정) — <b>generic -19bp 계열 폐기로 4개월 불일치 종결</b> · 강제청산 임계(-50bp)까지 약 10bp · <b>사상 최대 베이시스 숏 + 저변동성 + 얇은 현물 완충 = 사고 배열</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>산식 확정(단일):</b> 10Y SOFR 스왑금리 − 10Y UST. LIBOR 종료 후 정의는 이것 하나뿐이며 <b>generic 계열은 폐기</b><br><b>-50bp →</b> 베이시스 강제 청산 본격화 / <b>-65bp →</b> 역대 최대(4/8~9)<br><b>음수는 정상</b> — 부호가 아니라 <b>확대 속도</b>가 신호<br>📌 <b>기록 규칙:</b> 결과값이 아니라 ① SOFR 스왑금리 ② 같은 영업일 DGS10 ③ 출처·일자를 함께 남긴다</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>약 -40bp</b>(SOFR 기준) · 10Y UST 4.63%(8/13 DGS10). <b>강제청산 임계까지 약 10bp.</b><br><b>🔴 위험한 조합:</b> ① -50bp까지 10bp ② <b>COT 숏 2,123K 사상 최대권</b> ③ MOVE 76·VIX 14 변동성 저점 ④ 은행 흡수 정지·외국계 축소로 현물 완충 부족.<br>4/2 관세 충격 시 -65bp 기록 후 부분 회복 — <b>당시 값은 산식 확정 이전이라 비교 시 유의</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>-50bp 도달 시 COT 포지션 급감 여부 즉시 확인</b> ② 10Y 4.75% 돌파 시 재확인 ③ 취득처 일원화(BlueGamma·ICE Swap Rate·CME 중 하나)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4~8월 generic -19bp vs SOFR -40bp 병기로 판정 불가 상태 4개월 → <b>8/15 SOFR 기준 단일화로 종결</b></span>
+    <span class="tag tag-alert">🔴 약 -40bp(산식 확정) — <b>generic 계열 폐기로 4개월 불일치 종결</b> · 강제청산까지 약 10bp · 사상 최대 숏 + 저변동성</span>
   </td>
   <td class="src">10Y SOFR 스왑<br><small>− DGS10 (동일 영업일)</small></td>
   
@@ -615,11 +603,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/7 · FRED STLFSI4</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>0 이하 →</b> 정상 이하 스트레스(현재) / <b>0 이상 →</b> 평균 이상 스트레스 / <b>1.0+ →</b> 시스템 스트레스 경보<br>
-    <b>8/7 -0.771</b> — 5/15 -0.740 대비 소폭 추가 하락(완화 방향). 다층 확인: IG OAS 79bp·HY OAS 271bp·MOVE 76.09·VIX 14.63 모두 정상권. <b>유가 $93 재상승·10Y 4.63%에도 금융 시스템 스트레스 전이는 미발생.</b><br>
-    <b>⚠️ 이 지표의 한계 — 지금 국면에서 특히 주의:</b> STLFSI4는 <b>스프레드·변동성 중심 구성</b>이라 ① 실물 신용 감속(C&amp;I 연환산 -1.1%) ② 섀도우뱅킹 레버리지 누적(NDFI 사상 최고) ③ <b>베이시스 트레이드 포지션 사상 최대(2,123K)</b>를 <b>거의 포착하지 못한다</b>. <b>지금처럼 "가격은 조용한데 포지션과 실물이 나빠지는" 구간에서는 이 지표의 낮은 값이 안전의 근거가 될 수 없다.</b><br>
-    <b>다음 관찰:</b> 0 상향 돌파 시 경보 / <b>이 지표가 오를 때는 이미 늦은 경우가 많으므로 COT·스왑스프레드·PIK 등 선행 항목을 우선</b><br>
-    <span class="tag tag-ok">🟢 -0.771(8/7) 완화 유지 — 단 <b>포지션·실물 리스크는 구성상 미포착</b>, 낮은 값을 안전 근거로 쓰지 말 것</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>0 이하 →</b> 정상 이하 스트레스 ← 해당 / <b>0 이상 →</b> 평균 이상 / <b>1.0+ →</b> 시스템 경보<br><b>이 지표가 오를 때는 이미 늦다</b> — COT·스왑스프레드·PIK 등 선행 항목을 우선</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>-0.771</b>(8/7) — 5/15 -0.740 대비 소폭 완화. IG 79bp·HY 271bp·MOVE 76·VIX 14.63 모두 정상권으로 다층 확인되며, <b>유가 $93·10Y 4.63%에도 금융 스트레스 전이는 미발생</b>.<br><b>⚠️ 구성상 한계:</b> 스프레드·변동성 중심이라 ① 실물 신용 감속(C&amp;I -1.1%) ② 섀도우뱅킹 레버리지(NDFI 사상 최고) ③ <b>베이시스 포지션 사상 최대(2,123K)</b>를 거의 포착하지 못한다. <b>「가격은 조용한데 포지션과 실물이 나빠지는」 지금 구간에서 낮은 값은 안전의 근거가 될 수 없다.</b></span>
+    <span class="th"><span class="th-k k-next">다음</span>① 0 상향 돌파 시 경보 ② 선행 항목(COT·스왑·PIK)이 먼저 움직이는지 병행 확인</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 이후 완화 방향 유지 — 8/15 점검에서 <b>구성상 미포착 영역</b> 명시</span>
+    <span class="tag tag-ok">🟢 -0.771 완화 유지 — 단 <b>포지션·실물 리스크는 구성상 미포착</b>, 낮은 값을 안전 근거로 쓰지 말 것</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/STLFSI4">FRED: STLFSI4</a><br>St. Louis Fed 주간</td>
 </tr>
@@ -648,12 +636,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">FRED 8/13 · 0.79% · BAMLC0A0CM</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>75bp →</b> 역대 최저권 / <b>79bp →</b> 현재 / <b>100bp+ →</b> 크레딧 수요 약화<br>
-    <b>150bp+ →</b> 2022 긴축 공포 수준 / <b>300bp+ →</b> 위기 국면<br>
-    <b>8/13 79bp</b> — 5/21 75bp(역대 최저권) 대비 <b>+4bp 소폭 확대</b>. 여전히 역사적 초저 수준이며 크레딧 수요는 강함. 다만 <b>바닥에서 방향은 확대 쪽으로 돌아섰다</b>는 점만 기록(4bp는 노이즈 범위이므로 판정 없음).<br>
-    <b>IG만 타이트 + HY 벌어짐 →</b> 크레딧 내부 균열 신호. 현재 IG 79bp·HY 271bp로 <b>HY가 오히려 더 축소</b>(278→271bp) — 균열 신호 없음, 양자 동시 타이트 유지.<br>
-    <b>⚠️ 표면 안정에 과신 금지:</b> 유가 $93·10Y 4.63%·C&amp;I 연환산 마이너스가 동시에 진행 중인데 크레딧 스프레드만 역대 최저권. <b>이 괴리는 크레딧이 안전하다는 뜻이 아니라 반영이 늦다는 뜻일 수 있으며, BDC PIK 8%·다운그레이드 +19% 등 선행지표는 이미 경고 중</b>(row-bdc-pik).<br>
-    <span class="tag tag-ok">🟢 79bp(8/13) — 역대 최저권 유지, 5월 대비 +4bp(노이즈) · HY와 동시 타이트로 내부 균열 없음 · <b>단 유가·금리·실물 감속과의 괴리는 미반영 가능성</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>75bp →</b> 역대 최저권 / <b>100bp+ →</b> 크레딧 수요 약화 / <b>150bp+ →</b> 2022 긴축 공포 / <b>300bp+ →</b> 위기<br><b>IG 타이트 + HY 확대 →</b> 크레딧 내부 균열 신호</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>79bp</b>(8/13) — 5/21 75bp 대비 +4bp(노이즈 범위). 여전히 역사적 초저 수준이나 <b>바닥에서 방향은 확대 쪽</b>. HY는 271bp로 오히려 축소돼 <b>내부 균열 신호는 없음</b>(양자 동시 타이트).<br><b>⚠️ 과신 금지:</b> 유가 $93·10Y 4.63%·C&amp;I 연환산 마이너스가 진행 중인데 스프레드만 역대 최저권이다. <b>안전하다는 뜻이 아니라 반영이 늦다는 뜻</b>일 수 있고, BDC PIK 8%·다운그레이드 +19%는 이미 경고 중.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 100bp 접근 ② IG↑·HY↓ 분기가 이어지는지 ③ 선행지표(PIK·다운그레이드)와의 괴리 축소 여부</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 75bp 역대 최저권 도달 → 8/15 79bp로 소폭 확대(판정 없음)</span>
+    <span class="tag tag-ok">🟢 79bp 역대 최저권 유지 — HY와 동시 타이트로 균열 없음 · <b>유가·금리·실물 감속과의 괴리는 미반영 가능성</b></span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/BAMLC0A0CM">FRED: BAMLC0A0CM</a><br>ICE BofA</td>
 </tr>
@@ -664,12 +651,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">FRED 8/13 · 2.71% · BAMLH0A0HYM2</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>250bp↓ →</b> 역대 최저권·리스크온 강함 / <b>271bp →</b> 현재·추가 타이트닝 진행<br>
-    <b>400bp →</b> 경기침체 우려 본격화 / <b>500bp+ →</b> 시스템 리스크 경보<br>
-    <b>8/13 271bp</b> — 5/21 278bp 대비 <b>-7bp 추가 축소</b>. 2025년 중반 330bp 고점 이후 하락 추세 지속. IG(79bp)와 동반 타이트로 크레딧 전반 리스크온 유지, <b>250bp 역대 최저권까지 21bp</b>.<br>
-    ⚠️ <b>헤드라인 271bp "정상"이나 선행지표는 반대 방향:</b> PIK 8%·BDC 다운그레이드 YoY +19%·논어크루얼 2.9%는 <b>HY OAS보다 2~3분기 앞서 경고</b>하는 지표들이며 이미 악화 중. <b>여기에 C&amp;I 월간 연환산이 -1.1%로 꺾인 것(row-ci)이 더해져 실물 측 신용 수요도 감속</b> — 스프레드만 타이트한 상태가 유지되기 어려운 조합.<br>
-    <b>다음 관찰:</b> <b>IG는 확대(+4bp)·HY는 축소(-7bp)로 이번 구간 방향이 갈렸다</b> — 이 괴리가 이어지면 "IG만 타이트 + HY 벌어짐"의 <b>정반대 패턴(HY 과열)</b>으로 별도 관찰 항목화 검토.<br>
-    <span class="tag tag-warn">🟡 271bp(8/13·-7bp) — 250bp 최저권까지 21bp · IG는 확대·HY는 축소로 <b>방향 분기</b> · <b>PIK·다운그레이드·C&amp;I 마이너스 등 선행지표와 표면 스프레드의 괴리 확대 중, 과신 금지</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>250bp↓ →</b> 역대 최저권 / <b>400bp →</b> 침체 우려 본격화 / <b>500bp+ →</b> 시스템 경보<br>경기침체 6~12개월 선행 지표</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>271bp</b>(8/13·-7bp) — 2025년 중반 330bp 고점 이후 하락 지속, <b>250bp 최저권까지 21bp</b>. IG(79bp)와 동반 타이트.<br><b>⚠️ 선행지표는 반대 방향:</b> PIK 8%·BDC 다운그레이드 YoY +19%·논어크루얼 2.9%는 HY OAS보다 <b>2~3분기 앞서 경고</b>하는 항목들이며 이미 악화 중. 여기에 <b>C&amp;I 연환산 -1.1%</b>로 실물 신용 수요도 감속 — 스프레드만 타이트한 상태가 유지되기 어려운 조합.<br><b>방향 분기:</b> 이번 구간 IG는 +4bp 확대, HY는 -7bp 축소로 갈렸다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 250bp 하향 돌파 시 과열 구간 ② <b>IG↑·HY↓ 분기가 이어지면 「HY 과열」로 별도 관찰 항목화 검토</b> ③ PIK 10% 돌파 여부</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 278bp → 8/15 271bp로 추가 축소, 표면 안정과 선행지표 괴리 확대</span>
+    <span class="tag tag-warn">🟡 271bp — 250bp까지 21bp · <b>IG는 확대·HY는 축소로 방향 분기</b> · PIK·다운그레이드·C&amp;I와의 괴리 확대, 과신 금지</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2">FRED: BAMLH0A0HYM2</a><br>ICE BofA</td>
   
@@ -683,11 +669,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">BNP 약 42bp / DB 약 47bp — 새 직접값 명확 확인 어려움, 기존값 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-ok">안정</span></td>
     <td class="threshold">
-    <b>150bp →</b> 유럽 은행 스트레스 / <b>200bp+ →</b> 전이 리스크 본격화<br>
-    <b>BNP 약 42bp · DB 약 47bp</b>(8월) — 5/22 BNP 40.18bp·DB ~56bp 대비 <b>BNP 소폭 확대·DB 축소</b>로 양자 수렴. 150bp 임계와는 큰 거리로 <b>유럽 은행 시스템 스트레스 없음</b>. 1년 변화 기준 양자 모두 -20%대 하향 안정.<br>
-    <b>⚠️ 유가 재급등에도 무반응:</b> 이 행의 원래 논리는 "이란전 유가 급등 → 에너지 대출 익스포저 큰 유럽 은행이 먼저 반응"이었는데, <b>유가가 $71 → $93로 재급등하는 동안 CDS는 40bp대에서 미동 없음</b>. <b>에너지 익스포저 전이 경로는 현 유가 레벨($90대)에서는 작동하지 않는다</b>는 게 4개월간 반복 확인된 결과 — <b>$115~130 구간에서나 유효한 지표</b>로 재분류.<br>
-    <b>⚠️ 데이터 취득 한계:</b> 직접값 확인이 어려워 <b>기존 확인값 유지 상태가 반복</b>되고 있다. 실질 갱신 빈도가 낮으므로 <b>속보성 지표로 쓰지 말고 분기 단위 확인 항목으로 격하</b>.<br>
-    <span class="tag tag-ok">🟢 BNP 약 42bp / DB 약 47bp — 150bp 임계와 큰 거리, 스트레스 없음 · <b>유가 +30% 재급등에도 무반응 = 전이 경로는 $115+ 구간에서만 유효</b>, 분기 확인 항목으로 격하</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>150bp →</b> 유럽 은행 스트레스 / <b>200bp+ →</b> 전이 리스크 본격화<br><b>이 지표는 $115+ 유가 구간에서만 유효</b>(재분류) · 취득 빈도가 낮아 <b>분기 확인 항목</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>BNP 약 42bp / DB 약 47bp</b> — 150bp 임계와 큰 거리로 <b>유럽 은행 시스템 스트레스 없음</b>. 5/22 대비 BNP 소폭 확대·DB 축소로 양자 수렴, 1년 기준 모두 -20%대 하향 안정.<br><b>⚠️ 유가 재급등에도 무반응:</b> 이 행의 원래 논리는 "유가 급등 → 에너지 대출 익스포저 큰 유럽 은행이 먼저 반응"이었는데, <b>유가가 $71→$93(+30%)로 오르는 동안 CDS는 40bp대에서 미동 없음</b>. 4개월 반복 확인된 결과라 <b>현 유가 레벨에서는 전이 경로가 작동하지 않는다</b>고 본다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① $115 이상 구간 진입 시 재활성화 ② 분기 단위 확인으로 충분 ③ 직접값 취득처 확보</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>이란전 $112 구간에서도 미발동 → 8/15 "$115+ 구간 전용 지표"로 격하·분기 항목화</span>
+    <span class="tag tag-ok">🟢 BNP 42bp / DB 47bp — 스트레스 없음 · <b>유가 +30%에도 무반응 = 전이 경로는 $115+ 구간에서만 유효</b></span>
   </td>
   <td class="src"><a href="https://www.investing.com/rates-bonds/bnp-paribas-cds-5-year-eur">Investing.com</a><br>BNP/DB CDS 5Y EUR</td>
   
@@ -700,13 +686,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ss">스크린샷</span><span class="verify-note">8% 유지 / 보조 public BDC 약 7.7% — 기존값 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>10% 초과 →</b> BDC 현금흐름 미스매치 임계점(배당 의무 90% + PIK = 유동성 압박)<br>
-    <b>YE 2025 현황(Morningstar DBRS 4/14/2026):</b> 섹터 평균 <b>8%</b>(전년比 +30bp) · Non-accrual 커버리지 평균 2.9%(전체 BDC 3.2%) · <b>다운그레이드 볼륨 YoY +19%</b> · elevated PIK: TPVG·CION·PSEC(구조적 PIK 75%+, 신용 악화 아닌 수익률 제고 목적). 보조 지표로 public BDC 평균 약 7.7%.<br>
-    구조적 PIK("good") vs 수정 관련 PIK("bad", 부실 차주 단기 유동성 지원) 혼재 — <b>헤드라인 8%만으로 판단 금지.</b><br>
-    <b>🔴 경고 조건이 이번 회차에 강화됨:</b> Morningstar DBRS는 <b>"에너지 비용 상승 + 금리 인하 지연 시 차주 stress"</b>를 경고했는데, <b>8월 현재 유가 $93 재급등(row-brent) + 연내 인하 확률 0%(row-fedwatch)로 두 조건이 모두 충족</b>됐다. <b>YE 2025 기준 8%가 Q1·Q2 2026에 상승했을 개연성이 높다.</b><br>
-    <b>⚠️ 데이터 지연 4개월:</b> 최신 확인이 <b>YE 2025 기준</b>이라 위 판단은 추론이며 실측이 아니다. <b>Q1·Q2 BDC 실적 확인이 이 행의 최우선 과제</b>이며, 그 전까지 8%를 현재값으로 신뢰하지 말 것.<br>
-    <b>다음 관찰:</b> Q2 2026 BDC 실적(8월 중 진행) — PIK 10% 접근 여부 / 논어크루얼 3% 돌파 / <b>FHLB·지역은행 전이 순서 모니터링</b><br>
-    <span class="tag tag-warn">🟡 8%(YE 2025·4개월 지연) — <b>DBRS가 경고한 「에너지 비용↑ + 인하 지연」 두 조건이 8월 현재 모두 충족</b>, 상승 개연성 높음 · <b>Q1·Q2 실적 확인 전까지 8%를 현재값으로 쓰지 말 것</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>PIK 10% 초과 →</b> BDC 현금흐름 미스매치 임계(배당 의무 90% + PIK = 유동성 압박)<br>구조적 PIK(good) vs 수정 관련 PIK(bad) 혼재 — <b>헤드라인 수치만으로 판단 금지</b> · HY OAS보다 2~3분기 선행</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>8%</b>(YE 2025 기준·Morningstar DBRS 4/14 발표로 <b>4개월 지연</b>) · Non-accrual 2.9%(전체 BDC 3.2%) · <b>다운그레이드 볼륨 YoY +19%</b> · elevated PIK: TPVG·CION·PSEC(구조적 75%+). 보조 지표 public BDC 약 7.7%.<br><b>🔴 DBRS 경고 조건이 둘 다 충족됐다:</b> DBRS는 "에너지 비용 상승 + 금리 인하 지연 시 차주 stress"를 경고했는데, 8월 현재 <b>유가 $93 재급등 + 연내 인하 확률 0%</b>다. <b>YE 2025의 8%가 상승했을 개연성이 높으나 실측이 아니라 추론</b>이다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>Q2 2026 BDC 실적</b>이 최우선 — PIK 10% 접근 여부 ② 논어크루얼 3% 돌파 ③ FHLB·지역은행 전이 순서 모니터링</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>YE 2025 이후 미갱신 4개월 — 8/15 점검에서 지연 명시 및 <b>추론과 실측 구분</b></span>
+    <span class="tag tag-warn">🟡 8%(YE 2025·4개월 지연) — <b>DBRS 경고 조건(에너지↑ + 인하 지연) 둘 다 충족</b>, 상승 개연성 · Q2 실적 전까지 현재값으로 쓰지 말 것</span>
   </td>
   <td class="src">BDC 분기 보고서<br>Morningstar</td>
 </tr>
@@ -734,11 +718,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/13 SOFR 3.62% · FRED 확인</span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>SOFR = IORB(3.65%) →</b> 정상 / <b>&gt;+10bp →</b> 지준 경색 신호 / <b>&gt;+25bp →</b> Repo 압박<br>
-    <b>8/13 SOFR 3.62% vs IORB 3.65%</b> — <b>-3bp</b>로 정상 구간(SOFR &lt; IORB) 유지. 단 5/21의 -14bp 대비 <b>스프레드가 11bp 좁혀졌다</b>.<br>
-    <b>🔺 스프레드 축소가 이번 회차의 관찰 포인트:</b> 같은 기간 <b>TGA는 $786B → $966.6B로 리빌드</b>되고 <b>지준은 $3,107B → $2,948B로 $3T를 재이탈</b>(row-reserves)했다. <b>지준이 줄면서 SOFR이 IORB에 붙어오는 것은 교과서적 전개</b>이며, 아직 경색은 아니지만 <b>여유 구간이 얇아지고 있다</b>는 신호로 읽어야 한다.<br>
-    <b>다음 관찰:</b> ① <b>SOFR ≥ IORB 역전이 지준 경보 격상의 필수 조건</b>(row-reserves 3요건 중 ②) ② 9월 분기납세(9/15) 전후 — TGA 추가 흡수 + 분기말 수요 겹치는 구간이 올해 최대 시험대 ③ 스프레드가 0bp에 도달하면 즉시 경보.<br>
-    <span class="tag tag-warn">🟡 3.62% vs IORB 3.65%(-3bp·8/13) — 정상이나 <b>5월 -14bp에서 11bp 축소</b> · TGA 리빌드·지준 $3T 재이탈과 정합, <b>여유 구간이 얇아지는 중</b> · 역전 시 지준 경보 격상</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>SOFR ≥ IORB 역전 →</b> 지준 경색 신호(row-reserves 격상 3요건 중 ②) / <b>+10bp+ →</b> 딜러 밸런스시트 한계<br>IORB는 FRED 시리즈로 자동 조회(v17.3) — 하드코딩 제거</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>SOFR 3.62% vs IORB 3.65%</b>(8/13·-3bp) — 정상 구간이나 5/21 -14bp에서 <b>11bp 축소</b>.<br>같은 기간 TGA는 $786B → $966.6B로 리빌드되고 지준은 $3,107B → $2,948B로 $3T 재이탈. <b>지준이 줄면서 SOFR이 IORB에 붙어오는 것은 교과서적 전개</b>이며, 아직 경색은 아니지만 <b>여유 구간이 얇아지고 있다</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>역전이 지준 경보 격상의 필수 조건</b> ② <b>9/15 분기납세</b>가 최대 시험대 ③ 스프레드가 0bp에 도달하면 즉시 경보</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 -14bp "지준 여유 확인" → 8/15 -3bp로 축소, 판정 「정상」→「주의」</span>
+    <span class="tag tag-warn">🟡 -3bp — 정상이나 5월 -14bp에서 11bp 축소 · TGA 리빌드·지준 $3T 재이탈과 정합, <b>여유 구간 축소 중</b></span>
   </td>
   <td class="src"><a href="https://www.newyorkfed.org/markets/reference-rates/sofr">NY Fed SOFR</a><br>매일 오전 8AM ET</td>
   
@@ -751,14 +735,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/13 SOFR 3.62% vs IORB 3.65% · GCF 미공개로 SOFR-IORB 대체</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>🆕 임계 전면 재보정(8/15) — 기존 임계로는 경보가 영원히 울리지 않았다:</b> 표시값은 GCF가 아니라 <b>SOFR−IORB 대체치</b>인데 임계는 GCF 기준(<s>+20bp 경색 / +30bp 딜러 한계</s>)이 그대로였다. <b>지준이 풍부하면 SOFR−IORB는 음수가 정상</b>이라 +20bp에 도달할 일이 사실상 없고, 따라서 <b>구조적으로 경보 불능 상태</b>였다.<br>
-    <b>재보정 임계 (SOFR−IORB 기준):</b> <b>≤ -10bp →</b> 지준 풍부·완충 충분 / <b>-10 ~ -5bp →</b> 완충 축소 진행 / <b>-5 ~ 0bp →</b> <b>주의 ← 현재 -3bp 해당</b> / <b>0bp 이상(역전) 3영업일+ →</b> <b>지준 희소화 경보</b> / <b>+10bp 이상 →</b> 2019년형 레포 경색 경로<br>
-    <b>⚠️ 노이즈 규칙:</b> 분기말·세납일 1~2일 스파이크는 구조적으로 발생하므로 <b>3영업일 연속을 최소 요건</b>으로 한다(본 파일 공통 규율).<br>
-    <b>현황:</b> 8/13 SOFR 3.62% vs IORB 3.65% = <b>-3bp</b>. 5/21 -14bp 대비 <b>3개월간 11bp 축소</b>. 재보정된 척도에서는 <b>「완충 충분」이 아니라 「주의」 구간</b>이며, TGA 리빌드(+$144B)·지준 $3T 재이탈(row-reserves)과 정합.<br>
-    <b>🔑 재보정이 판독을 바꾼 사례:</b> 같은 -3bp가 기존 임계로는 「정상」, 새 임계로는 「주의」다. <b>임계가 지표와 맞지 않으면 값이 아무리 정확해도 판단이 나오지 않는다.</b><br>
-    <b>✅ IORB 자동화(v17.3):</b> 기존 <code>IORB = 3.65</code> 하드코딩은 <b>FOMC가 금리를 바꾸면 아무도 모르게 스프레드가 틀어지는</b> 구조였다. FRED 시리즈 IORB 직접 조회로 교체, 실패 시에만 폴백값 사용 + 로그 경고.<br>
-    <b>다음 관찰:</b> ① <b>0bp 역전이 지준 경보 격상의 필수 조건</b>(row-reserves 3요건 중 ②) ② <b>9/15 분기납세</b> — TGA 흡수 + 분기말 수요 중첩으로 올해 최대 시험대 ③ -5bp 상향 돌파 시 격상 검토.<br>
-    <span class="tag tag-warn">🟡 -3bp(8/13) — <b>재보정 후 「정상」→「주의」로 판정 변경</b> · 5월 -14bp에서 11bp 축소 · <b>기존 GCF 임계(+20bp)는 SOFR−IORB에 부적합해 경보 불능이었음</b> · IORB 하드코딩도 v17.3에서 제거</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>SOFR−IORB 기준(재보정):</b> <b>≤-10bp →</b> 지준 풍부 / <b>-10~-5bp →</b> 완충 축소 / <b>-5~0bp →</b> 주의 ← 해당 / <b>0bp 이상(역전) 3영업일+ →</b> 지준 희소화 경보 / <b>+10bp+ →</b> 2019년형 경색<br>분기말·세납 1~2일 스파이크는 구조적 — <b>3영업일 연속이 최소 요건</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>-3bp</b>(8/13 SOFR 3.62% vs IORB 3.65%) — 5/21 -14bp에서 <b>3개월간 11bp 축소</b>. TGA 리빌드·지준 $3T 재이탈과 정합하며 <b>완충이 얇아지는 중</b>.<br><b>⚠️ 지표 정의:</b> DTCC GCF는 미공개라 이 행은 <b>SOFR−IORB 대체치</b>. 기존 임계(+20/+30bp)는 GCF 기준이라 <b>구조적으로 경보 불능</b>이었고, 재보정 결과 같은 -3bp의 판정이 「정상」→「주의」로 바뀌었다.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>0bp 역전이 지준 경보 격상의 필수 조건</b>(row-reserves 3요건 중 ②) ② <b>9/15 분기납세</b>가 최대 시험대 ③ -5bp 상향 돌파 시 격상 검토</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>표시값 284bp는 val 패치 부재로 남은 화석값 → v17 패치 추가로 해소 → 8/15 임계 재보정 + IORB 하드코딩 제거(FRED 조회)</span>
+    <span class="tag tag-warn">🟡 -3bp — <b>재보정으로 「정상」→「주의」 판정 변경</b> · 5월 -14bp에서 11bp 축소 · 기존 GCF 임계는 경보 불능이었음</span>
   </td>
   <td class="src">DTCC GCF(미공개)<br>SOFR-IORB 대체</td>
   
@@ -771,13 +752,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/11 · CFTC TFF Lev Funds</span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>구조적 특성:</b> 헤지펀드(Leveraged Funds)는 Basis Trade(현물 매수·선물 공매도) 구조상 국채 선물에서 <em>구조적 Net Short</em>을 유지 — 이는 정상. 문제는 <b>Short 규모 급팽창</b> 또는 <b>급격한 포지션 전환</b>이 발생할 때 청산 리스크.<br>
-    <b>🔴 사상 최대권 경신(8/15 갱신): 8/11 Net Short 2,123K계약</b>. 5/19 1,952K → 6/9 1,913K → <b>8/11 2,123K</b>로 <b>2개월간 +210K(+11%) 증가</b>. 2023~2024 피크 당시 명목가치 ~$8,000억(OFR) 기준을 넘어서는 규모로 <b>베이시스 트레이드가 재구축을 넘어 확대 국면</b>.<br>
-    <b>⚠️ 왜 지금 위험한가 — 조합이 나쁨:</b> ① 포지션 사상 최대권 ② <b>MOVE 76대·VIX 14대로 변동성이 저점</b>(레버리지가 싸게 조달되는 환경) ③ <b>은행 채널 국채 흡수 정지</b>로 현물 측 완충 부족 ④ 호르무즈 재봉쇄로 지정학 충격 tail 상존. <b>변동성이 낮을 때 포지션이 최대가 되는 건 전형적인 청산 사고 전조 배열</b>이며, 2019년 9월 레포 발작·2020년 3월 국채 발작이 모두 이 구도에서 나왔다.<br>
-    <b>임계:</b> <b>주간 -50K 이상 급감 →</b> 강제 청산 본격화·10Y UST 급등 연동 / <b>유지·확대 →</b> 재구축 지속 / <b>2,200K 돌파 →</b> 규모 경보 격상(신설)<br>
-    <b>교차 확인:</b> 스왑스프레드(row-swap)와 병행 필수 — 현재 generic -19bp/SOFR -40bp대로 <b>SOFR 기준은 -50bp 강제청산 임계에 근접</b>. 산식 불일치 미해결 상태라 이 조합에서는 <b>보수적으로 SOFR 기준을 채택</b>하는 게 안전.<br>
-    ⚠️ 케이맨 헤지펀드 $1.4조 TIC 과소집계 — 실제 포지션은 COT보다 클 수 있음<br>
-    <span class="tag tag-alert">🔴 2,123K계약(8/11·사상 최대권) — 2개월 +11% 확대 · <b>저변동성(MOVE 76·VIX 14) + 사상 최대 포지션 + 은행 흡수 정지 = 청산 사고 전조 배열</b> · SOFR 스왑스프레드 -50bp 임계 근접과 병행 주시</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>주간 -50K 이상 급감 →</b> 강제 청산 본격화·10Y 급등 연동 / <b>유지·확대 →</b> 재구축 지속 / <b>2,200K 돌파 →</b> 규모 경보 격상(신설)<br>헤지펀드는 Basis Trade 구조상 <b>구조적 Net Short이 정상</b> — 문제는 규모 급팽창과 급격한 전환</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>Net Short 2,123K계약</b>(8/11·<b>사상 최대권</b>) — 5/19 1,952K → 6/9 1,913K → 8/11 2,123K로 <b>2개월 +11%</b>. 2023~24 피크 명목 ~$8,000억(OFR)을 넘는 규모로 재구축을 넘어 <b>확대 국면</b>.<br><b>🔴 조합이 나쁘다:</b> ① 포지션 사상 최대 ② <b>MOVE 76·VIX 14로 변동성 저점</b>(레버리지가 싸게 조달되는 환경) ③ 은행 국채 흡수 정지로 현물 완충 부족 ④ 호르무즈 재봉쇄 tail. <b>저변동성에서 포지션이 최대가 되는 건 2019년 9월·2020년 3월 사고의 공통 배열.</b><br>⚠️ 케이맨 헤지펀드 $1.4조 TIC 과소집계 — 실제는 COT보다 클 수 있음.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 스왑스프레드 SOFR 기준 -50bp 도달 시 <b>포지션 급감 여부 즉시 확인</b> — 둘이 동시면 청산 진행 중 ② 2,200K 돌파 ③ 10Y 4.75% 돌파 시 재확인</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4/2 관세 충격으로 1차 청산(스왑 -65bp) → 재구축 → 8/15 사상 최대권 경신</span>
+    <span class="tag tag-alert">🔴 2,123K 사상 최대권 — 2개월 +11% · <b>저변동성 + 최대 포지션 + 얇은 현물 완충 = 사고 배열</b></span>
   </td>
   <td class="src"><a href="https://www.cftc.gov/MarketReports/CommitmentsofTraders/">CFTC COT</a><br>TFF / 매주 금</td>
   
@@ -791,15 +770,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">Q1 2026 · FRED Z.1 $724.3B / <b>공식 CFR $734.3B</b> — 공식 수치는 분기 CFR 발행 시 수동 갱신</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    정상 범위 <b>$1,890억~$8,040억</b>(2015~2025 실측). SVB 사태 피크 <b>$1조</b><br>
-    <b>🆕 임계 재정의(8/15) — $700B 단독 돌파는 경보 근거로 쓰지 않는다:</b> 공식 분기 추이를 확인한 결과 <b>Q2 2025에 이미 $742.8B로 현재보다 높았고 아무 일도 없었다</b>. 레벨 단독이 아니라 <b>① $700B 초과 + ② 연체·비발생 advance 발생 + ③ H.8 소형은행 Borrowings 동반 증가</b> 3개 동시 성립을 경보 요건으로 한다. <b>현재 ①만 충족, ②③ 미충족.</b><br>
-    <b>✅ 공식 원본 대조 완료(8/15):</b> FHLBank Office of Finance <b>Q1 2026 Combined Financial Report(5/14 발행)</b> 기준 Advances <b>$734,267M = $734.3B</b>(원금 $735,628M). FRED Z.1 $724.3B와 약 $10B 차이로 <b>기존에 알려진 집계 차이 범위와 일치</b>, 분기 귀속(Q1 2026)도 정확. <a href="https://www.fhlb-of.com/ofweb_userWeb/resources/2026Q1CFR.pdf" target="_blank">2026Q1CFR.pdf</a><br>
-    <b>공식 분기 추이:</b> 2025.3 $694.0B → <b>2025.6 $742.8B</b> → 2025.9 $693.5B → 2025.12 $676.7B → <b>2026.3 $734.3B(+$57.6B QoQ)</b>. <b>신고점이 아니라 작년 중반 수준 복귀</b>다.<br>
-    <b>🟢 스트레스 신호는 확인되지 않음:</b> ① 공식 보고서 — <b>모든 FHLBank에서 연체·비발생·손상 advance 0건, 대손충당금 미설정</b> ② FHLBank Chicago는 증가 사유를 <b>"예금취급기관·보험사 회원의 차입 증가"</b>로 설명(부실·유동성 압박 언어 없음) ③ H.8 Table 8 소형은행 8/5 Cash $484.5B·Borrowings $284.7B로 안정.<br>
-    <b>🔑 유력 해석 — 지역은행 부실이 아니라 eSLR 프론트런 조달:</b> 만기 <b>1년 이내가 $389.8B → $445.4B</b>, <b>변동금리가 $235.5B → $283.5B(+$48B)</b>로 단기·변동 조달이 급증했다. <b>Q1 2026(1~3월)은 본 파일이 이미 문서화한 「eSLR 발효(4/1) 전 은행 국채 프론트런」 구간과 정확히 겹치며</b>, 같은 기간 H.8 Non-MBS도 $1,980.1B(1월) → $2,019.4B(3월)로 +$39.3B 증가했다. <b>은행이 국채를 미리 매입하며 그 자금을 FHLB 단기 advance로 조달한 구도</b>로 읽는 것이 정합적 — <b>규제 대응 자금조달이지 신용 스트레스가 아니다.</b><br>
-    <b>⚠️ 그래도 관찰은 유지하는 이유:</b> 프론트런이 끝난 <b>Q2 2026에도 $700B대가 유지되면</b> 위 해석이 무너지고 다른 조달 압력을 의심해야 한다. C&amp;I 연환산 -1.1%·BDC PIK 8%와 조합될 경우 재평가.<br>
-    <b>다음 관찰:</b> ① <b>Q2 2026 CFR(8월 중순 발행 예정)</b> — 프론트런 종료 후 되돌림 여부가 핵심 ② 연체·비발생 advance 첫 발생 ③ H.8 Table 8 소형은행 Borrowings 증가 ④ 데이터는 FRED Z.1(자동)로 추적하되 <b>레벨 판단은 공식 CFR 기준</b>($10B 차이 상시 유의).<br>
-    <span class="tag tag-warn">🟡 공식 $734.3B(Q1 2026·FRED $724.3B) — <b>$700B 초과이나 Q2 2025 $742.8B 선례 존재, 신고점 아님</b> · <b>연체·비발생 0건·충당금 미설정으로 스트레스 신호 없음</b> · 단기·변동 조달 급증 = <b>eSLR 프론트런 자금조달로 해석</b> · Q2 CFR에서 되돌림 확인이 판정점</span>
+    <span class="th"><span class="th-k k-rule">임계</span>정상 범위 $1,890억~$8,040억(2015~2025 실측) · SVB 피크 $1조<br><b>경보는 3개 동시:</b> ① $700B 초과 ② 연체·비발생 advance 발생 ③ H.8 소형은행 Borrowings 동반 증가 ← <b>현재 ①만 충족</b><br><b>$700B 단독 돌파는 경보 근거로 쓰지 않는다</b> — Q2 2025에 이미 $742.8B였고 아무 일 없었음</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>공식 CFR $734.3B</b>(Q1 2026·원금 $735.6B) / FRED Z.1 $724.3B — <b>약 $10B 차이는 기존에 알려진 집계 차이</b>. 레벨 판단은 공식 CFR 기준.<br>추이: 2025.3 $694.0 → <b>2025.6 $742.8</b> → 2025.9 $693.5 → 2025.12 $676.7 → <b>2026.3 $734.3B</b> — <b>신고점이 아니라 작년 중반 수준 복귀</b>.<br><b>🟢 스트레스 신호 없음:</b> 공식 보고서상 <b>연체·비발생·손상 advance 0건, 대손충당금 미설정</b>. Chicago는 증가 사유를 "예금취급기관·보험사 회원 차입 증가"로 설명.<br><b>🔑 유력 해석:</b> 만기 1년 이내 $389.8→$445.4B, 변동금리 +$48B로 <b>단기·변동 조달 급증</b>. Q1 2026은 <b>eSLR(4/1) 전 국채 프론트런 구간</b>과 겹치고 같은 기간 H.8 Non-MBS도 +$39.3B — <b>규제 대응 조달이지 신용 스트레스가 아니다</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>Q2 2026 CFR</b> — 프론트런 종료 후 되돌림 여부가 핵심 ② 연체·비발생 첫 발생 ③ H.8 소형은행 Borrowings 증가(현재 $284.7B 안정) ④ Q2에도 $700B대 유지 시 위 해석 폐기</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>FRED만 보고 8/15 "임계 초과·경보"로 격상 → 같은 날 <b>공식 CFR 대조로 Q2 2025 선례 확인, 경보→주의 격하</b></span>
+    <span class="tag tag-warn">🟡 공식 $734.3B — $700B 초과이나 <b>Q2 2025 $742.8B 선례로 신고점 아님</b> · 연체 0건·충당금 미설정 · <b>eSLR 프론트런 조달로 해석</b></span>
   </td>
   <td class="src">FHLB Office of Finance<br>FRED: FHLBADVANCES</td>
 </tr>
@@ -827,11 +802,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/7 종가 · FRED DEXJPUS</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>145 이하 →</b> 엔캐리 청산 가속·미국채 매도 연쇄 / <b>140 이하 →</b> 2024/8 재현 경로<br>
-    <b>8/7 157.54</b> — 5/15 158.69 대비 소폭 엔 강세이나 <b>145 임계와 여전히 12.5엔 거리</b>. JGB 2.80% 고점권에도 엔 약세 지속 = 미-일 금리차 축소 속도가 완만.<br>
-    <b>⚠️ 엔캐리 청산 경로는 아직 열리지 않음:</b> 리패트리에이션 조짐이 H.8 외국계 채널에서 나타나고 있으나(row-h8-foreign), <b>환율 측 트리거(145)는 미충족</b>. 두 경로는 별개이며 <b>환율 없이 진행되는 완만한 축소</b>가 현재 그림.<br>
-    <b>다음 관찰:</b> BOJ 추가 인상 시 145 재테스트 / <b>160+ 시 당국 개입 경계</b> / 145 이탈 시 COT 사상 최대 숏(row-cot)과 겹쳐 청산 연쇄 tail 급증<br>
-    <span class="tag tag-warn">🟡 157.54(8/7) — 145 임계와 12.5엔 거리, <b>엔캐리 청산 경로 미개시</b> · JGB 고점권에도 엔 약세 지속</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>145 이하 →</b> 엔캐리 청산 가속·미국채 매도 연쇄 / <b>140 이하 →</b> 2024/8 재현 / <b>160+ →</b> 당국 개입 경계</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>157.54</b>(8/7) — <b>145 임계와 12.5엔 거리</b>. JGB 2.80% 고점권에도 엔 약세 지속 = 미-일 금리차 축소 속도가 완만.<br><b>환율 트리거는 아직 열리지 않았다:</b> H.8 외국계 채널에서 리패트리에이션 조짐이 나타나고 있으나(row-h8-foreign) 환율 측은 미충족 — <b>두 경로는 별개이며 현재는 환율 없이 진행되는 완만한 축소</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① BOJ 추가 인상 시 145 재테스트 ② <b>145 이탈 시 COT 사상 최대 숏과 겹쳐 청산 연쇄 tail 급증</b> ③ 160 접근 시 개입 경계</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5월 158.69 → 8/15 157.54로 소폭 엔 강세이나 임계와 거리 유지</span>
+    <span class="tag tag-warn">🟡 157.54 — 145까지 12.5엔, <b>엔캐리 청산 경로 미개시</b> · JGB 고점권에도 엔 약세 지속</span>
   </td>
   <td class="src"><a href="https://tradingeconomics.com/japan/currency">tradingeconomics</a><br>USD/JPY</td>
 </tr>
@@ -842,11 +817,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">6.74~6.75대, 위안 강세권 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-ok">정상</span></td>
     <td class="threshold">
-    <b>7.20 돌파 →</b> 위안 약세 용인 시그널 / <b>7.35+ →</b> 자본유출 압박·페트로위안 내러티브 강화<br>
-    <b>8월 6.74~6.75대</b> — 6/30 6.7922 대비 <b>추가 절상</b>, 7.20 임계와의 거리가 더 벌어짐. 위안 강세 기조 지속으로 PBOC 적극 관리 유지 확인.<br>
-    <b>⚠️ 달러 강세 환경에서의 위안 강세 = 의도적 관리:</b> DXY 119대 강세가 3개월 고착된 상황에서도 위안이 절상되는 건 <b>시장 압력이 아니라 정책 의지</b>. <b>자본유출 압박 신호 없음</b>이며 7.20 상방 돌파 가능성은 현저히 낮은 구간 유지.<br>
-    <b>다음 관찰:</b> 미중 관세 협상 국면에서 <b>절하 용인으로 전환하는지</b>가 유일한 반전 트리거 / 호르무즈 재봉쇄로 중국의 이란산 원유 조달 조건이 바뀌면 간접 영향 가능<br>
-    <span class="tag tag-ok">🟢 6.74~6.75대(8월) — 추가 절상, 7.20 임계와 거리 확대 · <b>달러 강세 속 위안 강세 = PBOC 정책 의지, 자본유출 압박 없음</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>7.20 돌파 →</b> 위안 약세 용인 시그널 / <b>7.35+ →</b> 자본유출 압박·페트로위안 내러티브 강화</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>6.74~6.75대</b>(8월) — 6/30 6.7922에서 <b>추가 절상</b>, 7.20 임계와 거리가 더 벌어짐.<br><b>DXY 119대 강세가 3개월 고착된 환경에서도 위안이 절상</b>되는 건 시장 압력이 아니라 <b>PBOC의 정책 의지</b>. 자본유출 압박 신호 없으며 7.20 상방 돌파 가능성은 현저히 낮은 구간.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 미중 관세 협상에서 <b>절하 용인으로 전환하는지</b>가 유일한 반전 트리거 ② 호르무즈 재봉쇄로 중국의 이란산 원유 조달 조건이 바뀌면 간접 영향</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6월 이후 절상 기조 지속 — 임계와의 거리 확대</span>
+    <span class="tag tag-ok">🟢 6.74~6.75대 — 추가 절상, 7.20과 거리 확대 · <b>달러 강세 속 위안 강세 = PBOC 정책 의지, 유출 압박 없음</b></span>
   </td>
   <td class="src">PBOC 매일 고시<br>FRED: DEXCHUS</td>
 </tr>
@@ -857,12 +832,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/7 종가 · FRED DTWEXBGS</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>100 이하 →</b> 달러 약세 구간 / <b>106+ →</b> 신흥국 부채 압박 재점화 / <b>94↓ →</b> 달러 패권 위기 심화<br>
-    <b>8/7 119.06</b>(FRED DTWEXBGS 광의 지수) — 5/15 119.28 대비 사실상 <b>횡보</b>. 이란전 이후 형성된 달러 강세 레벨이 3개월째 고착.<br>
-    <b>⚠️ 베센트 약달러 목표와의 괴리 지속:</b> 재무부의 약달러 유도 의도(bessent_ati_precedent_ref)에도 <b>실제 달러는 강세 레벨 유지</b>. 인상확률 74.6%·10Y 4.63%가 달러를 지지하는 구조.<br>
-    <b>🔑 Gold 급등과의 조합 해석:</b> 통상 달러 강세는 Gold 약세 요인인데, <b>8월엔 달러 횡보 속 Gold가 +10% 급등</b>했다. <b>달러 대비가 아니라 「법정화폐 전반에 대한 헤지 수요」가 커진 것</b>으로 읽는 게 정합적이며, 이는 리스크온 신호가 아니다.<br>
-    <b>다음 관찰:</b> 호르무즈 해소 + Fed 인하 전환이 동시에 나와야 약달러 복귀 경로 — <b>현재 둘 다 후퇴</b>.<br>
-    <span class="tag tag-warn">🟡 119.06(8/7·3개월 횡보) — 강세 레벨 고착, 베센트 약달러 목표와 괴리 지속 · <b>달러 횡보 속 Gold +10%는 법정화폐 전반 헤지 수요로 해석</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>100 이하 →</b> 달러 약세 구간 / <b>106+ →</b> 신흥국 부채 압박 / <b>94↓ →</b> 달러 패권 위기<br>(FRED DTWEXBGS 광의 지수 기준)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>119.06</b>(8/7) — 5/15 119.28 대비 사실상 <b>횡보</b>, 이란전 이후 강세 레벨이 3개월째 고착. 인상확률 74.6%·10Y 4.63%가 달러를 지지.<br><b>🔑 Gold와의 조합:</b> 통상 달러 강세는 Gold 약세 요인인데 <b>8월엔 달러 횡보 속 Gold +10%</b>였다. <b>달러 대비가 아니라 「법정화폐 전반에 대한 헤지 수요」</b>로 읽는 게 정합적이며, 리스크온 신호가 아니다.<br>베센트 약달러 목표와의 괴리는 지속.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 호르무즈 해소 + Fed 인하 전환이 <b>동시에</b> 나와야 약달러 복귀 — <b>현재 둘 다 후퇴</b> ② 106 하향 시 압박 완화</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>이란전 이후 강세 고착 3개월 — 8/15 Gold 급등과의 디커플링 해석 추가</span>
+    <span class="tag tag-warn">🟡 119.06 3개월 횡보 — 베센트 약달러 목표와 괴리 지속 · <b>달러 횡보 속 Gold +10%는 법정화폐 전반 헤지 수요</b></span>
   </td>
   <td class="src"><a href="https://www.investing.com/currencies/us-dollar-index">Investing.com</a><br>DXY / FRED: DTWEXBGS</td>
 </tr>
@@ -890,13 +864,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">8/14 기준 약 $62,500 — 규제 기대 후퇴로 하락 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>200주선 ~$59K →</b> 구조적 지지 / <b>$62,650·$65,000 →</b> 핵심 지지<br>
-    <b>$72K+ →</b> 추세 전환 확인 구간 / <b>$85K+ →</b> 200일선 돌파 추세 전환 확인 ← <b>현재 200일선 큰 폭 하회 유지</b><br>
-    <b>현황(8/14) 약 $62,500:</b> 6/30 저점 $59,384에서 반등했으나 <b>$62,650 지지선 부근에서 정체</b>. 8/7 $64,762(주간 +3.1%) → 8/14 약 $62,500으로 <b>주간 되밀림</b>. 200주선(~$59K)은 지켰으나 추세 전환 구간($72K)과는 여전히 큰 거리.<br>
-    <b>🔴 이번 구간의 핵심 — Gold와 완전히 갈라섰다:</b> 같은 8월에 <b>Gold는 $4,000 → $4,380(+10%) 급등</b>했는데 BTC는 약세. 6/30에 "Gold·BTC 동반 약세 = 달러 강세에 양쪽 눌림"으로 재해석했으나, <b>이제는 안전자산만 오르고 BTC는 못 오르는 구도</b>다. <b>「BTC = 대체 통화·금 대용」 서사는 이번 구간에서 지지받지 못했고, BTC는 순수 위험자산으로 거래되고 있다</b>는 게 정확한 판독.<br>
-    <b>🔴 입법 순풍도 소멸:</b> CLARITY Act 확률이 62% → 약 20%로 붕괴(row-clarity)하며 <b>5~6월의 "입법 모멘텀 유지" 완충이 사라졌다.</b> ETF도 순유출 전환(-$56.2M). <b>가격·자금유입·입법 3개가 모두 동시에 후퇴한 건 이번이 처음.</b><br>
-    <b>다음 관찰:</b> ① 200주선 $59K 방어 여부(이탈 시 구조적 지지 상실) ② <b>Gold와의 괴리가 좁혀지는지 — 좁혀지지 않으면 리스크온 전환은 아직</b> ③ ETF 순유입 2주 연속 복귀가 최소 반등 요건.<br>
-    <span class="tag tag-warn">🟡 약 $62,500(8/14) — 200주선은 방어하나 $72K 추세 전환과 거리 · <b>Gold 급등과 완전 디커플링 = 대체통화 서사 미지지, 순수 위험자산 거래</b> · <b>가격·ETF·입법 3개 동시 후퇴</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>200주선 ~$59K →</b> 구조적 지지 / <b>$62,650·$65,000 →</b> 핵심 지지 / <b>$72K+ →</b> 추세 전환 확인 / <b>$85K+ →</b> 200일선 돌파<br>ETF 순유입 2주 연속 복귀가 <b>반등 최소 요건</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>약 $62,500</b>(8/14) — 6/30 저점 $59,384에서 반등했으나 <b>$62,650 지지선 부근 정체</b>, 200주선은 방어. 추세 전환($72K)과는 큰 거리.<br><b>🔴 Gold와 완전히 갈라섰다:</b> 같은 8월 Gold +10%인데 BTC는 약세. <b>「BTC = 대체 통화·금 대용」 서사는 이번 구간에서 미지지</b>이며 순수 위험자산으로 거래되고 있다.<br><b>입법 완충도 소멸:</b> CLARITY 확률이 62%→약 20%로 붕괴, ETF는 순유출 전환. <b>가격·자금유입·입법 3개가 동시 후퇴한 건 이번이 처음.</b></span>
+    <span class="th"><span class="th-k k-next">다음</span>① 200주선 $59K 방어 여부 ② <b>Gold와의 괴리가 좁혀지는지 — 안 좁혀지면 리스크온 전환 아님</b> ③ ETF 2주 연속 순유입</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6/30 "200주선 재이탈 직전" → 8월 반등했으나 정체. Gold 동반 약세 해석은 디커플링으로 무효</span>
+    <span class="tag tag-warn">🟡 약 $62,500 — 200주선 방어하나 정체 · <b>Gold 급등과 디커플링 = 대체통화 서사 미지지</b> · 가격·ETF·입법 3개 동시 후퇴</span>
   </td>
   <td class="src"><a href="https://finance.yahoo.com/quote/BTC-USD/">Yahoo Finance</a><br>Fortune / CME BTC</td>
 </tr>
@@ -907,12 +879,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">Farside: 8/14 -$56.2M, 순유출 전환 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>주간 $7억+ →</b> 기관 수요 구조적 유지 / <b>일별 순유출 지속 →</b> 센티먼트 악화 신호<br>
-    <b>현황(8/14) -$56.2M 순유출:</b> 8/7 <b>+$101.7M 순유입</b>으로 잠시 전환했다가 <b>1주 만에 순유출로 재반전</b>. 6/29 -$231.0M 대비 유출 규모 자체는 작으나 <b>방향이 다시 유출</b>이라는 게 핵심 — 기관 재진입 트리거는 여전히 미충족.<br>
-    <b>⚠️ 판독 원칙:</b> 이 지표는 일별 진폭이 커서 <b>단일 일자 수치로 방향 판정 금지</b> — 본 파일의 다른 행과 동일하게 <b>주간 누적 또는 2주 연속 동일 방향</b>을 최소 요건으로 한다(신설).<br>
-    <b>🔴 입법 모멘텀 상실과 동시 발생:</b> 5~6월에는 "GENIUS Act·CLARITY 입법 모멘텀 유지"가 유출을 상쇄하는 논리였으나, <b>CLARITY 확률이 약 20%로 붕괴(row-clarity)하며 그 완충이 사라졌다.</b> <b>가격(row-btc)·자금유입·입법 3개 동시 후퇴 구도</b>.<br>
-    <b>다음 관찰:</b> <b>2주 연속 순유입 + BTC $65K 회복 동시</b>가 기관 재진입 최소 확인 요건 / 순유출이 주간 -$500M 규모로 확대되면 센티먼트 악화 경보 격상.<br>
-    <span class="tag tag-warn">🟡 -$56.2M(8/14) — 8/7 순유입(+$101.7M) 후 1주 만에 유출 재반전 · <b>입법 완충 소멸로 가격·유입·입법 3개 동시 후퇴</b> · 2주 연속 순유입이 재진입 최소 요건</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>주간 $7억+ →</b> 기관 수요 구조적 유지 / <b>순유출 지속 →</b> 센티먼트 악화 / <b>주간 -$500M 규모 확대 →</b> 경보 격상<br><b>일별 진폭이 커서 단일 일자로 방향 판정 금지</b> — 주간 누적 또는 2주 연속이 최소 요건(신설)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>-$56.2M</b>(8/14 Farside) — 8/7 +$101.7M 순유입으로 잠시 전환했다가 <b>1주 만에 유출 재반전</b>. 6/29 -$231.0M 대비 규모는 작으나 <b>방향이 다시 유출</b>이라 기관 재진입 트리거는 미충족.<br><b>입법 완충 소멸:</b> 5~6월엔 "GENIUS·CLARITY 입법 모멘텀"이 유출을 상쇄하는 논리였으나 <b>CLARITY 확률이 약 20%로 붕괴</b>하며 그 완충이 사라졌다. 가격·유입·입법 <b>3개 동시 후퇴</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>2주 연속 순유입 + BTC $65K 회복 동시</b>가 기관 재진입 최소 확인 요건 ② 주간 -$500M 확대 시 경보</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6월 순유출 지속 → 8/7 일시 순유입 → 8/14 재반전</span>
+    <span class="tag tag-warn">🟡 -$56.2M — 8/7 순유입 후 1주 만에 유출 재반전 · <b>입법 완충 소멸로 가격·유입·입법 3개 동시 후퇴</b></span>
   </td>
   <td class="src">Bloomberg ETF 플로우<br>IBIT 주간 유입</td>
 </tr>
@@ -923,12 +894,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">Polymarket 약 20%, 확률 추가 하락 지속 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>60%+ 회복 →</b> 입법 모멘텀 재점화 / <b>40%↓ →</b> 표결 불투명 / <b>20%↓ →</b> 2026년 내 통과 사실상 무산(신설)<br>
-    <b>🔴 확률 붕괴(8/15 갱신): Polymarket 약 20%</b>. 5/23 62% → 7월 → 8/7 17% → 현재 약 20%로 <b>3개월간 -42%p</b>. 5~6월에 기록한 "마크업 통과·입법 모멘텀 확인" 대비 시장은 <b>본회의 통과 가능성을 사실상 배제</b>하는 쪽으로 이동.<br>
-    <b>기확인 사실(변경 없음):</b> 5/14 Banking Cmte 마크업 통과 ✅ / GENIUS Act(스테이블코인) 5/19 상원 본회의 통과(66-32) ✅. <b>즉 위원회 단계는 넘었으나 본회의 60표 확보에서 막힌 구도</b>가 3개월째 고착.<br>
-    <b>잔존 장벽:</b> 상원 본회의 60표(Gillibrand·Kennedy 미확약) / ABA·BPI·ICBA 반대 지속 / 스테이블코인 이자 지급 조항·윤리 조항이 핵심 쟁점 / <b>8월 recess 이후 남은 입법 일정이 중간선거 국면과 겹쳐 사실상 마지막 창</b>.<br>
-    <b>⚠️ 자산 연동:</b> BTC $62.5K 약세·ETF 순유출(-$56.2M)과 정합 — <b>"규제 명확성 기대"는 더 이상 크립토 강세 재료가 아니며, 오히려 되돌림 요인으로 작동 중.</b> 이 행을 크립토 진입 트리거로 쓰던 인과는 현재 폐기 상태.<br>
-    <span class="tag tag-alert">🔴 약 20%(Polymarket) — 5월 62%에서 -42%p, <b>본회의 60표 벽에 3개월째 고착</b> · 20%↓ 시 2026년 내 무산 판정 · <b>크립토 진입 트리거로서의 유효성 폐기</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>60%+ 회복 →</b> 입법 모멘텀 재점화 / <b>40%↓ →</b> 표결 불투명 / <b>20%↓ →</b> 2026년 내 통과 사실상 무산(신설)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>약 20%</b>(Polymarket) — 5/23 62%에서 <b>3개월간 -42%p</b>. 시장은 본회의 통과 가능성을 사실상 배제하는 쪽으로 이동.<br><b>진행 상황:</b> 5/14 Banking Cmte 마크업 통과 ✅ / GENIUS Act 5/19 상원 본회의 통과(66-32) ✅ — <b>위원회는 넘었으나 본회의 60표에서 3개월째 고착</b>. 잔존 장벽은 Gillibrand·Kennedy 미확약, ABA·BPI·ICBA 반대, 스테이블코인 이자 조항·윤리 조항.<br><b>⚠️ 자산 연동:</b> BTC 약세·ETF 순유출과 정합 — <b>「규제 명확성 기대」는 더 이상 크립토 강세 재료가 아니며 이 행을 진입 트리거로 쓰던 인과는 폐기 상태</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 8월 recess 이후 본회의 일정 — <b>중간선거 국면과 겹쳐 사실상 마지막 창</b> ② 60표 확보 신호 ③ 20% 하회 지속 시 2026년 무산 판정</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>5/23 62% → 8/7 17% → 8/15 약 20%. 마크업 통과에도 본회의 벽에서 고착</span>
+    <span class="tag tag-alert">🔴 약 20% — 5월 62%에서 -42%p, <b>본회의 60표 벽에 3개월째 고착</b> · <b>크립토 진입 트리거로서의 유효성 폐기</b></span>
   </td>
   <td class="src"><a href="https://polymarket.com/">Polymarket</a><br>CLARITY Act</td>
 </tr>
@@ -955,13 +925,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">7월 SLOOS 유지: C&amp;I 기준 basically unchanged, 대기업·중견 수요 stronger · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>기준 완화 전환 →</b> 신용창출 재개 공급 측 선행 신호 / <b>강화 지속 →</b> SLR·금리인하 효과 미전달<br>
-    <b>수요 측 동반 개선 →</b> 실질 신용 사이클 재개 확인<br>
-    <b>✅ 7월 SLOOS(최신):</b> C&amp;I 기준 <b>basically unchanged</b>(4월의 "소폭 강화"에서 중립화) / 대기업·중견 <b>수요 stronger</b>. 공급 측 긴축 기조가 멈추고 수요는 개선됐다는 <b>설문상으로는 긍정적</b> 결과.<br>
-    <b>🔴 그러나 실물과 정면 배치 — 이번 회차 확정 사항:</b> 같은 분기 H.8 실물 실행은 <b>C&amp;I 월간 연환산 Jul -1.1%</b>(row-ci)로 5개월 감속 끝 마이너스 전환. <b>SLOOS가 "수요 stronger"라고 답한 분기에 실제 대출은 줄었다.</b> 4월에도 "SLOOS 강화 vs H.8 증가"로 반대 방향 괴리가 있었으므로, <b>두 번 연속 SLOOS와 실물이 어긋난 셈</b>.<br>
-    <b>📌 프레임 수정(신설):</b> <b>SLOOS 수요 항목의 선행성을 낮춰 잡는다.</b> 대출담당자의 체감 수요와 실제 실행 사이에 안정적 선행 관계가 확인되지 않으므로, <b>SLOOS는 「기준(공급 측)」 항목만 참고하고 「수요」 항목은 실물 확인 전까지 판단 근거로 쓰지 않는다.</b> 신용 사이클 판정은 <b>H.8 월간 연환산을 1순위</b>로.<br>
-    <b>다음 관찰:</b> 10월 SLOOS(Q3)에서 기준이 완화로 전환하는지 / <b>C&amp;I Aug 연환산이 2개월 연속 마이너스면 SLOOS 수요 신호는 완전 무효화</b><br>
-    <span class="tag tag-alert">🔴 C&amp;I 기준 basically unchanged·수요 stronger(7월) — <b>같은 분기 실물 C&amp;I 연환산 -1.1%로 정면 배치</b> · 2회 연속 SLOOS-실물 괴리 · <b>수요 항목 선행성 하향, 신용 사이클 판정은 H.8 월간 연환산 1순위</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>기준 완화 전환 →</b> 신용창출 재개 공급 측 선행 신호 / <b>강화 지속 →</b> SLR·인하 효과 미전달<br>📌 <b>수요 항목은 선행성이 확인되지 않아 판단 근거로 쓰지 않는다</b>(신설) — 신용 사이클 판정은 <b>H.8 월간 연환산이 1순위</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>7월 SLOOS: C&amp;I 기준 basically unchanged</b>(4월 "소폭 강화"에서 중립화) · <b>대기업·중견 수요 stronger</b> — 설문상으로는 긍정.<br><b>🔴 그러나 실물과 정면 배치:</b> 같은 분기 H.8 실행은 <b>C&amp;I 월간 연환산 -1.1%</b>로 마이너스 전환. <b>"수요 stronger"라고 답한 분기에 실제 대출은 줄었다.</b> 4월에도 "SLOOS 강화 vs H.8 증가"로 어긋났으므로 <b>2회 연속 괴리</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 10월 SLOOS(Q3)에서 기준이 완화로 전환하는지 ② <b>C&amp;I Aug 연환산이 2개월 연속 마이너스면 수요 신호는 완전 무효화</b></span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>4월 "공급 강화 기조" → 7월 중립화·수요 개선 → <b>8/15 실물 배치 확인으로 수요 항목 선행성 하향</b></span>
+    <span class="tag tag-alert">🔴 기준 unchanged·수요 stronger — <b>같은 분기 C&amp;I 연환산 -1.1%로 정면 배치, 2회 연속 괴리</b> · 판정은 H.8 월간 1순위</span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/sloos/">Fed SLOOS</a><br>분기 발표</td>
 </tr>
@@ -972,15 +940,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $2,921.6B(Table2 Line10 SA) · Jul 월간 연환산 -1.1%(Table1 Line10) · H.8 원본 PDF 대조(8/14 릴리스) · <b>자동패치 제외(v17)</b></span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>임계:</b> 월간 연환산 +10% 이상 유지 → 실수요 강세 / 월간 연환산 한 자릿수 지속 → 실수요 엔진 감속 / <b>월간 연환산 마이너스 전환 → 실물 수요 위축 국면 진입</b> ← <b>🔴 Jul -1.1%·조건 충족</b> / <b>2개월 연속 마이너스 → 위축 확정</b>(신설·Aug이 판정점) / 주간 레벨 $2,850B 하향 이탈 → 위축 경보<br>
-    <b>⚠️ 판독 원칙:</b> 주간 값은 ±$20B 진폭이 일상이라 <b>방향 판정에 쓰면 오독한다</b> — 레벨 신고점과 월간 마이너스가 동시에 성립할 수 있다(현재가 정확히 그 상태). <b>추세 판정은 Table 1의 월간 연환산으로만, 주간은 레벨 확인용.</b><br>
-    <b>🔴 현황(8/5) — 예측대로 Jul 연환산 마이너스 전환:</b> 월간 연환산 <b>Mar 16.5% → Apr 15.8% → May 10.8% → Jun 4.0% → Jul -1.1%</b>. 5개월 연속 감속 끝에 <b>2025년 이후 첫 마이너스</b>. 지난 회차에 "7월 주간 평균 레벨이 6월과 거의 같아 Jul 연환산은 마이너스 근처로 나올 개연성"으로 적어둔 예측이 <b>그대로 적중</b>. (Jun은 3.7%→4.0% 상향 개정)<br>
-    <b>레벨은 여전히 신고점:</b> 주간 7/15 $2,889.7 → 7/22 $2,888.1 → 7/29 $2,908.6 → <b>8/5 $2,921.6B(+$13.0B)</b>. 레벨 기준으로는 사상 최고. <b>레벨 신고점 ≠ 증가율 — 잔액이 높은 수준에서 정체하면 연환산은 마이너스로 찍힌다.</b> 이 구간에서 레벨만 보면 정반대 결론이 나오므로 주의.<br>
-    <b>🔑 주체 분해 — 이번엔 국내 대형은행 주도(지난 회차와 반대):</b> 대형은행 $1,557.6 → <b>$1,567.9B(+$10.3B·79%)</b> · 소형 $732.6 → $735.0B(+$2.4B) · <b>외국계 $618.4 → $618.6B(+$0.2B·정지)</b>. 지난 회차의 "증가분 68%가 외국계"는 그 주 한정 현상이었고, <b>8/5은 외국계가 완전히 멈추고 국내 대형은행이 밀어올린 구도</b>. 단 이 국내 증가로도 월간 연환산은 마이너스라는 점이 핵심.<br>
-    <b>📝 프레임 확정 유지: C&amp;I ≠ AI capex 게이지.</b> 하이퍼스케일러는 회사채·현금흐름·프라이빗크레딧/프로젝트파이낸스로 조달하며 은행 C&amp;I는 사실상 미사용 채널. <b>C&amp;I 증감을 AI 사이클 신호나 재진입 conviction 필터로 쓰는 인과는 폐기(유지).</b> C&amp;I는 <b>비AI 실물 기업 자금수요</b> 지표로만 사용.<br>
-    <b>🔴 SLOOS와의 괴리 확정:</b> 7월 SLOOS는 "대기업·중견 수요 stronger"였는데 같은 분기 실물 실행은 <b>연환산 마이너스</b>. <b>설문상 수요와 실제 대출 실행 사이 괴리가 데이터로 확인됨</b> — 향후 SLOOS 수요 항목의 선행성을 낮춰 잡아야 함.<br>
-    <b>다음 관찰:</b> ① <b>Aug 월간 연환산이 2개월 연속 마이너스인지 — 위축 확정 판정점</b> ② 플러스 복귀 시 Jul은 일회성 기저효과로 재분류 ③ NDFI(Line 26)가 계속 신고점을 경신하는지 — <b>C&amp;I 마이너스 + NDFI 신고점 조합이 유지되면 「실수요→섀도우뱅킹 행선지 이동」 경보 유지</b>(row-h8-nonbank 연동).<br>
-    <span class="tag tag-alert">🔴 $2,921.6B(8/5·+$13.0B·레벨 신고점) — 그러나 <b>Jul 월간 연환산 -1.1%로 5개월 감속 끝 첫 마이너스 전환</b> · 주간 증가분 79%가 국내 대형은행(외국계는 정지) · SLOOS "수요 stronger"와 실물 실행의 괴리 확정 · Aug이 위축 확정 판정점</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>월간 연환산 +10%↑ →</b> 실수요 강세 / <b>한 자릿수 →</b> 감속 / <b>마이너스 전환 →</b> 위축 국면 진입 ← 충족 / <b>2개월 연속 마이너스 →</b> 위축 확정 / 주간 $2,850B 이탈 → 위축 경보<br><b>판독 원칙:</b> 주간은 ±$20B 진폭이 일상 — <b>추세는 월간 연환산으로만, 주간은 레벨 확인용</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$2,921.6B</b>(8/5·+$13.0B·레벨 신고점)이나 <b>Jul 월간 연환산 -1.1%</b>. Mar 16.5 → Apr 15.8 → May 10.8 → Jun 4.0 → <b>Jul 마이너스</b>로 5개월 감속 끝 전환. <b>레벨 신고점과 월간 마이너스는 동시 성립</b>한다(잔액이 높은 수준에서 정체하면 연환산은 마이너스).<br>주체는 대형 +$10.3B(79%)·외국계 +$0.2B로 이번엔 국내 주도 — 그럼에도 월간은 마이너스.<br><b>프레임:</b> 하이퍼스케일러는 회사채·프라이빗크레딧으로 조달 — <b>C&amp;I를 AI capex 게이지로 쓰는 인과는 폐기(유지)</b>, 비AI 실물 수요 지표로만 사용.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>Aug 연환산 2개월 연속 마이너스 여부가 위축 확정 판정점</b> ② 플러스 복귀 시 Jul은 기저효과로 재분류 ③ NDFI 신고점과의 조합 지속 여부(row-h8-nonbank 연동)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6월 "4개월 감속" → 7/29 주간 급등에도 규율대로 미격상 → 8/15 Jul 마이너스로 <b>예측 적중·감속 확정</b></span>
+    <span class="tag tag-alert">🔴 $2,921.6B 레벨 신고점 — 그러나 <b>Jul 연환산 -1.1%로 첫 마이너스</b> · SLOOS "수요 stronger"와 정면 배치 · Aug이 확정 판정점</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/BUSLOANS">FRED: BUSLOANS</a><br>H.8 월간 SA</td>
 </tr>
@@ -991,15 +955,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">원본대조</span><span class="verify-note">8/5 주간 $2,558.2B(Table2 Line35 SA) · Jul 월간 연환산 +12.1% · H.8 원본 PDF 대조(8/14 릴리스)</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>임계:</b> C&amp;I 증가 + Large Time 증가 동시 → 조달-대출 팽창 확인 / C&amp;I 증가 + Large Time 정체 + <b>Other Deposits 감소 → 조달 기반 잠식</b> ← <b>🟢 8/5 해제</b> / Large Time만 급증 + C&amp;I 정체 → 조달만 늘고 대출 못 하는 구조 ← <b>현재 이 조합에 근접</b> / $2,480B 이탈 → 도매 조달 여력 소진<br>
-    <b>🆕 임계 추가 — 예금 2주 연속 감소의 해석 규칙(신설):</b> 7월 하순~8월 초 구간의 예금 급감은 <b>세납·결제 타이밍 왜곡일 확률이 높으므로 3주 연속을 최소 요건</b>으로 한다. 이번 회차가 그 근거 — 2주 연속 감소가 3주째에 전액 되돌아왔다.<br>
-    <b>구조:</b> Large Time 단독 판단 금지 — C&amp;I·Other Deposits·Cash assets와 방향 비교가 핵심. <b>주간 값은 결제·세납 타이밍에 흔들리므로 Table 1 월간 연환산과 병행 필수.</b><br>
-    <b>🟢 현황(8/5) — 지난 회차 "조달 기반 축소" 경보 철회:</b> Large Time 7/22 $2,539.4 → 7/29 $2,544.2 → <b>8/5 $2,558.2B(+$14.0B)</b>. 더 중요한 건 리테일: Other Deposits 7/15 $16,929.1 → 7/22 $16,865.0 → 7/29 $16,823.7 → <b>8/5 $16,938.0B(+$114.3B)</b>. <b>2주 연속 누적 -$105.4B가 1주 만에 전액 회복되며 7/15 레벨을 넘어섰다.</b> 총 예금도 $19,367.9 → <b>$19,496.3B(+$128.4B)</b>. 역레포·연방기금 $737.1 → <b>$774.8B(+$37.7B)</b>, 총자산 $25,602.3 → <b>$25,648.0B(+$45.7B)</b>.<br>
-    <b>⚖️ 지난 회차 판정 사후검증 — 격상 보류가 옳았음:</b> 7/29에 (a)2주 연속✅ (b)월간 불일치❌ (c)외국계 61% 집중✅로 <b>2/3, "경보 직전 관찰"</b>에 묶어두고 격상하지 않았는데, 1주 뒤 전액 되돌려졌다. <b>월간 연환산 불일치(b)를 이유로 격상을 막은 규율이 오탐을 정확히 걸러낸 사례</b> — 이 규율은 유지·강화한다.<br>
-    <b>🟢 Jul 월간 연환산도 조달 축소를 지지하지 않음:</b> Large Time <b>Jun -9.9% → Jul +12.1%</b>로 플러스 반전(지난 회차의 "도매 조달 축소 추세 확정" 우려 소멸). Cash assets <b>Jun -26.6% → Jul +25.7%</b>로 반전. Deposits Jul +3.2%. <b>단 Other Deposits는 Jun 7.7% → Jul 1.9%로 크게 감속</b> — 리테일 예금 증가세 둔화는 별개로 유효하며, 이쪽이 남은 유일한 조달 측 우려.<br>
-    <b>⚠️ Cash assets는 3주 연속 감소이나 주체가 바뀜:</b> $3,132.9 → $3,040.8 → <b>$3,009.8B(-$31.0B)</b>. 단 <b>대형은행은 $1,323.8 → $1,376.0B(+$52.2B) 반등</b>했고, 감소는 <b>외국계 지점(-$82.6B)</b>이 주도. <b>지난 회차의 "국채 매입 재원이 산술적으로 지속 불가능" 경고는 국내 대형은행에 관한 한 철회</b>하고, 외국계 대차대조표 축소 이슈(row-h8-foreign)로 이관한다.<br>
-    <b>다음 관찰:</b> ① Other Deposits Aug 연환산이 1.9%에서 더 떨어지는지 — 리테일 조달 둔화가 유일하게 남은 조달 측 우려 ② Large Time만 계속 늘고 C&amp;I가 마이너스를 유지하면 <b>"조달만 늘고 대출 못 하는 구조"</b> 임계 발동 ③ 8/12 주간에 예금이 다시 빠지면 3주 규칙에 따라 재점검.<br>
-    <span class="tag tag-ok">🟢 $2,558.2B(8/5·+$14.0B) · Jul 연환산 +12.1%로 반전 — <b>리테일 예금 +$114.3B로 2주 감소분 전액 회복, "조달 기반 축소" 경보 철회</b> · Cash 감소는 외국계 주도로 판명(대형은행 +$52.2B 반등) · 남은 우려는 Other Deposits 연환산 7.7%→1.9% 감속</span>
+    <span class="th"><span class="th-k k-rule">임계</span>C&amp;I↑ + Large Time↑ → 조달-대출 팽창 / C&amp;I↑ + Large Time 정체 + <b>Other Deposits↓ →</b> 조달 기반 잠식 / <b>Large Time만 급증 + C&amp;I 정체 →</b> 조달만 늘고 대출 못 함 ← 근접 / $2,480B 이탈 → 도매 여력 소진<br><b>예금 감소는 3주 연속을 최소 요건</b>으로 한다(신설·7월 하순 2주 감소가 1주 만에 전액 되돌려진 사례 반영)</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>$2,558.2B</b>(8/5·+$14.0B) · Jul 연환산 <b>+12.1%</b>(Jun -9.9%에서 반전). 핵심은 리테일 — <b>Other Deposits +$114.3B로 2주 누적 감소분(-$105.4B)을 1주 만에 전액 회복</b>, 총예금 +$128.4B·역레포 +$37.7B·총자산 +$45.7B. <b>「조달 기반 축소」 경보 철회.</b><br>Cash는 3주 연속 감소(-$31.0B)이나 <b>대형은행은 +$52.2B 반등</b>이고 감소는 외국계(-$82.6B) 주도 → 외국계 이슈로 이관.<br><b>남은 우려:</b> Other Deposits 연환산이 Jun 7.7% → <b>Jul 1.9%로 급감속</b>.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① Other Deposits Aug 연환산이 더 떨어지는지 — 유일하게 남은 조달 측 우려 ② Large Time만 늘고 C&amp;I 마이너스 지속 시 「조달만 늘고 대출 못 함」 임계 발동 ③ 8/12에 예금이 다시 빠지면 3주 규칙 적용</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>7/29 격상 3요건 2/3로 "경보 직전 관찰" → 8/15 전액 회복으로 <b>철회</b>. 월간 불일치를 이유로 격상 막은 규율이 오탐을 걸러낸 사례</span>
+    <span class="tag tag-ok">🟢 $2,558.2B · Jul +12.1% 반전 — <b>리테일 예금 전액 회복으로 조달 축소 경보 철회</b> · 남은 우려는 Other Deposits 7.7%→1.9% 감속</span>
   </td>
   <td class="src"><a href="https://www.federalreserve.gov/releases/h8/current/">Fed H.8 Table 2</a><br>Line 35 SA · 매주 금</td>
 </tr>
@@ -1010,13 +970,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">Q1 2026 1.411 최신 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-warn">낮음</span></td>
     <td class="threshold">
-    <b>분기 대비 반등 →</b> 유통속도 회복·민간 신용창출 재개 최종 확인 / <b>정체·하락 →</b> 돈이 여전히 고여 있음<br>
-    <b>시퀀스:</b> SLOOS 완화 → H.8 C&amp;I 증가 → M2 Velocity 반등 순으로 확인<br>
-    <b>✅ Q1 2026 1.411</b>(최신·Q2는 미발표). Q4 2025 1.409 → Q1 2026 1.411로 소폭 반등, 2분기 연속 상승 방향. <b>1.45 이상 회복 시 실물 신용 팽창 본격화 확인</b> — 현재는 회복 초기.<br>
-    <b>🔴 시퀀스 2단계에서 역행 발생(8/15 갱신):</b> 위 시퀀스대로라면 SLOOS 완화 → C&amp;I 증가가 이어져야 M2V가 오르는데, <b>C&amp;I 월간 연환산이 Jul -1.1%로 마이너스 전환</b>(row-ci)했다. <b>즉 2단계가 끊겼으므로 Q2·Q3 M2V 반등을 기대할 근거가 약해졌다.</b> Q1의 소폭 반등은 <b>C&amp;I가 아직 두 자릿수로 늘던 시기(Mar 16.5%)의 후행 반영</b>이라는 해석이 더 정합적.<br>
-    <b>⚠️ 후행성 유의:</b> 분기 발표 + 후행 지표라 <b>확인용이지 선행 판단용이 아니다.</b> 실시간 판단은 H.8 월간 연환산으로.<br>
-    <b>다음 관찰:</b> <b>Q2 2026 발표 시 1.411에서 하락 반전하는지</b> — 하락 시 "회복 초기" 서사 폐기<br>
-    <span class="tag tag-warn">🟡 1.411(Q1 2026·2분기 연속 상승) — 단 <b>시퀀스 2단계(C&amp;I)가 Jul -1.1%로 끊겨 Q2 이후 반등 근거 약화</b> · Q1 반등은 상반기 C&amp;I 강세의 후행 반영일 개연성</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>분기 대비 반등 →</b> 유통속도 회복·민간 신용창출 재개 최종 확인 / <b>1.45 이상 →</b> 실물 신용 팽창 본격화<br><b>시퀀스:</b> SLOOS 완화 → H.8 C&amp;I 증가 → M2V 반등 · <b>후행 확인용이지 선행 판단용 아님</b></span>
+    <span class="th"><span class="th-k k-now">지금</span><b>1.411</b>(Q1 2026·Q2 미발표) — Q4 2025 1.409에서 소폭 반등, 2분기 연속 상승 방향.<br><b>🔴 시퀀스 2단계가 끊겼다:</b> 위 순서대로면 C&amp;I 증가가 이어져야 하는데 <b>Jul 연환산 -1.1%로 마이너스 전환</b>. <b>Q2·Q3 M2V 반등을 기대할 근거가 약해졌고</b>, Q1의 소폭 반등은 C&amp;I가 아직 두 자릿수로 늘던 시기(Mar 16.5%)의 <b>후행 반영</b>으로 보는 게 정합적.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>Q2 2026 발표에서 1.411에서 하락 반전하는지</b> — 하락 시 「회복 초기」 서사 폐기 ② 실시간 판단은 H.8 월간 연환산으로</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>Q1 "2분기 연속 상승·회복 초기" → 8/15 C&amp;I 마이너스로 시퀀스 단절 확인</span>
+    <span class="tag tag-warn">🟡 1.411(Q1) — 2분기 연속 상승이나 <b>시퀀스 2단계(C&amp;I)가 끊겨 Q2 이후 반등 근거 약화</b> · Q1은 상반기 강세의 후행 반영</span>
   </td>
   <td class="src"><a href="https://fred.stlouisfed.org/series/M2V">FRED: M2V</a><br>분기 SA</td>
 </tr>
@@ -1043,29 +1001,26 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">7/1 발표 · BLS 7월 -23K</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>+100K+ →</b> 고용 안정·Fed 인하 명분 약화 / <b>0~+100K →</b> 인하 모멘텀 유지 / <b>마이너스 →</b> 경기 둔화 신호 / <b>연속 마이너스 →</b> 경기침체 경보<br>
-    <b>🔴 7월 -23K — 마이너스 전환(8/7 발표):</b> 4월 +115K에서 <b>마이너스로 반전</b>. 이 지표가 이번 국면에서 가장 큰 시장 반응을 만든 데이터로, <b>발표 직후 9월 인상 기대가 큰 폭 되돌려지며 12월 인상확률 80.3% → 74.6%</b>(row-fedwatch), <b>Gold는 6월 초 이후 최고로 급등</b>(row-gold)했다.<br>
-    <b>⚠️ 단 「연속 마이너스」는 아직 아님:</b> 1개월 마이너스로 경기침체 판정 불가. <b>8월 NFP(9/4 발표)가 2개월 연속 마이너스인지가 판정점</b>이며, 본 파일의 다른 행과 동일하게 <b>2회 연속을 최소 요건</b>으로 한다.<br>
-    <b>⚠️ 수정치 리스크 상시 유의:</b> BLS는 연간 80~100만 건 규모의 하향 수정이 반복되며 <b>경기 전환점에서 수정 폭이 커진다</b>(inflation_framework_ref 04 검증 항목). <b>당월 발표치를 그대로 신뢰하지 말고 다음 달 수정치와 병행 확인.</b><br>
-    <b>🔴 스태그플레이션 구도 확인:</b> 고용 약화(-23K)와 유가 재급등($93·row-brent)이 <b>동시에</b> 진행 중. <b>연준이 어느 쪽으로도 명확히 못 움직이는 구도이며, 「나쁜 경기 → 연준 완화 → 자산 상승」 공식이 깨지는 경로</b>가 실제로 열렸다.<br>
-    <span class="tag tag-alert">🔴 7월 -23K(8/7) — 4월 +115K에서 <b>마이너스 반전</b> · 인상확률 -5.7%p·Gold 급등의 직접 트리거 · <b>단 1개월뿐, 8월 NFP(9/4)가 연속 마이너스 판정점</b> · 유가 재급등과 겹쳐 스태그플레이션 구도</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>+100K+ →</b> 고용 안정·인하 명분 약화 / <b>0~+100K →</b> 인하 모멘텀 유지 / <b>마이너스 →</b> 둔화 신호 / <b>연속 마이너스 →</b> 침체 경보 · <b>2회 연속이 최소 요건</b><br>⚠️ BLS는 연간 80~100만 건 하향수정이 반복되고 <b>경기 전환점에서 수정 폭이 커진다</b> — 당월치 단독 신뢰 금지</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>7월 -23K</b> — 4월 +115K에서 마이너스 반전. <b>이번 국면에서 가장 큰 시장 반응을 만든 데이터</b>로, 발표 직후 12월 인상확률 80.3→74.6%, Gold는 6월 초 이후 최고로 급등.<br>단 1개월뿐이라 침체 판정 불가. <b>같은 달 실업률은 4.3→4.1%로 오히려 하락</b>해 방향이 엇갈리는데, 이는 참가율 하락(구직 포기)일 수 있어 병행 확인 필요.<br><b>🔴 스태그플레이션 구도:</b> 고용 약화와 유가 재급등($93)이 동시 진행 — 「나쁜 경기 → 연준 완화 → 자산 상승」 공식이 깨지는 경로.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>8월 NFP(9/4)가 2개월 연속 마이너스인지가 판정점</b> ② 7월치 수정 방향 ③ 실업률·참가율 동반 확인</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>값이 "+-23K"로 표기 오염돼 스크립트가 <b>영구 잠김</b> → v17에서 부호 포맷 수정·복구</span>
+    <span class="tag tag-alert">🔴 7월 -23K — 4월 +115K에서 반전, <b>인상확률 -5.7%p·Gold 급등의 직접 트리거</b> · 1개월뿐, 9/4가 판정점</span>
   </td>
   <td class="src"><a href="https://www.bls.gov/news.release/empsit.toc.htm">BLS 고용상황</a><br>매월 첫 금요일</td>
 </tr>
 <tr class="alt" id="row-cpi">
   <td class="ind">Core CPI / Core PCE<span class="sub">근원 물가 / 전년비</span></td>
   <td class="desc">식품·에너지 제외 근원 인플레이션. <b>Fed의 물가 목표(PCE 2%) 달성 여부를 판단하는 핵심 지표.</b> 이란전 유가 전이가 헤드라인을 밀어올려도 근원이 안정되면 인하 여지 유지</td>
-  <td class="val val-alert">헤드라인 3.5% / Core 2.8%</td>
-  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">7/1 BLS 7월 헤드라인 3.5%·Core 2.8% · FRED CPIAUCSL/CPILFESL 산출</span></td>
+  <td class="val val-alert">헤드라인 3.4% / Core 2.5%</td>
+  <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">8/12 BLS 발표(실측) 헤드라인 3.4%·Core 2.5% — v17.1 계산값(3.5/2.8)은 SA 시리즈 오류로 v17.4에서 NSA로 정정</span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>Core PCE 2.5% 하회 →</b> 인하 기대 강화 / <b>2.7% 유지 →</b> 동결 지속 / <b>3.0%+ →</b> 인하 논의 중단<br>
-    <b>✅ 자동화 복구(v17·8/15):</b> 이 행은 <b>3개월간 갱신되지 않았고 원인은 파이프라인 장애가 아니라 미구현</b>이었다. 기존 patch_cpi는 <b>값을 전혀 쓰지 않고 note의 날짜만 교체하며 "3월"을 하드코딩</b>하고 있었다(자동확인 배지가 사실상 장식). v17에서 <b>CPILFESL 지수에서 Core YoY를 직접 계산해 patch</b>하도록 신규 구현.<br>
-    <b>✅ 헤드라인·Core 모두 자동(v17.1):</b> v17은 헤드라인을 수동으로 남겼으나 <b>CPIAUCSL이 그대로 헤드라인 CPI</b>여서 오판이었다. 더 나쁜 건 Core만 패치하는 정규식이 <b>val 셀의 수동 헤드라인 값까지 삼켜 조용히 삭제</b>한 것(8/15 실제 발생) — 이 파일이 없애려던 문제 그 자체였다. v17.1에서 둘 다 자동화해 수동 의존을 제거했다.<br>
-    <b>🔴 마지막 확인분(4월): 헤드라인 3.8%·Core 2.8%.</b> Core MoM +0.4%(2025년 1월 이후 최고), 에너지 +3.8% MoM으로 <b>헤드라인 증가분의 40%+</b>. 실질 임금 MoM -0.5%. <b>에너지→근원 전이가 당시 확인 사항.</b><br>
-    <b>🔺 이후 상방 리스크 확대:</b> 4월 이후 유가가 7월 $71 저점 → <b>8월 $93로 재급등</b>(row-brent)했고 EIA는 호르무즈 차질이 <b>2027년 말까지</b> 지속된다고 본다. <b>"에너지發 인플레 되감기" 경로는 무효화됐으므로, Core가 2.8%에서 더 올랐을 개연성을 기본 시나리오로 둔다.</b> 다음 자동 갱신분에서 확인.<br>
-    <b>다음 관찰:</b> ① v17 적용 후 Core YoY 실제 갱신값 ② Truflation 실시간 지표와 병행(inflation_framework_ref 02) ③ Core 3.0% 돌파 시 인하 논의 중단 구간.<br>
-    <span class="tag tag-alert">🔴 마지막 확인 Core 2.8%(4월·Core MoM +0.4% 가속) — <b>3개월 미갱신 원인은 미구현, v17에서 자동화 복구</b> · 이후 유가 +30% 재급등으로 <b>상방 리스크 확대가 기본 시나리오</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>Core 2.5% 하회 →</b> 인하 기대 강화 / <b>2.7% 유지 →</b> 동결 지속 / <b>3.0%+ →</b> 인하 논의 중단<br>헤드라인·Core 모두 FRED NSA 시리즈(CPIAUCNS/CPILFENS)로 자동 산출</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>헤드라인 3.4% / Core 2.5%</b>(7월·BLS 8/12 발표, 컨센서스 정확히 부합) — 6월 대비 각각 -0.1%p로 <b>둘 다 완화</b>. Core MoM +0.2%로 21년래 최저권. 헤드라인 MoM +0.1%.<br><b>단 7월 CPI는 유가가 $71로 저점이던 달을 반영</b>한 값 — 호르무즈 재봉쇄發 에너지 재급등(Brent $93)은 8월분(9월 발표)부터 들어온다. <b>PPI 7월도 정합: final demand unchanged m/m·4.7% y/y(NSA, 6월 5.5%에서 둔화)</b>, 단 <b>근원 PPI(식품·에너지·무역서비스 제외)는 +0.4% m/m으로 6월(+0.1%) 대비 가속</b> — 헤드라인 둔화 이면에서 파이프라인 압력은 오히려 커짐.<br>발표 직후 9월 인상확률 50%→41~42%로 하락, 12월 인상확률은 73%대 유지(row-fedwatch 참조).</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>8월 CPI(9월 발표)에서 헤드라인·근원 모두 유가 재급등을 반영하는지 — 스태그플레이션 경로 확정의 핵심</b> ② 근원 PPI 가속이 CPI로 전이되는지 ③ Truflation 실시간 지표 병행</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>v17.1에서 SA 시리즈로 계산 → 실제 BLS치(3.4/2.5)와 10~30bp 괴리 → <b>v17.4에서 NSA 시리즈로 정정, BLS 실측과 일치 확인</b></span>
+    <span class="tag tag-alert">🔴 헤드라인 3.4% / Core 2.5%(7월·컨센서스 부합) — <b>유가 저점 달 반영, 재급등은 8월분부터</b> · 근원 PPI 가속(+0.4%)은 선행 경고</span>
   </td>
   <td class="src"><a href="https://www.bls.gov/cpi/">BLS CPI</a><br>4/10 발표 · 3월</td>
 </tr>
@@ -1076,13 +1031,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-auto">자동확인</span><span class="verify-note">7월 BLS · 7/1 발표 · 4.1%</span></td>
   <td class="status"><span class="badge badge-warn">주의</span></td>
     <td class="threshold">
-    <b>4.0% 이하 →</b> 고용 과열·인하 명분 없음 / <b>4.0~4.5% →</b> 현재 · 관망<br>
-    <b>4.5% 돌파 →</b> 경기침체 신호·금리 하락 압력 / <b>5.0%+ →</b> 긴급 인하 논의<br>
-    <b>7월 4.1%</b> — 3~4월 4.3%에서 <b>오히려 하락</b>. (검증 메모가 "3월"로 잘못 적혀 있던 것 8/15 정정)<br>
-    <b>🔑 NFP와 방향이 엇갈림 — 해석 주의:</b> 같은 달 <b>NFP는 -23K로 마이너스인데 실업률은 4.3% → 4.1%로 개선</b>. 이 조합은 통상 <b>경제활동참가율 하락(구직 포기)</b>으로 설명되며, <b>고용 개선이 아니라 노동공급 축소</b>일 수 있다. 실업률 단독으로 "고용 견조"로 읽으면 오독이며 <b>NFP·참가율과 반드시 병행</b>할 것.<br>
-    <b>정책 함의:</b> 실업률이 4.1%로 낮게 유지되는 한 <b>Fed의 "고용 우선" 전환 명분은 약하다</b>. 4.5% 돌파가 인하 논의 재개의 실질 문턱이며 현재 거리 0.4%p.<br>
-    <b>다음 관찰:</b> 8월 고용상황(9/4) — <b>NFP 연속 마이너스 + 실업률 상승 동시</b>가 나와야 경기 둔화 확정 / 참가율 추이 병행<br>
-    <span class="tag tag-warn">🟡 4.1%(7월·8/7 발표) — 4.3%에서 하락했으나 <b>같은 달 NFP -23K와 방향 상충</b> · 참가율 하락(구직 포기) 가능성 — <b>실업률 단독 판독 금지</b> · 4.5%까지 0.4%p</span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>4.0% 이하 →</b> 고용 과열·인하 명분 없음 / <b>4.0~4.5% →</b> 관망 ← 해당 / <b>4.5% 돌파 →</b> 침체 신호·인하 논의 문턱 / <b>5.0%+ →</b> 긴급 인하<br><b>단독 판독 금지</b> — NFP·참가율과 반드시 병행</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>4.1%</b>(7월) — 3~4월 4.3%에서 오히려 하락. <b>같은 달 NFP는 -23K로 방향이 상충</b>하는데, 이 조합은 통상 <b>경제활동참가율 하락(구직 포기)</b>으로 설명된다. <b>고용 개선이 아니라 노동공급 축소</b>일 수 있어 이것만으로 "고용 견조"로 읽으면 오독.<br>실업률이 낮게 유지되는 한 <b>Fed의 「고용 우선」 전환 명분은 약하다</b>. 4.5%까지 0.4%p.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① <b>NFP 연속 마이너스 + 실업률 상승 동시</b>가 나와야 둔화 확정 ② 참가율 추이 ③ 8월 고용상황(9/4)</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>검증 메모가 "3월"로 잘못 고정돼 있던 것 8/15 정정 · 스크립트도 월 하드코딩 제거</span>
+    <span class="tag tag-warn">🟡 4.1%(7월) — <b>같은 달 NFP -23K와 방향 상충</b>, 참가율 하락 가능성 · 단독 판독 금지 · 4.5%까지 0.4%p</span>
   </td>
   <td class="src"><a href="https://www.bls.gov/news.release/empsit.toc.htm">BLS 고용상황</a><br>NFP 동시</td>
 </tr>
@@ -1093,13 +1046,11 @@ tr.alt{background:rgba(0,0,0,0.015)}
   <td class="verify"><span class="vbadge vbadge-ok">검색확인</span><span class="verify-note">12/9 FOMC 기준, CPI 발표 후 인상 기대 소폭 낮아졌으나 인상확률 약 74.6%로 여전히 인상 우위 — 연내 인하 0% 유지 · chatgpt ai <!-- chatgpt ai 8/15 --></span></td>
   <td class="status"><span class="badge badge-alert">경보</span></td>
     <td class="threshold">
-    <b>6월 인하 확률 50%+ →</b> 채권 랠리·리스크온 / <b>인상 합산 70%+ →</b> 2026년 인상 베이스케이스 구조화 ← <b>현재 74.6% — 임계 상회 유지</b><br>
-    <b>🔻 인상 기대 되돌림(8/15 갱신): 12/9 FOMC 기준 인상확률 약 74.6%</b>(연내 인하 0%). 6/30 <b>80.3% → 74.6%로 -5.7%p</b> 하락. <b>직접 트리거는 8/7 부진한 7월 고용지표</b> — 9월 인상 기대가 큰 폭 되돌려지며 Gold가 6월 초 이후 최고로 급등(row-gold)한 것과 동일 원인.<br>
-    <b>⚠️ 그러나 방향 전환이 아니라 폭 조정:</b> <b>70%+ 임계는 여전히 상회</b>하고 <b>연내 인하 확률은 0% 유지</b>. "Warsh 비둘기 전환" 시나리오 소멸 판정은 그대로다. 6/19 89% → 6/27 67.8% → 6/30 80.3% → 8/15 74.6%로 <b>매 데이터마다 재가격되는 출렁임이 계속</b>되고 있어, 단일 수치로 방향을 확정하지 말 것.<br>
-    <b>✅ 6/17 Warsh 첫 FOMC(변경 없음):</b> 12-0 동결(3.5~3.75%). dot plot 18명 중 9명 2026 인상 전망·6명 25bp×2 선호. 이지닝 바이어스 제거·포워드 가이던스 삭제. SEP: PCE 연말 3.6%·GDP 2.2%·실업 4.3%.<br>
-    <b>🔴 이번 국면의 딜레마 — 양방향이 동시에 강해졌다:</b> <b>고용은 약해지는데(인하 압력) 유가는 $93로 재상승(인상 압력)</b>. 8월 물가 지표들도 압력 지속을 가리켰다. <b>이게 정확히 스태그플레이션 구도이며, 연준이 어느 쪽도 명확히 못 움직이는 「장기 동결」이 베이스케이스로 굳어지는 경로</b>. 채권 강세 논리(inflation_framework_ref 05)의 전제가 흔들리는 구간.<br>
-    <b>다음 관찰:</b> ① 8월 고용·물가 지표에서 어느 쪽이 우세한지 ② <b>인상확률 70% 하향 이탈 시 "인상 베이스케이스" 해제 판정</b> ③ 잭슨홀 Warsh 발언.<br>
-    <span class="tag tag-alert">🔴 인상확률 74.6%(12월·8/15 기준) — 8/7 약한 고용으로 80.3%에서 -5.7%p 되돌림, <b>단 70%+ 임계·연내 인하 0%는 유지</b> · <b>약한 고용 + 유가 $93 = 양방향 압력 동시 강화, 장기 동결 구도</b></span>
+    <span class="th"><span class="th-k k-rule">임계</span><b>인하 확률 50%+ →</b> 채권 랠리·리스크온 / <b>인상 합산 70%+ →</b> 2026년 인상 베이스케이스 구조화 ← 상회 유지<br><b>단일 수치로 방향 확정 금지</b> — 매 데이터마다 재가격되는 출렁임이 계속</span>
+    <span class="th"><span class="th-k k-now">지금</span><b>12월 인상확률 약 74.6%</b>(연내 인하 0%) — 6/30 80.3%에서 <b>-5.7%p</b>. 직접 트리거는 8/7 부진한 고용지표. <b>단 70%+ 임계는 상회, 인하 0%도 유지</b>라 방향 전환이 아니라 폭 조정.<br><b>6/17 Warsh 첫 FOMC(불변):</b> 12-0 동결(3.5~3.75%), dot plot 18명 중 9명 2026 인상·6명 25bp×2 선호, 포워드 가이던스 삭제, SEP PCE 연말 3.6%.<br><b>🔴 양방향이 동시에 강해졌다:</b> 고용 약화(인하 압력) + 유가 $93(인상 압력). <b>연준이 어느 쪽도 못 움직이는 「장기 동결」이 베이스케이스로 굳는 경로</b>이며, 채권 강세 논리의 전제가 흔들리는 구간.</span>
+    <span class="th"><span class="th-k k-next">다음</span>① 8월 고용·물가 중 어느 쪽이 우세한지 ② <b>70% 하향 이탈 시 「인상 베이스케이스」 해제 판정</b> ③ 잭슨홀 Warsh 발언</span>
+    <span class="th th-log"><span class="th-k k-log">이력</span>6/19 89% → 6/27 67.8% → 6/30 80.3% → 8/15 74.6%. "Warsh 비둘기 전환" 시나리오는 6월 이후 소멸 상태 유지</span>
+    <span class="tag tag-alert">🔴 인상확률 74.6% — 약한 고용으로 -5.7%p이나 <b>70%+·인하 0% 유지</b> · <b>고용 약화 + 유가 $93 = 장기 동결 구도</b></span>
   </td>
   <td class="src"><a href="https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html">CME FedWatch</a><br>Fed Funds Futures</td>
 </tr>
@@ -1142,6 +1093,7 @@ tr.alt{background:rgba(0,0,0,0.015)}
   FHLB 차입 → <a href="https://fred.stlouisfed.org/series/FHLBADVANCES">FRED FHLBADVANCES</a>
 </div>
 </div>
+
 
 
 
