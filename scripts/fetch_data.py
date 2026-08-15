@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # ========================================================================
-# macro-monitor 자동 업데이트 스크립트 v17.3
+# macro-monitor 자동 업데이트 스크립트 v17.4
+# v17.4 (8/15):
+#   - [긴급수정] fetch_cpi가 SA 시리즈(CPIAUCSL/CPILFESL)로 YoY를 계산해 실제 BLS
+#     발표치와 어긋남(헤드라인 -10bp, 코어 -30bp). BLS 보도자료 관행인 NSA
+#     시리즈(CPIAUCNS/CPILFENS)로 교체. 7월 실측 대조: 헤드라인 3.4%·코어 2.5%.
 # v17.3 (8/15):
 #   - [구조] IORB 하드코딩 제거 → FRED 시리즈 IORB 조회. FOMC 금리 변경 시
 #     아무도 모르게 Repo 스프레드가 틀어지던 함정 제거. 조회 실패 시에만 폴백.
@@ -63,7 +67,7 @@ import os
 import time
 from datetime import datetime
 
-SCRIPT_VERSION = "v17.3"
+SCRIPT_VERSION = "v17.4"
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
 MONITOR_FILE = "monitor.html"
@@ -298,8 +302,12 @@ def fetch_cpi():
     삼켜서 지워버렸고(값 셀엔 Core만 남고 임계 서술은 '헤드라인 수동 유지'라고
     말하는 불일치 발생), 이는 이 스크립트가 없애려던 문제 그 자체였다.
     둘 다 자동화해 수동 의존을 제거한다."""
-    core = _yoy_from_fred("CPILFESL", "Core CPI")
-    head = _yoy_from_fred("CPIAUCSL", "헤드라인 CPI")
+    # v17.4: BLS 보도자료의 "전년동월비"는 NSA(계절조정 전) 기준이다
+    # ("...increased 3.4 percent before seasonal adjustment"). v17.1은 SA
+    # 시리즈(CPIAUCSL/CPILFESL)로 계산해 실제 BLS 발표치(헤드라인 3.4%·코어 2.5%,
+    # 2026년 7월 기준)와 각각 10bp·30bp 어긋났다(계산값 3.5%/2.8%). NSA 시리즈로 교체.
+    core = _yoy_from_fred("CPILFENS", "Core CPI(NSA)")
+    head = _yoy_from_fred("CPIAUCNS", "헤드라인 CPI(NSA)")
     dt = core["dt"]
     return {"val": core["yoy"], "core": core["yoy"], "headline": head["yoy"],
             "index": core["index"], "month": f"{dt.month}월",
