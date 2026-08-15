@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # ========================================================================
-# macro-monitor 자동 업데이트 스크립트 v17
+# macro-monitor 자동 업데이트 스크립트 v17.1
+# v17.1 (8/15):
+#   - [회귀수정] patch_cpi 정규식이 val 셀의 수동 헤드라인 값까지 삼켜 삭제.
+#     ("헤드라인 3.8%(수동) / Core 2.8%" → "Core 2.8%" 로 조용히 사라짐)
+#     val 셀을 통째로 재작성하는 방식으로 교체.
+#   - [오판정정] v17은 "헤드라인 CPI는 FRED 단일 시리즈로 확정 어려움"이라 봤으나
+#     CPIAUCSL이 그대로 헤드라인 CPI다. 헤드라인·Core 모두 자동화해 수동 의존 제거.
 # v17 (8/15):
 #   - [치명] 자기 오염(self-poisoning) 버그 3건 수정 + 구조적 재발 방지.
 #     쓰는 형식과 읽는 앵커가 달라 "패치 성공한 순간 스스로 잠기는" 버그.
@@ -48,7 +54,7 @@ import os
 import time
 from datetime import datetime
 
-SCRIPT_VERSION = "v17"
+SCRIPT_VERSION = "v17.1"
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
 MONITOR_FILE = "monitor.html"
@@ -252,33 +258,41 @@ def fetch_nfp():
             "display": f"{change:+,}K ({month_name})"}
 
 
-def fetch_core_cpi():
-    """Core CPI YoY(%) — CPILFESL(지수 레벨)에서 전년 동월 대비 직접 계산.
-    v16까지는 fetch_fred("CPILFESL")의 지수 원값(336.789 등)을 그대로 들고 왔고
-    patch_cpi가 값을 아예 쓰지 않아 이 행은 사실상 미구현 상태였다."""
+def _yoy_from_fred(series_id, label):
+    """FRED 지수 시리즈에서 전년 동월 대비(%) 계산 — 13개월치 필요"""
     if not FRED_API_KEY:
         raise ValueError("FRED_API_KEY 없음")
     params = urllib.parse.urlencode({
-        "series_id": "CPILFESL", "api_key": FRED_API_KEY,
+        "series_id": series_id, "api_key": FRED_API_KEY,
         "file_type": "json", "sort_order": "desc", "limit": 16
     })
     data = http_get(f"https://api.stlouisfed.org/fred/series/observations?{params}")
     obs = [o for o in data.get("observations", []) if o["value"] != "."]
     if len(obs) < 13:
-        raise ValueError("Core CPI 데이터 부족(13개월 필요)")
+        raise ValueError(f"{label} 데이터 부족(13개월 필요)")
     latest = float(obs[0]["value"])
-    year_ago = float(obs[12]["value"])          # 13번째 = 12개월 전
-    yoy = round((latest / year_ago - 1) * 100, 1)
+    year_ago = float(obs[12]["value"])
     dt = datetime.strptime(obs[0]["date"], "%Y-%m-%d")
-    return {"val": yoy, "index": latest, "month": f"{dt.month}월",
+    return {"yoy": round((latest / year_ago - 1) * 100, 1),
+            "index": latest, "dt": dt}
+
+
+def fetch_cpi():
+    """헤드라인(CPIAUCSL) + Core(CPILFESL) YoY 동시 산출.
+
+    v17.1: v17에서 '헤드라인은 FRED 단일 시리즈로 확정이 어렵다'고 보고 Core만
+    자동화했으나 이는 오판이었다. CPIAUCSL이 그대로 헤드라인 CPI다.
+    더 나쁜 건, Core만 패치하는 정규식이 val 셀의 수동 헤드라인 값까지
+    삼켜서 지워버렸고(값 셀엔 Core만 남고 임계 서술은 '헤드라인 수동 유지'라고
+    말하는 불일치 발생), 이는 이 스크립트가 없애려던 문제 그 자체였다.
+    둘 다 자동화해 수동 의존을 제거한다."""
+    core = _yoy_from_fred("CPILFESL", "Core CPI")
+    head = _yoy_from_fred("CPIAUCSL", "헤드라인 CPI")
+    dt = core["dt"]
+    return {"val": core["yoy"], "core": core["yoy"], "headline": head["yoy"],
+            "index": core["index"], "month": f"{dt.month}월",
             "date": f"{dt.month}/{dt.day}",
-            "display": f"Core YoY {yoy:.1f}% (지수 {latest}, {dt.month}월)"}
-
-
-def fetch_unrate():
-    """실업률 — FRED UNRATE. v17: note에 월 표기를 넣기 위해 month 필드 추가."""
-    r = fetch_fred("UNRATE")
-    return r
+            "display": f'헤드라인 {head["yoy"]:.1f}% / Core {core["yoy"]:.1f}% ({dt.month}월)'}
 
 
 def fetch_cot_ust10y():
@@ -528,22 +542,29 @@ def patch_nfp(html, nfp):
 # v17: note에 발표일을 포함시킨다. 날짜를 빼면 validate_patches가 미반영으로
 #      경고하는데, 이를 예외 처리(skip)로 덮는 것이 과거 CPI 3개월 미갱신을
 #      감춘 원인이었으므로 예외 대신 날짜를 넣는 방향으로 해결한다.
-CPI_NOTE_RX = r'\d+/\d+ BLS \d+월 Core YoY [\d.]+% · FRED CPILFESL 산출\(헤드라인 수동\)'
+# v17.1: val 셀 전체를 헤드라인+Core로 완전히 재작성한다.
+#        v17의 정규식은 'Core X%' 앞의 임의 텍스트를 [^<]* 로 먹어치워
+#        수동 헤드라인 값을 조용히 삭제했다(실제 8/15 발생).
+CPI_VAL_RX  = r'<td class="val val-(?:ok|warn|alert)">[^<]*Core [\d.]+%</td>'
+CPI_NOTE_RX = (r'\d+/\d+ BLS \d+월 헤드라인 [\d.]+%·Core [\d.]+% · '
+               r'FRED CPIAUCSL/CPILFESL 산출')
 
 
 def patch_cpi(html, cpi):
     if not cpi:
         return html
+    cls = "val-alert" if cpi["core"] >= 3.0 or cpi["headline"] >= 3.5 else "val-warn"
+    html = sub(html, CPI_VAL_RX,
+        f'<td class="val {cls}">헤드라인 {cpi["headline"]:.1f}% / Core {cpi["core"]:.1f}%</td>',
+        label="CPI val")
     html = sub(html,
-        r'(<td class="val val-(?:ok|warn|alert)">)(?:🔴 )?[^<]*Core [\d.]+%(</td>)',
-        f'\\g<1>Core {cpi["val"]:.1f}%\\g<2>',
-        label="CPI val(Core)")
-    html = sub(html,
-        r'(?:\d+/\d+ BLS 발표 · \d+월 [^<]*'
-        r'|BLS \d+월 Core YoY [\d.]+% · FRED CPILFESL 산출\(헤드라인 수동\)'
+        r'(?:\d+/\d+ BLS \d+월 Core YoY [\d.]+% · FRED CPILFESL 산출\(헤드라인 수동\)'
+        r'|\d+/\d+ BLS 발표 · \d+월 [^<]*'
         r'|' + CPI_NOTE_RX + r')',
-        f'{cpi["date"]} BLS {cpi["month"]} Core YoY {cpi["val"]:.1f}% · FRED CPILFESL 산출(헤드라인 수동)',
+        f'{cpi["date"]} BLS {cpi["month"]} 헤드라인 {cpi["headline"]:.1f}%·'
+        f'Core {cpi["core"]:.1f}% · FRED CPIAUCSL/CPILFESL 산출',
         label="CPI note")
+    register_anchor("CPI val", CPI_VAL_RX)
     register_anchor("CPI note", CPI_NOTE_RX)
     return html
 
@@ -941,7 +962,7 @@ def main():
     data["sofr"]    = safe_fetch("SOFR",    lambda: fetch_fred("SOFR"))
     data["rrp"]     = safe_fetch("RRP",     lambda: fetch_fred("RRPONTSYD"))
     data["nfp"]     = safe_fetch("NFP",     fetch_nfp)
-    data["cpi"]     = safe_fetch("CoreCPI", fetch_core_cpi)
+    data["cpi"]     = safe_fetch("CPI",     fetch_cpi)
     data["unrate"]  = safe_fetch("UNRATE",  fetch_unrate)
     data["ci"]      = safe_fetch("C&I",     lambda: fetch_fred("BUSLOANS"))
     data["auction"] = safe_fetch("경매IB",  fetch_auction)
