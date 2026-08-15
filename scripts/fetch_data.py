@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # ========================================================================
-# macro-monitor 자동 업데이트 스크립트 v17.2
+# macro-monitor 자동 업데이트 스크립트 v17.3
+# v17.3 (8/15):
+#   - [구조] IORB 하드코딩 제거 → FRED 시리즈 IORB 조회. FOMC 금리 변경 시
+#     아무도 모르게 Repo 스프레드가 틀어지던 함정 제거. 조회 실패 시에만 폴백.
+#   - [재보정] Repo 판단 임계를 GCF 기준(+20/+30bp)에서 SOFR-IORB 기준으로 교체.
+#     기존 임계로는 경보가 영원히 울리지 않는 구조였음(0bp 역전이 실질 신호).
 # v17.2 (8/15):
 #   - [긴급수정] v17.1 리팩터링 중 fetch_unrate가 삭제되어 실행 시 NameError.
 #     py_compile은 통과하고 patch 단계만 mock 테스트해서 배포 후에야 발견됨.
@@ -58,14 +63,17 @@ import os
 import time
 from datetime import datetime
 
-SCRIPT_VERSION = "v17.2"
+SCRIPT_VERSION = "v17.3"
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "")
 MONITOR_FILE = "monitor.html"
 AUTO_BADGE = '<span class="vbadge vbadge-auto">자동확인</span>'
 
-# FOMC 금리 변경 시 반드시 갱신 (현재 3.5~3.75% 밴드 기준 IORB)
-IORB = 3.65
+# v17.3: IORB 하드코딩 제거. FRED 시리즈 "IORB"로 직접 조회한다.
+# 상수로 두면 FOMC가 금리를 바꿔도 아무도 모르게 Repo 스프레드가 틀어진다
+# (주석으로 "갱신 필수"라고 적어두는 것은 구조적 방지책이 아니다).
+# 조회 실패 시에만 아래 폴백을 쓰고, 그 사실을 로그에 명시한다.
+IORB_FALLBACK = 3.65
 
 # ── 라운드트립 앵커 레지스트리 ──────────────────────────────────
 # 패치가 "쓴 결과"를 자기 "읽기 앵커"로 다시 읽을 수 있는지 검증한다.
@@ -299,6 +307,11 @@ def fetch_cpi():
             "display": f'헤드라인 {head["yoy"]:.1f}% / Core {core["yoy"]:.1f}% ({dt.month}월)'}
 
 
+def fetch_iorb():
+    """IORB(지준부리금리) — FRED 시리즈 IORB. v17.3에서 하드코딩 대체."""
+    return fetch_fred("IORB")
+
+
 def fetch_unrate():
     """실업률 — FRED UNRATE. note에 월 표기를 넣기 위해 month 필드를 함께 사용."""
     return fetch_fred("UNRATE")
@@ -476,13 +489,23 @@ def patch_dgs10(html, dgs10):
         "DGS10")
 
 
+def _repo_cls(bp):
+    """v17.3 재보정: 임계가 GCF 기준(+20/+30bp)이라 SOFR-IORB에는 영원히 안 걸렸다.
+    SOFR-IORB는 지준 풍부 시 음수가 정상이고 0 접근·역전이 희소화 신호다."""
+    if bp >= 0:
+        return "val-alert"
+    if bp >= -5:
+        return "val-warn"
+    return "val-ok"
+
+
 REPO_NOTE_RX = (r'(?:\d+/\d+ SOFR [\d.]+% vs IORB [\d.]+% · '
                 r'(?:역전 해소|GCF 미공개로 SOFR-IORB 대체)'
                 r'|<b style="color:#8B1A1A">값·지표 정의 불일치</b>[^<]*'
                 r'(?:<[^>]+>[^<]*)*?표시값은 284bp)')
 
 
-def patch_sofr(html, sofr):
+def patch_sofr(html, sofr, iorb=None):
     if not sofr:
         return html
     html = sub(html,
@@ -496,13 +519,18 @@ def patch_sofr(html, sofr):
     # v17: Repo Stress 행은 note만 갱신되고 val 패치가 아예 없어
     #      과거 수동 입력값(284bp)이 화석으로 남아 "값 284bp / 설명 -3bp" 모순 발생.
     #      GCF는 DTCC 미공개이므로 이 행의 값은 SOFR-IORB 대체치임을 명시하고 함께 패치한다.
-    spread_bp = round((sofr["val"] - IORB) * 100)
+    if iorb:
+        iorb_val, iorb_src = iorb["val"], f'IORB {iorb["date"]}'
+    else:
+        iorb_val, iorb_src = IORB_FALLBACK, "IORB 폴백값(조회실패)"
+        print(f'    \u26a0\ufe0f  IORB 조회 실패 → 폴백 {IORB_FALLBACK}% 사용 (스프레드 신뢰도 저하)')
+    spread_bp = round((sofr["val"] - iorb_val) * 100)
     html = _patch_val_by_note(
         html,
         REPO_NOTE_RX,
-        f'{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB {IORB:.2f}% · GCF 미공개로 SOFR-IORB 대체',
+        f'{sofr["date"]} SOFR {sofr["val"]:.2f}% vs IORB {iorb_val:.2f}% · GCF 미공개로 SOFR-IORB 대체',
         r'<td class="val[^"]*"[^>]*>.*?</td>',
-        lambda m: f'<td class="val {"val-alert" if spread_bp >= 20 else "val-ok"}">{spread_bp:+d}bp</td>',
+        lambda m: f'<td class="val {_repo_cls(spread_bp)}">{spread_bp:+d}bp</td>',
         "Repo Stress val+note")
     register_anchor("Repo note", REPO_NOTE_RX)
     return html
@@ -873,7 +901,10 @@ def patch_stlfsi(html, stlfsi):
 # v17: 이전 앵커는 'Q\d 20\d\d · FHLB' 인데 쓰는 값은 '· FRED Z.1 (...)' 이라
 #      자기가 쓴 결과를 자기 앵커가 못 읽는 자기 오염 → 1회만 성공하고 영구 실패.
 #      읽기 앵커를 실제 쓰기 포맷과 일치시키고, 레거시 형태도 함께 흡수한다.
-FHLB_NOTE_RX = (r'Q\d 20\d\d · (?:FRED Z\.1 \(FHLB 공식[^)]*\)|FHLB[^<]*)')
+# v17.3: 공식 CFR 수치를 병기하는 형식으로 통일(수동 편집분까지 흡수).
+#        FRED Z.1과 공식 CFR은 약 $10B 상시 차이 → 둘 다 남겨야 오독이 없다.
+FHLB_NOTE_RX = (r'Q\d 20\d\d · FRED Z\.1 \$[\d,.]+B / <b>공식 CFR [^<]*</b>[^<]*'
+                r'|Q\d 20\d\d · (?:FRED Z\.1 \(FHLB 공식[^)]*\)|FHLB[^<]*)')
 
 
 def patch_fhlb(html, fhlb):
@@ -892,7 +923,9 @@ def patch_fhlb(html, fhlb):
 
     old_str = m.group(0)
     # 임계($700B) 초과 여부에 따라 색상 클래스 조정
-    cls = "val-alert" if val_b >= 700 else "val-ok"
+    # v17.3: 레벨 단독으로 경보 색을 주지 않는다(Q2 2025 $742.8B 선례 확인).
+    #        경보는 「$700B + 연체발생 + H.8 소형은행 Borrowings 증가」 3요건 수동 판정.
+    cls = "val-warn" if val_b >= 700 else "val-ok"
     new_str = re.sub(
         r'<td class="val val-(?:ok|warn|alert)">[^<]+</td>',
         f'<td class="val {cls}">${val_b:,.1f}B</td>',
@@ -900,13 +933,14 @@ def patch_fhlb(html, fhlb):
     )
     new_str = re.sub(
         FHLB_NOTE_RX,
-        f'{fhlb.get("quarter","Q?")} {fhlb.get("year","?")} · FRED Z.1 (FHLB 공식≈$676.7B)',
+        f'{fhlb.get("quarter","Q?")} {fhlb.get("year","?")} · FRED Z.1 ${val_b:,.1f}B / '
+        f'<b>공식 CFR $734.3B</b> — 공식 수치는 분기 CFR 발행 시 수동 갱신',
         new_str, count=1
     )
     new_str = new_str.replace('vbadge-ok">검색확인', 'vbadge-auto">자동확인')
     html = html.replace(old_str, new_str, 1)
     register_anchor("FHLB note", FHLB_NOTE_RX)
-    flag = "  \U0001F534 $700B 경보 임계 초과" if val_b >= 700 else ""
+    flag = "  \U0001F7E1 $700B 초과(단독으로는 경보 아님·3요건 확인 필요)" if val_b >= 700 else ""
     print(f"    \u2705 FHLB ${val_b:,.1f}B ({fhlb['date']}){flag}")
     return html
 
@@ -935,7 +969,7 @@ def patch_html(html, data):
     html = patch_tga(html,     data.get("tga"))
     html = patch_rrp(html,     data.get("rrp"))
     html = patch_dgs10(html,   data.get("dgs10"))
-    html = patch_sofr(html,    data.get("sofr"))
+    html = patch_sofr(html,    data.get("sofr"), data.get("iorb"))
     html = patch_auction(html, data.get("auction"))
     html = patch_nfp(html,     data.get("nfp"))
     html = patch_cpi(html,     data.get("cpi"))
@@ -967,7 +1001,7 @@ def preflight():
     이름 해석 실패는 조회를 시작하기 전에 잡아야 한다."""
     required = [
         "fetch_tga", "fetch_fred", "fetch_nfp", "fetch_cpi", "fetch_unrate",
-        "fetch_auction", "fetch_cot_ust10y", "fetch_oil", "fetch_oas",
+        "fetch_auction", "fetch_cot_ust10y", "fetch_oil", "fetch_oas", "fetch_iorb",
         "fetch_reserves", "fetch_walcl", "fetch_deposits", "fetch_fhlb",
         "fetch_usdjpy", "fetch_stlfsi", "_yoy_from_fred",
     ]
@@ -989,6 +1023,7 @@ def main():
     data["tga"]     = safe_fetch("TGA",     fetch_tga)
     data["dgs10"]   = safe_fetch("DGS10",   lambda: fetch_fred("DGS10"))
     data["sofr"]    = safe_fetch("SOFR",    lambda: fetch_fred("SOFR"))
+    data["iorb"]    = safe_fetch("IORB",    fetch_iorb)
     data["rrp"]     = safe_fetch("RRP",     lambda: fetch_fred("RRPONTSYD"))
     data["nfp"]     = safe_fetch("NFP",     fetch_nfp)
     data["cpi"]     = safe_fetch("CPI",     fetch_cpi)
